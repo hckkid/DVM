@@ -81,4 +81,5 @@ Module Type TYPE <: type_type.
 
   Definition checkCast (p:prg) (ty1 ty2:t) : bool :=
     match ty1,ty2 with
-    | (r (c cl1)) ,(r (c cl2)) => match 
+    | (r (c cl1)) ,(r (c cl2)) => match (CLIST.get cl1 (PROGRAM.getClasses p)),(CLIST.get cl1 (PROGRAM.getClasses p)) with
+      | Some cls1,Some cls2 => 
