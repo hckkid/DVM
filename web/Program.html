@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<link href="coqdoc.css" rel="stylesheet" type="text/css"/>
+<title>Program</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Program</h1>
+
+<div class="code">
+<span class="id" type="keyword">Add</span> <span class="id" type="var">LoadPath</span> "D:\DVM".<br/>
+<span class="id" type="keyword">Require</span> <span class="id" type="keyword">Export</span> <a class="idref" href="Defs.html#"><span class="id" type="library">Defs</span></a>.<br/>
+
+<br/>
+<span class="id" type="keyword">Module</span> <span class="id" type="keyword">Type</span> <a name="ProgramType"><span class="id" type="module">ProgramType</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="ProgramType.prg"><span class="id" type="axiom">prg</span></a> : <span class="id" type="keyword">Type</span>. &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="ProgramType.getMethods"><span class="id" type="axiom">getMethods</span></a> : <a class="idref" href="Program.html#ProgramType.prg"><span class="id" type="axiom">prg</span></a> -&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl2/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#Method"><span class="id" type="inductive">Method</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="ProgramType.getClasses"><span class="id" type="axiom">getClasses</span></a> : <a class="idref" href="Program.html#ProgramType.prg"><span class="id" type="axiom">prg</span></a> -&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl2/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <span class="id" type="keyword">Class</span>.<br/>
+&nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="ProgramType.getFields"><span class="id" type="axiom">getFields</span></a> : <a class="idref" href="Program.html#ProgramType.prg"><span class="id" type="axiom">prg</span></a> -&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl2/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#Field"><span class="id" type="inductive">Field</span></a>.<br/>
+<span class="id" type="keyword">End</span> <a class="idref" href="Program.html#"><span class="id" type="module">ProgramType</span></a>.<br/>
+
+<br/>
+<span class="id" type="keyword">Module</span> <a name="PROGRAM"><span class="id" type="module">PROGRAM</span></a> &lt;: <a class="idref" href="Program.html#"><span class="id" type="module">ProgramType</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="PROGRAM.prg"><span class="id" type="definition">prg</span></a> := <a class="idref" href="Defs.html#Program"><span class="id" type="inductive">Program</span></a>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="PROGRAM.getMethods"><span class="id" type="definition">getMethods</span></a> (<span class="id" type="var">p</span>:<a class="idref" href="Program.html#PROGRAM.prg"><span class="id" type="definition">prg</span></a>) := <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="Program.html#p"><span class="id" type="variable">p</span></a> <span class="id" type="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| (<a class="idref" href="Defs.html#prog"><span class="id" type="constructor">prog</span></a> <span class="id" type="var">cnl</span> <span class="id" type="var">mnl</span> <span class="id" type="var">clst</span> <span class="id" type="var">flst</span> <span class="id" type="var">mlst</span>) =&gt; <span class="id" type="var">mlst</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="PROGRAM.getClasses"><span class="id" type="definition">getClasses</span></a> (<span class="id" type="var">p</span>:<a class="idref" href="Program.html#PROGRAM.prg"><span class="id" type="definition">prg</span></a>) := <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="Program.html#p"><span class="id" type="variable">p</span></a> <span class="id" type="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| (<a class="idref" href="Defs.html#prog"><span class="id" type="constructor">prog</span></a> <span class="id" type="var">cnl</span> <span class="id" type="var">mnl</span> <span class="id" type="var">clst</span> <span class="id" type="var">flst</span> <span class="id" type="var">mlst</span>) =&gt; <span class="id" type="var">clst</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="PROGRAM.getFields"><span class="id" type="definition">getFields</span></a> (<span class="id" type="var">p</span>:<a class="idref" href="Program.html#PROGRAM.prg"><span class="id" type="definition">prg</span></a>) := <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="Program.html#p"><span class="id" type="variable">p</span></a> <span class="id" type="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| (<a class="idref" href="Defs.html#prog"><span class="id" type="constructor">prog</span></a> <span class="id" type="var">cnl</span> <span class="id" type="var">mnl</span> <span class="id" type="var">clst</span> <span class="id" type="var">flst</span> <span class="id" type="var">mlst</span>) =&gt; <span class="id" type="var">flst</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" type="keyword">End</span> <a class="idref" href="Program.html#"><span class="id" type="module">PROGRAM</span></a>.<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>
