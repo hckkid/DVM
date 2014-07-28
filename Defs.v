@@ -39,7 +39,7 @@ with RefType : Type :=
 
 Inductive lhs : Type :=
   | reg : Register -> lhs
-  | acc : Register -> rhs -> lhs
+  | acc : Register -> Register -> lhs
   | ifield : Register -> FieldLocation -> lhs
   | sfield : FieldLocation -> lhs
 with rhs : Type :=
@@ -56,13 +56,13 @@ Inductive Instruction : Type :=
   | branch : rhs -> BinaryCompOperator -> rhs -> ProgramCounter -> Instruction
   | move : Register -> rhs -> Instruction
   | update : rhs -> rhs -> Instruction
-  | unaryArith : Register -> UnaryOperator -> rhs -> Instruction
+  | unary : Register -> UnaryOperator -> rhs -> Instruction
   | binaryArith : Register -> rhs -> BinaryArithOperator -> rhs -> Instruction
   | new : Register -> ClassLocation -> Instruction
   | newarr : Register -> type -> rhs -> Instruction
   | cast : Register -> type -> rhs -> Instruction
-  | read : type -> Register -> Instruction
-  | print : type -> rhs -> Instruction.
+  | read : Register -> Instruction
+  | print : rhs -> Instruction.
 
 Inductive MethodSig : Type := ms (am:nat) (mn:MethodName) (ret:type) (regs:nat) (args:list (type*Name)).
 Inductive MethodBody : Type := mb (insts:list (ProgramCounter*Instruction)).
@@ -85,9 +85,16 @@ Inductive Val : Type :=
   | prim : Prim -> Val
   | ref : Ref -> Val.
 
+(** 
+
+An Object either is instance of Top class, or it made of current Class Location (Used in Casting),
+Original Class Location, Field Value Pairs, or it is deletedObject which comes into play during Garbage Collection.
+
+*)
+
 Inductive Object : Type :=
   | topObj : Object
-  | obj : ClassLocation -> list (FieldLocation * Val) -> Object
+  | obj : ClassLocation -> ClassLocation -> list (FieldLocation * Val) -> Object
   | dobj : Object.
 
 Inductive Array : Type :=

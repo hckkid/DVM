@@ -1,6 +1,20 @@
+(**
+
+Helpers provide few key definitions general for development purpose in Coq.
+
+Option provides support for monads.
+
+*)
+
 Inductive Option {A:Type} : Type :=
   | Some : A -> Option
   | None : Option.
+
+(** 
+
+Fixpoint for equality on naturals.
+
+*)
 
 Fixpoint areEqualNum (n1:nat) (n2:nat) : bool :=
   match n1 with
@@ -81,3 +95,59 @@ Fixpoint twoRev {X:Type} (l1 l2:list X) : list X :=
 
 Definition fastRev {X:Type} (l:list X) : list X :=
   twoRev l nil.
+
+Theorem zero_lt_S_n : forall n, 0 < S n.
+Proof.
+  induction n.
+  econstructor.
+  inversion IHn.
+  econstructor.
+  econstructor.
+  econstructor.
+  econstructor.
+  auto.
+Qed.
+
+Theorem n_m_le_Sn_Sm : forall p q, p <= q -> S p <= S q.
+Proof.
+  intros.
+  generalize dependent p.
+  induction q; intros.
+  inversion H; auto.
+  inversion H; auto.
+Qed.
+
+Theorem n_m_lt_Sn_Sm : forall p q, p < q -> S p < S q.
+Proof.
+  intros.
+  inversion H; auto.
+  econstructor.
+  apply n_m_le_Sn_Sm.
+  assumption.
+Qed.
+
+Theorem Sn_Sm_le_n_m : forall p q, S p <= S q -> p <= q.
+Proof.
+  intros.
+  generalize dependent p.
+  induction q; intros.
+  inversion H; eauto.
+  inversion H1.
+  inversion H; eauto.
+Qed.
+
+Theorem Sn_Sm_lt_n_m : forall p q, S p < S q -> p < q.
+Proof.
+  intros.
+  inversion H.
+  econstructor.
+  inversion H1.
+  econstructor.
+  econstructor.
+  subst.
+  apply Sn_Sm_le_n_m in H1.
+  eauto.
+Qed.
+
+Inductive boolCoerced : bool -> Prop :=
+  | trueP : boolCoerced true. 
