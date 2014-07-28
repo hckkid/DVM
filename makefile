@@ -13,10 +13,11 @@ Files:=Helpers.v\
 
 run:
 	$(COQBIN)coqc
-<<<<<<< HEAD
 
 
 for compiling from inside subdirectory
+
+coqc CoqDVM.v Helpers.v Primitives.v DList.v Defs.v Program.v DvmState.v Method.v Eval.v DType.v Example.v Instructions.v
 
 coqc ..\CoqDVM.v ..\Helpers.v ..\Primitives.v ..\DList.v ..\Defs.v ..\Program.v ..\DvmState.v ..\Method.v ..\Eval.v ..\DType.v ..\Example.v ..\Instructions.v
 
@@ -29,10 +30,3 @@ coqdoc --no-lib-name --toc --tex ..\CoqDVM.v ..\Helpers.v ..\Primitives.v ..\DLi
 
 
 coqdoc --no-lib-name --toc --pdf ..\CoqDVM.v ..\Helpers.v ..\Primitives.v ..\DList.v ..\Defs.v ..\Program.v ..\DvmState.v ..\Method.v ..\Eval.v ..\DType.v ..\Example.v ..\Instructions.v
-=======
-	
-	
-coqc Helpers.v Primitives.v DList.v	Defs.v Program.v DvmState.v Method.v Eval.v Type.v Example.v Instructions.v
-
-
->>>>>>> master

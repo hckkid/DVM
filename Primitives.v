@@ -10,17 +10,11 @@ Inductive BinaryArithOperator : Type :=
   | bmult : BinaryArithOperator
   | bdiv : BinaryArithOperator
   | bmod : BinaryArithOperator
-<<<<<<< HEAD
 (*  | band : BinaryArithOperator
   | bor : BinaryArithOperator
   | bxor : BinaryArithOperator 
 For later*)
 .
-=======
-  | band : BinaryArithOperator
-  | bor : BinaryArithOperator
-  | bxor : BinaryArithOperator.
->>>>>>> master
 
 Inductive BinaryCompOperator : Type :=
   | beq : BinaryCompOperator
@@ -50,17 +44,13 @@ End PrimitiveType.
 Module PType <: PrimitiveType.
   Definition t := Prim.
   Definition t_type := PrimType.
-<<<<<<< HEAD
 
-=======
->>>>>>> master
   Fixpoint toNat (x:t) : nat :=
     match x with
     | boolean n => n
     | char n => n
     | int n => n
     end.
-<<<<<<< HEAD
 
   Inductive toNatRel : t -> nat -> Prop :=
     | boolToNatRel : forall n:nat, toNatRel (boolean n) n
@@ -72,15 +62,12 @@ Module PType <: PrimitiveType.
     destruct x; split; intro; simpl in H; subst; try econstructor; try (inversion H; simpl; reflexivity).
   Qed.
 
-=======
->>>>>>> master
   Fixpoint fromNat (ty:t_type) (n:nat) : t :=
     match ty with
     | Bool => boolean n
     | Char => char n
     | Int => int n
     end.
-<<<<<<< HEAD
 
   Inductive fromNatRel : t_type -> nat -> t -> Prop :=
     | boolFromNatRel : forall n:nat, fromNatRel Bool n (boolean n)
@@ -92,15 +79,12 @@ Module PType <: PrimitiveType.
     destruct ty; split; intro; simpl in H; subst; try econstructor; try inversion H; simpl; reflexivity.
   Qed.
 
-=======
->>>>>>> master
   Fixpoint getType (x:t) : t_type :=
     match x with
     | boolean x => Bool
     | char x => Char
     | int x => Int
     end.
-<<<<<<< HEAD
 
   Inductive getTypeRel : t -> t_type -> Prop :=
     | boolGetTypeRel: forall n:nat, getTypeRel (boolean n) Bool
@@ -132,10 +116,4 @@ Module PType <: PrimitiveType.
   Definition comp (x1 x2:t) : nat :=
     (toNat x1) - (toNat x2).
 
-=======
-  Definition cast (ty:t_type) (x:t) : t :=
-    fromNat ty (toNat x).
-  Definition comp (x1 x2:t) : nat :=
-    (toNat x1) - (toNat x2).
->>>>>>> master
 End PType.

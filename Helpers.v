@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 (**
 
 Helpers provide few key definitions general for development purpose in Coq.
@@ -7,21 +6,16 @@ Option provides support for monads.
 
 *)
 
-=======
->>>>>>> master
 Inductive Option {A:Type} : Type :=
   | Some : A -> Option
   | None : Option.
 
-<<<<<<< HEAD
 (** 
 
 Fixpoint for equality on naturals.
 
 *)
 
-=======
->>>>>>> master
 Fixpoint areEqualNum (n1:nat) (n2:nat) : bool :=
   match n1 with
   | O => match n2 with
@@ -100,7 +94,6 @@ Fixpoint twoRev {X:Type} (l1 l2:list X) : list X :=
   end.
 
 Definition fastRev {X:Type} (l:list X) : list X :=
-<<<<<<< HEAD
   twoRev l nil.
 
 Theorem zero_lt_S_n : forall n, 0 < S n.
@@ -157,7 +150,4 @@ Proof.
 Qed.
 
 Inductive boolCoerced : bool -> Prop :=
-  | trueP : boolCoerced true. 
-=======
-  twoRev l nil.
->>>>>>> master
+  | trueP : boolCoerced true.
