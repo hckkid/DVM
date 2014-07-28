@@ -2,7 +2,10 @@ Add LoadPath "D:\DVM".
 Require Export Eval.
 Require Export Example.
 Require Export Method.
+<<<<<<< HEAD
 Require Export DType.
+=======
+>>>>>>> master
 
 Module Type InstructionType.
   Parameter inst : Type. (* ADT for Instrucion *)
@@ -28,7 +31,11 @@ Module INSTRUCTION <: InstructionType.
     | branch r1 _ r2 _ => (cons r1 (cons r2 nil))
     | move _ r1 => (cons r1 nil)
     | update r1 r2 => (cons r1 (cons r2 nil))
+<<<<<<< HEAD
     | unary _ _ r1 => (cons r1 nil)
+=======
+    | unaryArith _ _ r1 => (cons r1 nil)
+>>>>>>> master
     | binaryArith _ r1 _ r2 => (cons r1 (cons r2 nil))
     | new _ _ => nil
     | newarr _ _ r1 => (cons r1 nil)
@@ -132,7 +139,11 @@ Module INSTRUCTION <: InstructionType.
       end
     end.
 
+<<<<<<< HEAD
   Definition evalMove (l1:rhs) (n:Register) (curr:DVMState) (p:prg) : list deltaState :=
+=======
+  Definition move (l1:rhs) (n:Register) (curr:DVMState) (p:prg) : list deltaState :=
+>>>>>>> master
     match (EVAL.evalRhs l1 curr) with
     | Some v1 => [updateFrame (upVals n v1)]
     | _ => match curr with
@@ -141,6 +152,7 @@ Module INSTRUCTION <: InstructionType.
       end
     end.
 
+<<<<<<< HEAD
   Declare Module HEAP : ListType with Definition t1 := arrOrObj.
   Declare Module VLIST : ListType with Definition t1 := Val.
   Declare Module FLIST : ListType with Definition t1 := FieldLocation*Val.
@@ -264,4 +276,6 @@ Module INSTRUCTION <: InstructionType.
     | _,_ => [mkStuck]
     end.
 
+=======
+>>>>>>> master
 End INSTRUCTION.

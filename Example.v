@@ -129,7 +129,10 @@ Definition msigs : list MethodSig :=
 
 Definition clst : list Class :=
 [
+<<<<<<< HEAD
   top;
+=======
+>>>>>>> master
   (class 0 0 [1] [1]) ;
   (class 0 1 [2] [2]) ;
   (class 0 0 [] [3])
@@ -150,6 +153,7 @@ Definition mb1 : list (ProgramCounter*Instruction) :=
   (5,move 5 (cs (cnat 0)));
   (6,branch (l (reg 3)) beq (cs (cnat 0)) 12);
   (7,newarr 6 (r (a (p Int))) (cs (cnat 6)));
+<<<<<<< HEAD
   (8,move 7 (cs (cnat 5)));
   (9,update (l (acc 4 7)) (l (reg 6)));
   (10,binaryArith 5 (l (reg 5)) badd (cs (cnat 1)));
@@ -157,15 +161,30 @@ Definition mb1 : list (ProgramCounter*Instruction) :=
   (12,goto 6);
   (13,update (l (reg 4)) (l (ifield 0 1)));
   (14,ret)
+=======
+  (8,move 6 (l (acc 4 (cs (cnat 5)))));
+  (9,binaryArith 5 (l (reg 5)) badd (cs (cnat 1)));
+  (10,binaryArith 3 (l (reg 3)) bsub (cs (cnat 1)));
+  (11,goto 6);
+  (12,update (l (reg 4)) (l (ifield 0 1)));
+  (13,ret)
+>>>>>>> master
 ].
 
 Definition mb2 : list (ProgramCounter*Instruction) :=
 [
+<<<<<<< HEAD
   (15,invokei 0 [] 0);
   (16,move 1 (l (ifield 0 1)));
   (17,move 2 (cs (cnat 0)));
   (16,move 1 (l (acc 1 2)));
   (17,move 1 (l (acc 1 2)));
+=======
+  (14,invokei 0 [] 0);
+  (15,move 1 (l (ifield 0 1)));
+  (16,move 1 (l (acc 1 (cs (cnat 0)))));
+  (17,move 1 (l (acc 1 (cs (cnat 0)))));
+>>>>>>> master
   (18,update (l (reg 1)) (l (reg 101)));
   (19,update (l (ifield 0 2)) (l (reg 101)));
   (20,ret)
