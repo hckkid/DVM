@@ -62,7 +62,8 @@ Inductive Instruction : Type :=
   | newarr : Register -> type -> rhs -> Instruction
   | cast : Register -> type -> rhs -> Instruction
   | read : Register -> Instruction
-  | print : rhs -> Instruction.
+  | print : rhs -> Instruction
+  | hlt : Instruction.
 
 Inductive MethodSig : Type := ms (am:nat) (mn:MethodName) (ret:type) (regs:nat) (args:list (type*Name)).
 Inductive MethodBody : Type := mb (insts:list (ProgramCounter*Instruction)).

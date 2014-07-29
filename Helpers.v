@@ -61,6 +61,21 @@ Fixpoint fold {X Y:Type} (l1:list X) (f:X->Y->Y) (def:Y) : Y :=
   | (cons x lrem) => (f x (fold lrem f def))
   end.
 
+Inductive foldRel {X Y:Type} : list X -> (X->Y->Y) -> Y -> Y -> Prop :=
+  | nilFoldRel : forall (f:X->Y->Y) (def:Y), (foldRel nil f def def)
+  | someFoldRel : forall (x:X) (xrem:list X) (f:X->Y->Y) (def:Y) (res:Y), foldRel xrem f def res ->
+                 foldRel (cons x xrem) f def (f x res).
+
+Theorem foldRelEq : forall (X Y:Type) (l1:list X) (f:X->Y->Y) (def:Y) (res:Y), fold l1 f def = res <-> foldRel l1 f def res.
+Proof.
+  induction l1; split; intro.
+    simpl in H. rewrite <- H. constructor.
+    inversion H. simpl. reflexivity.
+    simpl in H. remember (fold l1 f def) as frem. symmetry in Heqfrem. apply IHl1 in Heqfrem. rewrite <- H.
+    constructor. assumption.
+    inversion H. simpl. apply IHl1 in H5. rewrite H5. reflexivity.
+Qed.
+
 Fixpoint map {X Y:Type} (l1:list X) (f:X->Y) : list Y :=
   match l1 with
   | nil => nil

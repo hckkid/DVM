@@ -25,8 +25,10 @@ Inductive deltaState : Type :=
   | createFrame : Frame -> deltaState
   | updateFrame : frameDiff -> deltaState
   | deleteFrame : deltaState
+  | addHeap : arrOrObj -> deltaState
   | upHeap : list (nat*arrOrObj) -> deltaState
   | upSHeap : SHeap -> deltaState
+  | addOutb : nat -> deltaState
   | upInb : list (nat*nat) -> deltaState
   | upOutb : list (nat*nat) -> deltaState
   | upInc : Cursor -> deltaState
@@ -97,6 +99,7 @@ Module ChangeState <: ChangeStateType.
         | (cons f1 frem) => Some (dst frem h sh inb outb)
         | _ => None
         end
+      | addHeap aob => Some (dst frms (ABLIST.prep aob h) sh inb outb)
       | upHeap lst => Some (dst frms (ABLIST.setMany lst h) sh inb outb)
       | upSHeap sh' => Some (dst frms h sh' inb outb)
       | upInb lst => match inb with
@@ -104,6 +107,9 @@ Module ChangeState <: ChangeStateType.
         end
       | upInc crs => match inb with
         | (curs,lst) => Some (dst frms h sh (crs,lst) outb)
+        end
+      | addOutb v1 => match outb with
+        | (curs,lst') => Some (dst frms h sh inb (curs,(NLIST.prep v1 lst')))
         end
       | upOutb lst => match outb with
         | (curs,lst') => Some (dst frms h sh inb (curs,(NLIST.setMany lst lst')))
@@ -125,11 +131,17 @@ Module ChangeState <: ChangeStateType.
                          mkChangeRel (dst (cons f1 frms) h sh inb outb) (updateFrame fd) (Some (dst (cons f2 frms) h sh inb outb))
     | deleteFrameRel : forall (frms: list Frame) (f1:Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer),
                          mkChangeRel (dst (cons f1 frms) h sh inb outb) deleteFrame (Some (dst frms h sh inb outb))
+    | addHeapRel : forall (frms: list Frame) (aob:arrOrObj) (h h':Heap) (sh:SHeap) (inb outb:Buffer),
+                         ABLIST.prepRel aob h h' ->
+                         mkChangeRel (dst frms h sh inb outb) (addHeap aob) (Some (dst frms h' sh inb outb))
     | upHeapRel : forall (frms: list Frame) (lst:list (nat*arrOrObj)) (h h':Heap) (sh:SHeap) (inb outb:Buffer),
                          ABLIST.setManyRel lst h h' ->
                          mkChangeRel (dst frms h sh inb outb) (upHeap lst) (Some (dst frms h' sh inb outb))
     | upSHeapRel : forall (frms: list Frame) (h:Heap) (sh sh':SHeap) (inb outb:Buffer),
                          mkChangeRel (dst frms h sh inb outb) (upSHeap sh') (Some (dst frms h sh' inb outb))
+    | addOutb : forall (frms: list Frame) (h:Heap) (sh:SHeap) (curs:Cursor) (lst lst':list nat) (inb:Buffer) (n:nat),
+                         NLIST.prepRel n lst lst' ->
+                         mkChangeRel (dst frms h sh inb (curs,lst)) (addOutb n) (Some (dst frms h sh inb (curs,lst')))
     | upInbRel : forall (frms: list Frame) (h:Heap) (sh:SHeap) (curs:Cursor) (clst:list (nat*nat)) (lst lst':list nat) (outb:Buffer),
                          NLIST.setManyRel clst lst lst' ->
                          mkChangeRel (dst frms h sh (curs,lst) outb) (upInb clst) (Some (dst frms h sh (curs,lst') outb))
@@ -159,8 +171,12 @@ Module ChangeState <: ChangeStateType.
       destruct st; try destruct frms; try simpl in H; try subst; try econstructor. apply changeFrameRelEq. reflexivity.
       inversion H; simpl; try reflexivity. apply changeFrameRelEq in H2. subst. reflexivity.
       destruct st; try destruct frms; simpl in H; subst; econstructor.
+      apply ABLIST.prepRelEq. reflexivity. inversion H; simpl; auto. apply ABLIST.prepRelEq in H2. rewrite H2. reflexivity.
       apply ABLIST.setManyRelEq. reflexivity.
       inversion H; simpl; try reflexivity. apply ABLIST.setManyRelEq in H2. rewrite H2. reflexivity.
+      destruct st; try destruct inb; simpl in H; subst; try econstructor.
+      destruct outb. constructor. eapply NLIST.prepRelEq. reflexivity.
+      inversion H; simpl; try reflexivity. apply NLIST.prepRelEq in H2. rewrite H2. reflexivity.
       destruct st; try destruct inb; simpl in H; subst; try econstructor. apply NLIST.setManyRelEq. reflexivity.
       inversion H; simpl; try reflexivity; try apply NLIST.setManyRelEq in H2; subst; try reflexivity.
       destruct st; try destruct outb; simpl in H; subst; try econstructor. apply NLIST.setManyRelEq. reflexivity.

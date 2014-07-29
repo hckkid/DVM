@@ -140,31 +140,31 @@ Module EVAL <: EVALTYPE.
                               evalRegRel n1 (dst frms h sh inb outb) (Some (ref (lRef lc))) ->
                               HP.getRel lc h (Some (dob dobj)) ->
                               evalLhsRel (ifield n1 n2) (dst frms h sh inb outb) None
-    | someObjNoneIfieldEvalLhsRel : forall (n1 n2 n3 n4:nat) (lc:Location) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (lst:list (FieldLocation*Val)),
+    | someObjNoneIfieldEvalLhsRel : forall (n1 n3 n4:nat) (n2:FieldLocation) (lc:Location) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (lst:list (FieldLocation*Val)),
                               evalRegRel n1 (dst frms h sh inb outb) (Some (ref (lRef lc))) ->
                               HP.getRel lc h (Some (dob (obj n3 n4 lst))) ->
                               LVLIST.findRel (n2,(ref null)) compFirst lst None ->
                               evalLhsRel (ifield n1 n2) (dst frms h sh inb outb) None
-    | someObjSomeNoneIfieldEvalLhsRel : forall (n1 n2 n3 n4 n5:nat) (lc:Location) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (lst:list (FieldLocation*Val)),
+    | someObjSomeNoneIfieldEvalLhsRel : forall (n1 n3 n4 n5:nat) (lc:Location) (n2:FieldLocation) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (lst:list (FieldLocation*Val)),
                               evalRegRel n1 (dst frms h sh inb outb) (Some (ref (lRef lc))) ->
                               HP.getRel lc h (Some (dob (obj n3 n4 lst))) ->
                               LVLIST.findRel (n2,(ref null)) compFirst lst (Some n5) ->
                               LVLIST.getRel n5 lst None ->
                               evalLhsRel (ifield n1 n2) (dst frms h sh inb outb) None
-    | someObjSomeSomeIfieldEvalLhsRel : forall (n1 n2 n3 n4 n5 n6:nat) (lc:Location) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (lst:list (FieldLocation*Val)) (v1:Val),
+    | someObjSomeSomeIfieldEvalLhsRel : forall (n1 n3 n4 n5 n6:nat) (lc:Location) (n2:FieldLocation) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (lst:list (FieldLocation*Val)) (v1:Val),
                               evalRegRel n1 (dst frms h sh inb outb) (Some (ref (lRef lc))) ->
                               HP.getRel lc h (Some (dob (obj n3 n4 lst))) ->
                               LVLIST.findRel (n2,(ref null)) compFirst lst (Some n5) ->
                               LVLIST.getRel n5 lst (Some (n6,v1)) ->
                               evalLhsRel (ifield n1 n2) (dst frms h sh inb outb) (Some v1)
-    | noneSfieldEvalLhsRel : forall (n:nat) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer),
+    | noneSfieldEvalLhsRel : forall (n:FieldLocation) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer),
                               SVLIST.findRel (n,(ref null)) compFirst sh None ->
                               evalLhsRel (sfield n) (dst frms h sh inb outb) None
-    | someNoneSfieldEvalLhsRel : forall (n n2:nat) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer),
+    | someNoneSfieldEvalLhsRel : forall (n:FieldLocation) (n2:nat) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer),
                               SVLIST.findRel (n,(ref null)) compFirst sh (Some n2) ->
                               SVLIST.getRel n2 sh None ->
                               evalLhsRel (sfield n) (dst frms h sh inb outb) None
-    | someSomeSfieldEvalLhsRel : forall (n n2 n3:nat) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (v1:Val),
+    | someSomeSfieldEvalLhsRel : forall (n:FieldLocation) (n2 n3:nat) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (v1:Val),
                               SVLIST.findRel (n,(ref null)) compFirst sh (Some n2) ->
                               SVLIST.getRel n2 sh (Some (n3,v1)) ->
                               evalLhsRel (sfield n) (dst frms h sh inb outb) (Some v1)
@@ -226,7 +226,16 @@ Module EVAL <: EVALTYPE.
       apply evalRegRelEq in H0; rewrite H0; auto. apply HP.getRelEq in H1. rewrite H1. reflexivity.
       apply evalRegRelEq in H0; rewrite H0; auto. apply HP.getRelEq in H1. rewrite H1. reflexivity.
       apply evalRegRelEq in H0; rewrite H0; auto. apply HP.getRelEq in H1. rewrite H1. reflexivity.
-      apply evalRegRelEq in H0; rewrite H0; auto. apply HP.getRelEq in H1. rewrite H1. apply LVLIST.findRelEq in H2. rewrite H2.
+      apply evalRegRelEq in H0; rewrite H0; auto. apply HP.getRelEq in H1. rewrite H1.
+      apply LVLIST.findRelEq in H2. rewrite H2. reflexivity.
+      apply evalRegRelEq in H0; rewrite H0; auto. apply HP.getRelEq in H1. rewrite H1. apply LVLIST.findRelEq in H2. rewrite H2. apply LVLIST.getRelEq in H3. rewrite H3. reflexivity.
+      apply evalRegRelEq in H0; rewrite H0; auto. apply HP.getRelEq in H1. rewrite H1. apply LVLIST.findRelEq in H2. rewrite H2. apply LVLIST.getRelEq in H3. rewrite H3. reflexivity.
+      apply SVLIST.findRelEq in H0. rewrite H0. reflexivity.
+      apply SVLIST.findRelEq in H0. rewrite H0. apply SVLIST.getRelEq in H1. rewrite H1. reflexivity.
+      apply SVLIST.findRelEq in H0. rewrite H0. apply SVLIST.getRelEq in H1. rewrite H1. reflexivity.
+      destruct l1; simpl; auto. apply evalRegRelEq. constructor.
+      destruct l1; simpl; auto. apply evalRegRelEq. constructor.
+  Qed.
 (* ShortCuts
       try (destruct st; simpl; reflexivity); try (apply HP.getRelEq in H1; rewrite H1; simpl; auto); try (destruct l1; simpl; reflexivity).
       destruct st; try reflexivity. destruct (evalReg n (dst frms h sh inb outb)); destruct v; simpl; try reflexivity. destruct r; auto. destruct (HP.get l h); auto. destruct t; auto. destruct a; auto.
@@ -234,10 +243,6 @@ Module EVAL <: EVALTYPE.
       apply evalRegRelEq in H2. rewrite H2. apply PType.toNatRelEq in H3. rewrite H3. apply VLIST.getRelEq. assumption.
 *)
 (** Bug Alert *)
-      remember (LVLIST.find (n2, ref null) (@compFirst Val) lst) as fres.
-      destruct lst. simpl. reflexivity. simpl.
-      subst; destruct (LVLIST.find (n2, ref null) compFirst lst). destruct (HP.get lc h); auto. destruct t; auto. destruct a; auto. 
-      apply evalRegRelEq in H0; rewrite H0.
 
   Definition evalRhs (exp:rhs) (st:DVMState) : @Option Val :=
     match exp with
@@ -249,5 +254,20 @@ Module EVAL <: EVALTYPE.
       | cnull => Some (ref null)
       end
     end.
+
+  Inductive evalRhsRel : rhs -> DVMState -> @Option Val -> Prop :=
+    | lhsEvalRhsRel : forall (l1:lhs) (st:DVMState) (v:@Option Val), evalLhsRel l1 st v -> evalRhsRel (l l1) st v
+    | cnatEvalRhsRel : forall (n:nat) (st:DVMState), evalRhsRel (cs (cnat n)) st (Some (prim (int n)))
+    | ctrueEvalRhsRel : forall (st:DVMState), evalRhsRel (cs ctrue) st (Some (prim (boolean 1)))
+    | cfalseEvalRhsRel : forall (st:DVMState), evalRhsRel (cs cfalse) st (Some (prim (boolean 0)))
+    | cnullEvalRhsRel : forall (st:DVMState), evalRhsRel (cs cnull) st (Some (ref null)).
+
+  Theorem evalRhsRelEq : forall (r1:rhs) (st:DVMState) (v1:@Option Val), evalRhs r1 st = v1 <-> evalRhsRel r1 st v1.
+  Proof.
+    split; intro.
+    destruct r1. simpl in H. apply evalLhsRelEq in H. constructor. assumption.
+    destruct c; simpl in H; rewrite <- H; constructor.
+    inversion H; simpl; auto. apply evalLhsRelEq. assumption.
+  Qed.
 
 End EVAL.

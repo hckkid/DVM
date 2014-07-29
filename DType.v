@@ -22,8 +22,10 @@ Module TYPE <: type_type.
   Declare Module CLIST : ListType with Definition t1 := Class.
   Declare Module FLIST : ListType with Definition t1 := Field.
   Declare Module HEAP : ListType with Definition t1 := arrOrObj.
+
   Definition appTemp {A:Type} (x:A) (l:list A) : list A :=
     (cons x l).
+
   Fixpoint fieldListIndexed (n:nat) (c:Class) (clst:list Class) : @Option (list FieldLocation) :=
     match c,n with
     | top,_ => Some nil
@@ -70,7 +72,7 @@ Module TYPE <: type_type.
     | r (c cl) => match (CLIST.get cl (PROGRAM.getClasses p)) with
       | Some cls => match (fieldList cls (PROGRAM.getClasses p)) with
         | Some lst => match (defaultedFields lst p) with
-          | Some (lst') => Some (upHeap (cons ((HEAP.len h),(dob (obj cl cl lst'))) nil))
+          | Some (lst') => Some (addHeap (dob (obj cl cl lst')))
           | _ => None
           end
         | _ => None
@@ -101,7 +103,7 @@ Module TYPE <: type_type.
 
   Definition createArray (ty:t) (n:nat) (h:heap) : @Option deltaState :=
     match ty with
-    | (r (a ty2)) => Some (upHeap (cons ((HEAP.len h),(ar (arr n (generateN n ty2)))) nil))
+    | (r (a ty2)) => Some (addHeap (ar (arr n (generateN n ty2))))
     | _ => None
     end.
 
@@ -135,4 +137,5 @@ Module TYPE <: type_type.
       end
     | _,_ => None
     end.
+
 End TYPE.

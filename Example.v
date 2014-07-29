@@ -129,13 +129,10 @@ Definition msigs : list MethodSig :=
 
 Definition clst : list Class :=
 [
-<<<<<<< HEAD
   top;
-=======
->>>>>>> master
-  (class 0 0 [1] [1]) ;
-  (class 0 1 [2] [2]) ;
-  (class 0 0 [] [3])
+  (class 0 0 [0] [0]) ;
+  (class 0 1 [1] [1]) ;
+  (class 0 0 [] [2])
 ].
 
 Definition flst : list Field :=
@@ -148,68 +145,53 @@ Definition mb1 : list (ProgramCounter*Instruction) :=
 [
   (1,move 1 (cs (cnat 5))) ;
   (2,move 2 (cs (cnat 6))) ;
-  (3,binaryArith 3 (l (reg 2)) badd (cs (cnat 5)));
+  (3,move 3 (l (reg 1)));
   (4,newarr 4 (r (a (r (a (p Int))))) (cs (cnat 5)));
   (5,move 5 (cs (cnat 0)));
-  (6,branch (l (reg 3)) beq (cs (cnat 0)) 12);
+  (6,branch (l (reg 3)) beq (cs (cnat 0)) 13);
   (7,newarr 6 (r (a (p Int))) (cs (cnat 6)));
-<<<<<<< HEAD
   (8,move 7 (cs (cnat 5)));
-  (9,update (l (acc 4 7)) (l (reg 6)));
+  (9,update (l (acc 4 5)) (l (reg 6)));
   (10,binaryArith 5 (l (reg 5)) badd (cs (cnat 1)));
   (11,binaryArith 3 (l (reg 3)) bsub (cs (cnat 1)));
   (12,goto 6);
-  (13,update (l (reg 4)) (l (ifield 0 1)));
+  (13,update (l (ifield 0 0)) (l (reg 4)));
   (14,ret)
-=======
-  (8,move 6 (l (acc 4 (cs (cnat 5)))));
-  (9,binaryArith 5 (l (reg 5)) badd (cs (cnat 1)));
-  (10,binaryArith 3 (l (reg 3)) bsub (cs (cnat 1)));
-  (11,goto 6);
-  (12,update (l (reg 4)) (l (ifield 0 1)));
-  (13,ret)
->>>>>>> master
 ].
 
 Definition mb2 : list (ProgramCounter*Instruction) :=
 [
-<<<<<<< HEAD
   (15,invokei 0 [] 0);
-  (16,move 1 (l (ifield 0 1)));
+  (16,move 1 (l (ifield 0 0)));
   (17,move 2 (cs (cnat 0)));
-  (16,move 1 (l (acc 1 2)));
-  (17,move 1 (l (acc 1 2)));
-=======
-  (14,invokei 0 [] 0);
-  (15,move 1 (l (ifield 0 1)));
-  (16,move 1 (l (acc 1 (cs (cnat 0)))));
-  (17,move 1 (l (acc 1 (cs (cnat 0)))));
->>>>>>> master
-  (18,update (l (reg 1)) (l (reg 101)));
-  (19,update (l (ifield 0 2)) (l (reg 101)));
-  (20,ret)
+  (18,move 1 (l (acc 1 2)));
+  (19,nop);
+  (20,update (l (acc 1 2)) (l (reg 101)));
+  (21,update (l (ifield 0 1)) (l (reg 101)));
+  (22,ret)
 ].
 
 Definition mb3 : list (ProgramCounter*Instruction) :=
 [
-  (21,move 1 (cs (cnat 0)));
-  (22,new 2 1);
-  (23,invokei 2 [] 0);
-  (24,read (p Int) 3);
-  (25,new 4 2);
-  (26,invokei 4 [(l (reg 3))] 1);
-  (27,print (p Int) (l (ifield 4 2)));
-  (28,ret)
+  (23,move 1 (cs (cnat 0)));
+  (24,new 2 1);
+  (25,invokei 2 [] 0);
+  (26,read 3);
+  (27,new 4 2);
+  (28,invokei 4 [(l (reg 3))] 1);
+  (29,print (l (ifield 4 1)));
+  (30,hlt)
 ].
 
 Definition mlst : list Method := [ (mtd 1 (mb mb1)) ; (mtd 2 (mb mb2)) ; (mtd 3 (mb mb3)) ].
 
 Definition p : Program := (prog cnls msigs clst flst mlst).
 
-Definition currFrame : Frame := frm [(0,(prim (int 1)));(2,(prim (char 3)));(1,(prim (int 2)))] 2  21.
+Definition currFrame : Frame := frm [] 2  23.
 Definition currHeap : Heap := [].
 Definition currSHeap : SHeap := [].
-Definition bufferIn : Buffer := (0,[]).
+Definition bufferIn : Buffer := (0,[10]).
 Definition bufferOut : Buffer := (1,[]).
 
 Definition currState : DVMState := dst [currFrame] currHeap currSHeap bufferIn bufferOut.
+Definition currInst : Instruction := move 1 (cs (cnat 0)).
