@@ -25,12 +25,49 @@
 
 <div class="paragraph"> </div>
 
-CoqDVM is a Proof Carrying Code for a subset of Dalvik Virtual Machine (DVM).
+CoqDVM is a Verifier with Proof Carrying Code for a subset of Dalvik Virtual Machine (DVM).
 This subset of Dalvik Virtual Machine is made keeping Occam's Razor in mind.
 
 <div class="paragraph"> </div>
 
-<a name="lab1"></a><h1 class="section">Overview</h1>
+<a name="lab1"></a><h1 class="section">Goals</h1>
+
+
+<div class="paragraph"> </div>
+
+CoqDVM targets to prove security related aspects on Dalvik bytecode, making use of Coq. Reason to use
+Coq is to be able to prove correctness of implementations and theorems about DVM at the same time.
+Dalvik bein Register Based and with support for Objects and arrays makes the said properties more interesting.
+Milestones in order can be written as:
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> Designing a simple subset of Dalvik
+
+</li>
+<li> Providing functionality over this small subset
+
+</li>
+<li> Testing then enhanching subset with more instruction
+
+</li>
+<li> Prove theorems about DVM implementation
+<ul class="doclist">
+<li> Progress Theorem
+
+</li>
+<li> Preservation Theorem
+
+</li>
+<li> Heap Soundness Theorem
+
+</li>
+</ul>
+
+</li>
+</ul>
+<a name="lab2"></a><h1 class="section">Overview</h1>
 
 
 <div class="paragraph"> </div>
@@ -55,7 +92,7 @@ CoqDVM from topmost view can be broken into following units:
 
 </li>
 </ul>
-<a name="lab2"></a><h2 class="section">General Units</h2>
+<a name="lab3"></a><h2 class="section">General Units</h2>
 
 
 <div class="paragraph"> </div>
@@ -70,7 +107,7 @@ of semantic defining units.
 
 <div class="paragraph"> </div>
 
-<a name="lab3"></a><h2 class="section">Syntax Defining Units</h2>
+<a name="lab4"></a><h2 class="section">Syntax Defining Units</h2>
 
 
 <div class="paragraph"> </div>
@@ -79,7 +116,7 @@ This part is formed by modules Primitives Defs Program DvmState and Method.
 
 <div class="paragraph"> </div>
 
-<a name="lab4"></a><h3 class="section">Primitives</h3>
+<a name="lab5"></a><h3 class="section">Primitives</h3>
 
 
 <div class="paragraph"> </div>
@@ -91,7 +128,7 @@ Operators in CoqDVM.
 
 <div class="paragraph"> </div>
 
-<a name="lab5"></a><h3 class="section">Defs</h3>
+<a name="lab6"></a><h3 class="section">Defs</h3>
 
 
 <div class="paragraph"> </div>
@@ -124,7 +161,7 @@ mentioning are:
 
 </li>
 </ul>
-<a name="lab6"></a><h3 class="section">Method &amp; Program</h3>
+<a name="lab7"></a><h3 class="section">Method &amp; Program</h3>
 
 
 <div class="paragraph"> </div>
@@ -141,7 +178,7 @@ These are very small modules, which basically provide few simple operation on th
 
 </li>
 </ul>
-<a name="lab7"></a><h3 class="section">DvmState</h3>
+<a name="lab8"></a><h3 class="section">DvmState</h3>
 
 
 <div class="paragraph"> </div>
@@ -155,7 +192,7 @@ the final DVMState based on both these inputs, which CoqDVM should be in.
 
 <div class="paragraph"> </div>
 
-<a name="lab8"></a><h2 class="section">Semantic Definining Units</h2>
+<a name="lab9"></a><h2 class="section">Semantic Definining Units</h2>
 
 
 <div class="paragraph"> </div>
@@ -164,7 +201,7 @@ The semantics for CoqDVM is covered by modules DvmState(already described), Eval
 
 <div class="paragraph"> </div>
 
-<a name="lab9"></a><h3 class="section">Eval</h3>
+<a name="lab10"></a><h3 class="section">Eval</h3>
 
 
 <div class="paragraph"> </div>
@@ -184,7 +221,7 @@ Eval module consists mainly of three important fixpoint definitions and their re
 
 </li>
 </ul>
-<a name="lab10"></a><h3 class="section">DType</h3>
+<a name="lab11"></a><h3 class="section">DType</h3>
 
 
 <div class="paragraph"> </div>
@@ -205,7 +242,7 @@ DType modules deals with operations on composite types. It can primarily be said
 
 </li>
 </ul>
-<a name="lab11"></a><h3 class="section">Instructions</h3>
+<a name="lab12"></a><h3 class="section">Instructions</h3>
 
 
 <div class="paragraph"> </div>
@@ -220,7 +257,7 @@ current instruction is, by application of evalInst and mkChanges.
 
 <div class="paragraph"> </div>
 
-<a name="lab12"></a><h2 class="section">Proof Units</h2>
+<a name="lab13"></a><h2 class="section">Proof Units</h2>
 
 
 <div class="paragraph"> </div>
@@ -229,7 +266,7 @@ This part of CoqDVM is still upgrading, currently it consists of modules Example
 
 <div class="paragraph"> </div>
 
-<a name="lab13"></a><h3 class="section">Consistency</h3>
+<a name="lab14"></a><h3 class="section">Consistency</h3>
 
 
 <div class="paragraph"> </div>
@@ -243,7 +280,7 @@ in Progress property and Heap soundness property.
 
 <div class="paragraph"> </div>
 
-<a name="lab14"></a><h3 class="section">Example</h3>
+<a name="lab15"></a><h3 class="section">Example</h3>
 
 
 <div class="paragraph"> </div>
@@ -254,7 +291,7 @@ file in Instructions module where we use multiStepFix on program and state defin
 
 <div class="paragraph"> </div>
 
-<a name="lab15"></a><h3 class="section">Progress</h3>
+<a name="lab16"></a><h3 class="section">Progress</h3>
 
 
 <div class="paragraph"> </div>

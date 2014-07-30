@@ -50,10 +50,10 @@ List Based Declarions to be used later.
 
   Fixpoint evalReg (n:nat) (st:DVMState) : @Option Val :=
     match st with
-    | dst nil _ _ _ _ => None
-    | dst (cons (frm lst m pc) frem) _ _ _ _ => match (RLIST.find (n,(ref null)) compFirst lst) with
+    | dst nil h sh inb outb => None
+    | dst (cons (frm lst m pc) frem) h sh inb outb => match (RLIST.find (n,(ref null)) compFirst lst) with
       | (Some n') => match (RLIST.get n' lst) with
-        | (Some (_,x)) => Some x
+        | (Some (z,x)) => Some x
         | None => None
         end
       | None => None
@@ -107,35 +107,35 @@ List Based Declarions to be used later.
 
   Definition evalLhs (exp:lhs) (st:DVMState) : @Option Val :=
     match exp,st with
-    | (reg n),_ => evalReg n st
-    | (acc n n2),dst _ h _ _ _ => match (evalReg n st) with
+    | (reg n),x => evalReg n st
+    | (acc n n2),dst frms h sh inb outb => match (evalReg n st) with
       | Some (ref (lRef lc)) => match (HP.get lc h),(evalReg n2 st) with
         | Some (ar (arr n' lst)),(Some (prim p1)) => (VLIST.get (PType.toNat p1) lst)
-        | _,_ => None
+        | x,y => None
         end
-      | _ => None
+      | x => None
       end
-    | (ifield n1 n2),(dst _ h _ _ _) => match (evalReg n1 st) with
+    | (ifield n1 n2),(dst frms h sh inb outb) => match (evalReg n1 st) with
       | Some (ref (lRef lc)) => match (HP.get lc h) with
         | Some (dob (obj n' n'' lst)) => match (LVLIST.find (n2,(ref null)) compFirst lst) with
           | Some n3 => match (LVLIST.get n3 lst) with
             | Some (n',vl') => Some vl'
             | None => None
             end
-          | _ => None
+          | x => None
           end
-        | _ => None
+        | x => None
         end
-      | _ => None
+      | x => None
       end
-    | (sfield n),(dst _ _ sh _ _) => match (SVLIST.find (n,(ref null)) compFirst sh) with
+    | (sfield n),(dst frms h sh inb outb) => match (SVLIST.find (n,(ref null)) compFirst sh) with
       | Some n2 => match (SVLIST.get n2 sh) with
         | Some (n3,v') => Some v'
         | None => None
         end
       | None => None
       end
-    | _ , _ => None
+    | x , y => None
     end.
 
   Inductive evalLhsRel : lhs -> DVMState -> @Option Val -> Prop :=

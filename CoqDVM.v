@@ -1,7 +1,21 @@
 (**
 
-CoqDVM is a Proof Carrying Code for a subset of Dalvik Virtual Machine (DVM).
+CoqDVM is a Verifier with Proof Carrying Code for a subset of Dalvik Virtual Machine (DVM).
 This subset of Dalvik Virtual Machine is made keeping Occam's Razor in mind.
+
+* Goals
+
+CoqDVM targets to prove security related aspects on Dalvik bytecode, making use of Coq. Reason to use
+Coq is to be able to prove correctness of implementations and theorems about DVM at the same time.
+Dalvik bein Register Based and with support for Objects and arrays makes the said properties more interesting.
+Milestones in order can be written as:
+- Designing a simple subset of Dalvik
+- Providing functionality over this small subset
+- Testing then enhanching subset with more instruction
+- Prove theorems about DVM implementation
+  - Progress Theorem
+  - Preservation Theorem
+  - Heap Soundness Theorem
 
 * Overview
 
