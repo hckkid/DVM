@@ -28,6 +28,37 @@
 <span class="id" type="keyword">Open</span> <span class="id" type="keyword">Scope</span> <span class="id" type="var">type_scope</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab48"></a><h1 class="section">Overview</h1>
+
+
+<div class="paragraph"> </div>
+
+This is pretty simple module like Program. We have module signature then module with very few functions.
+
+<div class="paragraph"> </div>
+
+
+<div class="paragraph"> </div>
+
+
+<div class="paragraph"> </div>
+
+<a name="lab49"></a><h2 class="section">MethodType Signature</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Module</span> <span class="id" type="keyword">Type</span> <a name="MethodType"><span class="id" type="module">MethodType</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="MethodType.mthd"><span class="id" type="axiom">mthd</span></a> : <span class="id" type="keyword">Type</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="MethodType.prg"><span class="id" type="axiom">prg</span></a> : <span class="id" type="keyword">Type</span>.<br/>
@@ -38,7 +69,60 @@
 <span class="id" type="keyword">End</span> <a class="idref" href="Method.html#"><span class="id" type="module">MethodType</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab50"></a><h2 class="section">Method Module</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Module</span> <a name="METHOD"><span class="id" type="module">METHOD</span></a> &lt;: <a class="idref" href="Method.html#"><span class="id" type="module">MethodType</span></a>.<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+Lets sum this up quickly
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> mthd, prg are ADTS for Method and Program
+
+</li>
+<li> comp to compare programcounter
+
+</li>
+<li> MLIST, MTLIST list module declarations with type ProgramCounter*Instruction and Method respectivly
+
+</li>
+<li> getMethod, finds method in program at given method location
+
+</li>
+<li> firstPC, returns first ProgramCounter of given method
+
+</li>
+<li> getInstAt, return instruction at first occurence of program counter in a method
+
+</li>
+<li> getNextPC, return ProgramCounter of next ProgramCounter,Instruction pair after first occurence of input 
+  ProgramCounter in given Method
+
+</li>
+</ul>
+
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="METHOD.mthd"><span class="id" type="definition">mthd</span></a> := <a class="idref" href="Defs.html#Method"><span class="id" type="inductive">Method</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="METHOD.prg"><span class="id" type="definition">prg</span></a> := <a class="idref" href="Defs.html#Program"><span class="id" type="inductive">Program</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Fixpoint</span> <a name="METHOD.comp"><span class="id" type="definition">comp</span></a> (<span class="id" type="var">n1</span> <span class="id" type="var">n2</span>:(<a class="idref" href="Defs.html#ProgramCounter"><span class="id" type="definition">ProgramCounter</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="Defs.html#Instruction"><span class="id" type="inductive">Instruction</span></a>)) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#bool"><span class="id" type="inductive">bool</span></a> :=<br/>

@@ -1,11 +1,52 @@
 Add LoadPath "D:\DVM".
 Require Export Helpers.
 
+(**
+
+* Overview
+
+We deviated from out past approach on use of modules here slightly, that is because previously
+we were using Moudles for functionality only, now we want a module functor which given some parameter
+can provide us with a specific module based on given parameter. Why do we need this?
+
+- Frame : it is a product of (Register Value pairs) , MethodLocation and Program Counter, we need a list module for Register Value pairs
+- Heap : it is a list of arrOrObj, so now we need a list module on ADT arrOrObj
+- SHeap : it is a list of FieldLocation*Val, so again another list module with another type
+- Array : in arr object we have a list of Val
+- Object : in object we have list of FieldLocation*Val for instance fields
+
+So this pretty much sums up why we have a "Module Type" with implementation instead of "Module" , this allows
+us to declare any Module extending this type with t1 declared to have full functionality implemented here.
+
+*)
+
 Module Type ListType.
+
+(**
+
+** Construtor and ADT declarations
+
+*)
   Parameter t1 : Type.
   Definition t2 := list t1.
   Definition empty : t2 := nil.
   Definition app (x:t1) (l:t2) := (cons x l).
+
+(**
+
+* Operations
+
+We have numrous operations on list coded up just in case needs be, but following operations are most frequently used:
+- find : finds a value in list based upon input compare function
+- get : fetch the value at input location
+- set : set input value at input location
+- setMany : multiple set operations with inputs provided as location value pairs
+- prep : puts a new value at the end of list
+- find_in_range : find always returns allocated location if a location is returned
+We have every definition followed by its relations equivalent and theorem showing the equivalence.
+
+*)
+
   Fixpoint remove (x:t1) (comp:t1 -> t1 -> bool) (l:t2) :=
     match l with
     | nil => nil
@@ -65,6 +106,23 @@ Module Type ListType.
     | nil => lst
     | (cons (n1,val1) rem) => setMany rem (set n1 val1 lst)
     end.
+
+(**
+
+* Key Theorems
+
+Although we are proving theorems for list, but these meta theorems appear as-is if we had separate heap module,
+Only program and state dependent heap properties would need to be defined later. Here is a list of theorems
+
+- prep_rev : reverse after prep is same as cons to reverse of original list
+- rev_rev_same : reverse of reverse is always original list
+- get_nil : get of nil is None
+- get_set_avail : get after a set at allocated location is always the value input in set
+- get_set_unavail : get after a set at unallocated location is always None
+- get_set_indep : get at location independent of set remains the same
+- get_set_dep : get at location same as set changes to input value in set
+
+*)
 
   Theorem prep_rev : forall a lst, rev (prep a lst) = cons a (rev lst).
   Proof.

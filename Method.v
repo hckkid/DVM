@@ -5,6 +5,20 @@ Require Export DList.
 
 Open Scope type_scope.
 
+(**
+
+* Overview
+
+This is pretty simple module like Program. We have module signature then module with very few functions.
+
+*)
+
+(**
+
+** MethodType Signature
+
+*)
+
 Module Type MethodType.
   Parameter mthd : Type.
   Parameter prg : Type.
@@ -14,7 +28,26 @@ Module Type MethodType.
   Parameter getNextPC : ProgramCounter -> mthd -> @Option ProgramCounter.
 End MethodType.
 
+(**
+
+** Method Module
+
+*)
+
 Module METHOD <: MethodType.
+(**
+
+Lets sum this up quickly
+- mthd, prg are ADTS for Method and Program
+- comp to compare programcounter
+- MLIST, MTLIST list module declarations with type ProgramCounter*Instruction and Method respectivly
+- getMethod, finds method in program at given method location
+- firstPC, returns first ProgramCounter of given method
+- getInstAt, return instruction at first occurence of program counter in a method
+- getNextPC, return ProgramCounter of next ProgramCounter,Instruction pair after first occurence of input 
+  ProgramCounter in given Method
+
+*)
   Definition mthd := Method.
   Definition prg := Program.
   Fixpoint comp (n1 n2:(ProgramCounter*Instruction)) : bool :=

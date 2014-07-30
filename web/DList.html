@@ -23,11 +23,117 @@
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Export</span> <a class="idref" href="Helpers.html#"><span class="id" type="library">Helpers</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab22"></a><h1 class="section">Overview</h1>
+
+
+<div class="paragraph"> </div>
+
+We deviated from out past approach on use of modules here slightly, that is because previously
+we were using Moudles for functionality only, now we want a module functor which given some parameter
+can provide us with a specific module based on given parameter. Why do we need this?
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> Frame : it is a product of (Register Value pairs) , MethodLocation and Program Counter, we need a list module for Register Value pairs
+
+</li>
+<li> Heap : it is a list of arrOrObj, so now we need a list module on ADT arrOrObj
+
+</li>
+<li> SHeap : it is a list of FieldLocation*Val, so again another list module with another type
+
+</li>
+<li> Array : in arr object we have a list of Val
+
+</li>
+<li> Object : in object we have list of FieldLocation*Val for instance fields
+
+</li>
+</ul>
+So this pretty much sums up why we have a "Module Type" with implementation instead of "Module" , this allows
+us to declare any Module extending this type with t1 declared to have full functionality implemented here.
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Module</span> <span class="id" type="keyword">Type</span> <a name="ListType"><span class="id" type="module">ListType</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab23"></a><h2 class="section">Construtor and ADT declarations</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="ListType.t1"><span class="id" type="axiom">t1</span></a> : <span class="id" type="keyword">Type</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="ListType.t2"><span class="id" type="definition">t2</span></a> := <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DList.html#ListType.t1"><span class="id" type="axiom">t1</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="ListType.empty"><span class="id" type="definition">empty</span></a> : <a class="idref" href="DList.html#ListType.t2"><span class="id" type="definition">t2</span></a> := <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nil"><span class="id" type="constructor">nil</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="ListType.app"><span class="id" type="definition">app</span></a> (<span class="id" type="var">x</span>:<a class="idref" href="DList.html#ListType.t1"><span class="id" type="axiom">t1</span></a>) (<span class="id" type="var">l</span>:<a class="idref" href="DList.html#ListType.t2"><span class="id" type="definition">t2</span></a>) := (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#cons"><span class="id" type="constructor">cons</span></a> <a class="idref" href="DList.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="DList.html#l"><span class="id" type="variable">l</span></a>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab24"></a><h1 class="section">Operations</h1>
+
+
+<div class="paragraph"> </div>
+
+We have numrous operations on list coded up just in case needs be, but following operations are most frequently used:
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> find : finds a value in list based upon input compare function
+
+</li>
+<li> get : fetch the value at input location
+
+</li>
+<li> set : set input value at input location
+
+</li>
+<li> setMany : multiple set operations with inputs provided as location value pairs
+
+</li>
+<li> prep : puts a new value at the end of list
+
+</li>
+<li> find_in_range : find always returns allocated location if a location is returned
+
+</li>
+</ul>
+We have every definition followed by its relations equivalent and theorem showing the equivalence.
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Fixpoint</span> <a name="ListType.remove"><span class="id" type="definition">remove</span></a> (<span class="id" type="var">x</span>:<a class="idref" href="DList.html#ListType.t1"><span class="id" type="axiom">t1</span></a>) (<span class="id" type="var">comp</span>:<a class="idref" href="DList.html#ListType.t1"><span class="id" type="axiom">t1</span></a> -&gt; <a class="idref" href="DList.html#ListType.t1"><span class="id" type="axiom">t1</span></a> -&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#bool"><span class="id" type="inductive">bool</span></a>) (<span class="id" type="var">l</span>:<a class="idref" href="DList.html#ListType.t2"><span class="id" type="definition">t2</span></a>) :=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="DList.html#l"><span class="id" type="variable">l</span></a> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nil"><span class="id" type="constructor">nil</span></a> =&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nil"><span class="id" type="constructor">nil</span></a><br/>
@@ -87,6 +193,50 @@
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nil"><span class="id" type="constructor">nil</span></a> =&gt; <a class="idref" href="DList.html#lst"><span class="id" type="variable">lst</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#cons"><span class="id" type="constructor">cons</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><span class="id" type="var">n1</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,</span></a><span class="id" type="var">val1</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">)</span></a> <span class="id" type="var">rem</span>) =&gt; <a class="idref" href="DList.html#setMany"><span class="id" type="definition">setMany</span></a> <span class="id" type="var">rem</span> (<a class="idref" href="DList.html#ListType.set"><span class="id" type="definition">set</span></a> <span class="id" type="var">n1</span> <span class="id" type="var">val1</span> <a class="idref" href="DList.html#lst"><span class="id" type="variable">lst</span></a>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab25"></a><h1 class="section">Key Theorems</h1>
+
+
+<div class="paragraph"> </div>
+
+Although we are proving theorems for list, but these meta theorems appear as-is if we had separate heap module,
+Only program and state dependent heap properties would need to be defined later. Here is a list of theorems
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> prep_rev : reverse after prep is same as cons to reverse of original list
+
+</li>
+<li> rev_rev_same : reverse of reverse is always original list
+
+</li>
+<li> get_nil : get of nil is None
+
+</li>
+<li> get_set_avail : get after a set at allocated location is always the value input in set
+
+</li>
+<li> get_set_unavail : get after a set at unallocated location is always None
+
+</li>
+<li> get_set_indep : get at location independent of set remains the same
+
+</li>
+<li> get_set_dep : get at location same as set changes to input value in set
+
+</li>
+</ul>
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Theorem</span> <a name="ListType.prep_rev"><span class="id" type="lemma">prep_rev</span></a> : <span class="id" type="keyword">forall</span> <span class="id" type="var">a</span> <span class="id" type="var">lst</span>, <a class="idref" href="DList.html#ListType.rev"><span class="id" type="definition">rev</span></a> (<a class="idref" href="DList.html#ListType.prep"><span class="id" type="definition">prep</span></a> <a class="idref" href="DList.html#a"><span class="id" type="variable">a</span></a> <a class="idref" href="DList.html#lst"><span class="id" type="variable">lst</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Logic.html#:type_scope:x_'='_x"><span class="id" type="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#cons"><span class="id" type="constructor">cons</span></a> <a class="idref" href="DList.html#a"><span class="id" type="variable">a</span></a> (<a class="idref" href="DList.html#ListType.rev"><span class="id" type="definition">rev</span></a> <a class="idref" href="DList.html#lst"><span class="id" type="variable">lst</span></a>).<br/>

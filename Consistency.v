@@ -1,6 +1,18 @@
 Add LoadPath "D:\DVM".
 Require Export Instructions.
 
+(**
+
+* Overview
+
+This module creates consistency relations to check different kinds of consistencies in between heap,instruction,
+frames, program etc. Our progress property makes use of instruction being consistent with state and program to
+state that given instruction will definitely go into some next non stuck state or not.
+
+* Declarations
+
+*)
+
 Declare Module RLIST : ListType with Definition t1 := nat*Val.
 Declare Module HP : ListType with Definition t1 := arrOrObj.
 Declare Module VLIST : ListType with Definition t1 := Val.
@@ -8,6 +20,12 @@ Declare Module LVLIST : ListType with Definition t1 := (FieldLocation*Val).
 Declare Module SVLIST : ListType with Definition t1 := (FieldLocation*Val).
 Declare Module FLIST : ListType with Definition t1 := FieldLocation*Val.
 Declare Module NLIST : ListType with Definition t1 := nat.
+
+(**
+
+* Instrcution consistency
+
+*)
 
 Inductive consistentNop : DVMState -> Program -> Prop :=
   | consistencyNopDst : forall (p:Program) (vals:list (nat*Val)) (ml:MethodLocation) (pc:ProgramCounter) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (md:Method), 

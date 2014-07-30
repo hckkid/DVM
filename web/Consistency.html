@@ -23,6 +23,33 @@
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Export</span> <a class="idref" href="Instructions.html#"><span class="id" type="library">Instructions</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab105"></a><h1 class="section">Overview</h1>
+
+
+<div class="paragraph"> </div>
+
+This module creates consistency relations to check different kinds of consistencies in between heap,instruction,
+frames, program etc. Our progress property makes use of instruction being consistent with state and program to
+state that given instruction will definitely go into some next non stuck state or not.
+
+<div class="paragraph"> </div>
+
+<a name="lab106"></a><h1 class="section">Declarations</h1>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Declare Module</span> <a name="RLIST"><span class="id" type="module">RLIST</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>.<br/>
 <span class="id" type="keyword">Declare Module</span> <a name="HP"><span class="id" type="module">HP</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := <a class="idref" href="Defs.html#arrOrObj"><span class="id" type="inductive">arrOrObj</span></a>.<br/>
 <span class="id" type="keyword">Declare Module</span> <a name="VLIST"><span class="id" type="module">VLIST</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := <a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>.<br/>
@@ -30,6 +57,22 @@
 <span class="id" type="keyword">Declare Module</span> <a name="SVLIST"><span class="id" type="module">SVLIST</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := (<a class="idref" href="Defs.html#FieldLocation"><span class="id" type="definition">FieldLocation</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>).<br/>
 <span class="id" type="keyword">Declare Module</span> <a name="FLIST"><span class="id" type="module">FLIST</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := <a class="idref" href="Defs.html#FieldLocation"><span class="id" type="definition">FieldLocation</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>.<br/>
 <span class="id" type="keyword">Declare Module</span> <a name="NLIST"><span class="id" type="module">NLIST</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab107"></a><h1 class="section">Instrcution consistency</h1>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 <span class="id" type="keyword">Inductive</span> <a name="consistentNop"><span class="id" type="inductive">consistentNop</span></a> : <a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a> -&gt; <a class="idref" href="Defs.html#Program"><span class="id" type="inductive">Program</span></a> -&gt; <span class="id" type="keyword">Prop</span> :=<br/>

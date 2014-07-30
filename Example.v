@@ -6,14 +6,16 @@ Require Export DvmState.
 
 Open Scope string_scope.
 
-(*
+(**
+
+* Access Modifier Codes
 
 0  == Public
 1  == Protected
 2  == Private
 x>2  == Static && (x-3)
 
-Original Code :-
+* Original Java Code
 
 Public Class super{
 public:
@@ -43,19 +45,19 @@ Public Class tester{
   }
 }
 
-Intermediate Dalvik Bytecode similar code :-
+* Intermediate Dalvik Bytecode similar code
 
-Classes Indexed
+** Classes Indexed
 #1 super
 #2 sub
 #3 tester
 
-MethodSigs
+** MethodSigs
 #1 pub super v 100 {}
 #2 pub sub v 100 {(n,int)}
 #3 static pub main v 100 {}
 
-ClassDecls
+** ClassDecls
 
 {
   pub c1
@@ -74,12 +76,12 @@ ClassDecls
   smethod m3
 }
 
-FieldDecls
+** FieldDecls
 
 #1 n pub (a (a int))  // Two D int array name n public
 #2 p pub int
 
-MethodDecls
+** MethodDecls
 
 {
   #1 move r1 5
@@ -120,12 +122,32 @@ MethodDecls
 
 *)
 
+(** 
+
+* CoqDVM code
+
+** ClassNames
+
+*)
+
 Definition cnls : list ClassName := [ "super" ; "sub" ; "tester" ].
+
+(**
+
+** Method Signatures
+
+*)
 
 Definition msigs : list MethodSig := 
 [ (ms 0 "super" v 100 []) ;
   (ms 0 "sub" v 100 [(p(Int),"n")]) ;
   (ms 3 "main" v 100 []) ].
+
+(**
+
+** Class Declarations
+
+*)
 
 Definition clst : list Class :=
 [
@@ -135,11 +157,23 @@ Definition clst : list Class :=
   (class 0 0 [] [2])
 ].
 
+(**
+
+** Field Declarations
+
+*)
+
 Definition flst : list Field :=
 [
   (fld 0 "n" (r (a (r (a (p Int)))))) ;
   (fld 0 "p" (p Int))
 ].
+
+(**
+
+** Method Declarations
+
+*)
 
 Definition mb1 : list (ProgramCounter*Instruction) :=
 [
@@ -184,6 +218,12 @@ Definition mb3 : list (ProgramCounter*Instruction) :=
 ].
 
 Definition mlst : list Method := [ (mtd 1 (mb mb1)) ; (mtd 2 (mb mb2)) ; (mtd 3 (mb mb3)) ].
+
+(** 
+
+** Final Program and Initial State
+
+*)
 
 Definition p : Program := (prog cnls msigs clst flst mlst).
 

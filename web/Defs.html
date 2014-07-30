@@ -24,6 +24,42 @@
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Strings.String.html#"><span class="id" type="library">String</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab26"></a><h1 class="section">Overview</h1>
+
+
+<div class="paragraph"> </div>
+
+In this module we define syntax elements of CoqDVM
+
+<div class="paragraph"> </div>
+
+<a name="lab27"></a><h1 class="section">Definitions</h1>
+
+
+<div class="paragraph"> </div>
+
+
+<div class="paragraph"> </div>
+
+
+<div class="paragraph"> </div>
+
+<a name="lab28"></a><h2 class="section">Location and Name Definitions</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Definition</span> <a name="Location"><span class="id" type="definition">Location</span></a> := <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>.<br/>
 
 <br/>
@@ -48,12 +84,44 @@
 <span class="id" type="keyword">Definition</span> <a name="MethodName"><span class="id" type="definition">MethodName</span></a> := <a class="idref" href="Defs.html#Name"><span class="id" type="definition">Name</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab29"></a><h2 class="section">Constant Definition</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Inductive</span> <a name="Constant"><span class="id" type="inductive">Constant</span></a> : <span class="id" type="keyword">Type</span> :=<br/>
 &nbsp;&nbsp;| <a name="cnat"><span class="id" type="constructor">cnat</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a> -&gt; <a class="idref" href="Defs.html#Constant"><span class="id" type="inductive">Constant</span></a><br/>
 <br/>
 &nbsp;&nbsp;| <a name="ctrue"><span class="id" type="constructor">ctrue</span></a> : <a class="idref" href="Defs.html#Constant"><span class="id" type="inductive">Constant</span></a><br/>
 &nbsp;&nbsp;| <a name="cfalse"><span class="id" type="constructor">cfalse</span></a> : <a class="idref" href="Defs.html#Constant"><span class="id" type="inductive">Constant</span></a><br/>
 &nbsp;&nbsp;| <a name="cnull"><span class="id" type="constructor">cnull</span></a> : <a class="idref" href="Defs.html#Constant"><span class="id" type="inductive">Constant</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab30"></a><h2 class="section">"type" definition</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 <span class="id" type="keyword">Inductive</span> <a name="type"><span class="id" type="inductive">type</span></a> : <span class="id" type="keyword">Type</span> :=<br/>
@@ -66,6 +134,22 @@
 &nbsp;&nbsp;| <a name="sizeda"><span class="id" type="constructor">sizeda</span></a> : <a class="idref" href="Defs.html#type"><span class="id" type="inductive">type</span></a> -&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a> -&gt; <a class="idref" href="Defs.html#RefType"><span class="id" type="inductive">RefType</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab31"></a><h2 class="section">lhs and rhs for simple expression</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Inductive</span> <a name="lhs"><span class="id" type="inductive">lhs</span></a> : <span class="id" type="keyword">Type</span> :=<br/>
 &nbsp;&nbsp;| <a name="reg"><span class="id" type="constructor">reg</span></a> : <a class="idref" href="Defs.html#Register"><span class="id" type="definition">Register</span></a> -&gt; <a class="idref" href="Defs.html#lhs"><span class="id" type="inductive">lhs</span></a><br/>
 &nbsp;&nbsp;| <a name="acc"><span class="id" type="constructor">acc</span></a> : <a class="idref" href="Defs.html#Register"><span class="id" type="definition">Register</span></a> -&gt; <a class="idref" href="Defs.html#Register"><span class="id" type="definition">Register</span></a> -&gt; <a class="idref" href="Defs.html#lhs"><span class="id" type="inductive">lhs</span></a><br/>
@@ -74,6 +158,22 @@
 <span class="id" type="keyword">with</span> <a name="rhs"><span class="id" type="inductive">rhs</span></a> : <span class="id" type="keyword">Type</span> :=<br/>
 &nbsp;&nbsp;| <a name="l"><span class="id" type="constructor">l</span></a> : <a class="idref" href="Defs.html#lhs"><span class="id" type="inductive">lhs</span></a> -&gt; <a class="idref" href="Defs.html#rhs"><span class="id" type="inductive">rhs</span></a><br/>
 &nbsp;&nbsp;| <a name="cs"><span class="id" type="constructor">cs</span></a> : <a class="idref" href="Defs.html#Constant"><span class="id" type="inductive">Constant</span></a> -&gt; <a class="idref" href="Defs.html#rhs"><span class="id" type="inductive">rhs</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab32"></a><h2 class="section">Instruction Definition</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 <span class="id" type="keyword">Inductive</span> <a name="Instruction"><span class="id" type="inductive">Instruction</span></a> : <span class="id" type="keyword">Type</span> :=<br/>
@@ -96,6 +196,22 @@
 &nbsp;&nbsp;| <a name="hlt"><span class="id" type="constructor">hlt</span></a> : <a class="idref" href="Defs.html#Instruction"><span class="id" type="inductive">Instruction</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab33"></a><h2 class="section">Class related final definitions</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Inductive</span> <a name="MethodSig"><span class="id" type="inductive">MethodSig</span></a> : <span class="id" type="keyword">Type</span> := <a name="ms"><span class="id" type="constructor">ms</span></a> (<span class="id" type="var">am</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>) (<span class="id" type="var">mn</span>:<a class="idref" href="Defs.html#MethodName"><span class="id" type="definition">MethodName</span></a>) (<span class="id" type="var">ret</span>:<a class="idref" href="Defs.html#type"><span class="id" type="inductive">type</span></a>) (<span class="id" type="var">regs</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>) (<span class="id" type="var">args</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> (<a class="idref" href="Defs.html#type"><span class="id" type="inductive">type</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="Defs.html#Name"><span class="id" type="definition">Name</span></a>)).<br/>
 <span class="id" type="keyword">Inductive</span> <a name="MethodBody"><span class="id" type="inductive">MethodBody</span></a> : <span class="id" type="keyword">Type</span> := <a name="mb"><span class="id" type="constructor">mb</span></a> (<span class="id" type="var">insts</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> (<a class="idref" href="Defs.html#ProgramCounter"><span class="id" type="definition">ProgramCounter</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="Defs.html#Instruction"><span class="id" type="inductive">Instruction</span></a>)).<br/>
 
@@ -111,6 +227,23 @@
 &nbsp;&nbsp;| <a name="class"><span class="id" type="constructor">class</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a> -&gt; <a class="idref" href="Defs.html#ClassLocation"><span class="id" type="definition">ClassLocation</span></a> -&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#FieldLocation"><span class="id" type="definition">FieldLocation</span></a> -&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#MethodLocation"><span class="id" type="definition">MethodLocation</span></a> -&gt; <span class="id" type="keyword">Class</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+Accessmodifier then superclass then fields then methods 
+<div class="paragraph"> </div>
+
+
+<div class="paragraph"> </div>
+
+<a name="lab34"></a><h2 class="section">Val (Values in CoqDVM) Definition</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 <span class="id" type="keyword">Inductive</span> <a name="Ref"><span class="id" type="inductive">Ref</span></a> : <span class="id" type="keyword">Type</span> :=<br/>
@@ -126,6 +259,11 @@
 </div>
 
 <div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab35"></a><h2 class="section">Object &amp; Array Definitions</h2>
+
 
 <div class="paragraph"> </div>
 
@@ -157,6 +295,22 @@ Original Class Location, Field Value Pairs, or it is deletedObject which comes i
 <span class="id" type="keyword">Inductive</span> <a name="ValOrRef"><span class="id" type="inductive">ValOrRef</span></a> : <span class="id" type="keyword">Type</span> :=<br/>
 &nbsp;&nbsp;| <a name="vl"><span class="id" type="constructor">vl</span></a> : <a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a> -&gt; <a class="idref" href="Defs.html#ValOrRef"><span class="id" type="inductive">ValOrRef</span></a><br/>
 &nbsp;&nbsp;| <a name="rf"><span class="id" type="constructor">rf</span></a> : <a class="idref" href="Defs.html#arrOrObj"><span class="id" type="inductive">arrOrObj</span></a> -&gt; <a class="idref" href="Defs.html#ValOrRef"><span class="id" type="inductive">ValOrRef</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab36"></a><h2 class="section">Program : Where all definitions meet</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 <span class="id" type="keyword">Inductive</span> <a name="Program"><span class="id" type="inductive">Program</span></a> : <span class="id" type="keyword">Type</span> := <a name="prog"><span class="id" type="constructor">prog</span></a> (<span class="id" type="var">cnl</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#ClassName"><span class="id" type="definition">ClassName</span></a>) (<span class="id" type="var">mnl</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#MethodSig"><span class="id" type="inductive">MethodSig</span></a>) (<span class="id" type="var">cl</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <span class="id" type="keyword">Class</span>) (<span class="id" type="var">fl</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#Field"><span class="id" type="inductive">Field</span></a>) (<span class="id" type="var">ml</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#Method"><span class="id" type="inductive">Method</span></a>).<br/>

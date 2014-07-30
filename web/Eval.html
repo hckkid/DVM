@@ -24,6 +24,46 @@
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Export</span> <a class="idref" href="Program.html#"><span class="id" type="library">Program</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab51"></a><h1 class="section">Overview</h1>
+
+
+<div class="paragraph"> </div>
+
+This Module implements functionality to evaluate simple expressions that occur in CoqDVM instruction provided current state
+
+<div class="paragraph"> </div>
+
+<a name="lab52"></a><h1 class="section">EVALTYPE signature</h1>
+
+
+<div class="paragraph"> </div>
+
+Here we have just three function prototypes
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> evalReg : evaluates value of a register
+
+</li>
+<li> evalLhs : evaluates value of lhs expression
+
+</li>
+<li> evalRhs : evaluates value of rhs expression
+
+</li>
+</ul>
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Module</span> <span class="id" type="keyword">Type</span> <a name="EVALTYPE"><span class="id" type="module">EVALTYPE</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="EVALTYPE.evalReg"><span class="id" type="axiom">evalReg</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a> -&gt; <a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a> -&gt; @<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> <a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="EVALTYPE.evalLhs"><span class="id" type="axiom">evalLhs</span></a> : <a class="idref" href="Defs.html#lhs"><span class="id" type="inductive">lhs</span></a> -&gt; <a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a> -&gt; @<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> <a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>.<br/>
@@ -31,12 +71,57 @@
 <span class="id" type="keyword">End</span> <a class="idref" href="Eval.html#"><span class="id" type="module">EVALTYPE</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab53"></a><h1 class="section">EVAL module</h1>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Module</span> <a name="EVAL"><span class="id" type="module">EVAL</span></a> &lt;: <a class="idref" href="Eval.html#"><span class="id" type="module">EVALTYPE</span></a>.<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+List Based Declarions to be used later.
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" type="keyword">Declare Module</span> <a name="EVAL.RLIST"><span class="id" type="module">RLIST</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Declare Module</span> <a name="EVAL.HP"><span class="id" type="module">HP</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := <a class="idref" href="Defs.html#arrOrObj"><span class="id" type="inductive">arrOrObj</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Declare Module</span> <a name="EVAL.VLIST"><span class="id" type="module">VLIST</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := <a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Declare Module</span> <a name="EVAL.LVLIST"><span class="id" type="module">LVLIST</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := (<a class="idref" href="Defs.html#FieldLocation"><span class="id" type="definition">FieldLocation</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>).<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Declare Module</span> <a name="EVAL.SVLIST"><span class="id" type="module">SVLIST</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := (<a class="idref" href="Defs.html#FieldLocation"><span class="id" type="definition">FieldLocation</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab54"></a><h2 class="section">evalReg : Evaluates Register</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Fixpoint</span> <a name="EVAL.evalReg"><span class="id" type="definition">evalReg</span></a> (<span class="id" type="var">n</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>) (<span class="id" type="var">st</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) : @<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> <a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a> :=<br/>
@@ -91,6 +176,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">inversion</span> <span class="id" type="var">H</span>; <span class="id" type="tactic">subst</span>; <span class="id" type="tactic">destruct</span> <span class="id" type="var">n</span>; <span class="id" type="tactic">simpl</span>; <span class="id" type="tactic">try</span> <span class="id" type="tactic">reflexivity</span>;<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">try</span> (<span class="id" type="tactic">apply</span> <a class="idref" href="Eval.html#EVAL.RLIST.findRelEq"><span class="id" type="lemma">RLIST.findRelEq</span></a> <span class="id" type="keyword">in</span> <span class="id" type="var">H0</span>; <span class="id" type="tactic">rewrite</span> <span class="id" type="var">H0</span>; <span class="id" type="tactic">try</span> <span class="id" type="tactic">reflexivity</span>; <span class="id" type="tactic">apply</span> <a class="idref" href="Eval.html#EVAL.RLIST.getRelEq"><span class="id" type="lemma">RLIST.getRelEq</span></a> <span class="id" type="keyword">in</span> <span class="id" type="var">H1</span>; <span class="id" type="tactic">rewrite</span> <span class="id" type="var">H1</span>; <span class="id" type="tactic">reflexivity</span>).<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab55"></a><h2 class="section">evalLhs : Evaluates lhs expressions</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="EVAL.evalLhs"><span class="id" type="definition">evalLhs</span></a> (<span class="id" type="var">exp</span>:<a class="idref" href="Defs.html#lhs"><span class="id" type="inductive">lhs</span></a>) (<span class="id" type="var">st</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) : @<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> <a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a> :=<br/>
@@ -264,10 +365,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> <span class="id" type="var">l1</span>; <span class="id" type="tactic">simpl</span>; <span class="id" type="tactic">auto</span>. <span class="id" type="tactic">apply</span> <a class="idref" href="Eval.html#EVAL.evalRegRelEq"><span class="id" type="lemma">evalRegRelEq</span></a>. <span class="id" type="tactic">constructor</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> <span class="id" type="var">l1</span>; <span class="id" type="tactic">simpl</span>; <span class="id" type="tactic">auto</span>. <span class="id" type="tactic">apply</span> <a class="idref" href="Eval.html#EVAL.evalRegRelEq"><span class="id" type="lemma">evalRegRelEq</span></a>. <span class="id" type="tactic">constructor</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Qed</span>.<br/>
+
+<br/>
+
+<br/>
 </div>
 
 <div class="doc">
-Bug Alert 
+
+<div class="paragraph"> </div>
+
+<a name="lab56"></a><h2 class="section">evalRhs : Evaluates rhs expressions</h2>
+
+
+<div class="paragraph"> </div>
+
+
 </div>
 <div class="code">
 

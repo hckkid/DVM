@@ -26,13 +26,81 @@
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Export</span> <a class="idref" href="DType.html#"><span class="id" type="library">DType</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab83"></a><h1 class="section">Enter The Dragon!</h1>
+
+
+<div class="paragraph"> </div>
+
+Welcome to the most crucial and intense part of whole implementation, in this module we provide functionality for
+execution of each Instruction given a State and Program.
+
+<div class="paragraph"> </div>
+
+<a name="lab84"></a><h1 class="section">InstructionType Signature</h1>
+
+
+<div class="paragraph"> </div>
+
+Its not much to discus about, just for abstarcting Instruction Module.
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Module</span> <span class="id" type="keyword">Type</span> <a name="InstructionType"><span class="id" type="module">InstructionType</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="InstructionType.inst"><span class="id" type="axiom">inst</span></a> : <span class="id" type="keyword">Type</span>. &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="InstructionType.mthd"><span class="id" type="axiom">mthd</span></a> : <span class="id" type="keyword">Type</span>. &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="InstructionType.prg"><span class="id" type="axiom">prg</span></a> : <span class="id" type="keyword">Type</span>. &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="InstructionType.toEval"><span class="id" type="axiom">toEval</span></a> : <a class="idref" href="Instructions.html#InstructionType.inst"><span class="id" type="axiom">inst</span></a> -&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#rhs"><span class="id" type="inductive">rhs</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="InstructionType.stepFix"><span class="id" type="axiom">stepFix</span></a> : <a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a> -&gt; <a class="idref" href="Instructions.html#InstructionType.prg"><span class="id" type="axiom">prg</span></a> -&gt; @<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> <a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>.<br/>
 <span class="id" type="keyword">End</span> <a class="idref" href="Instructions.html#"><span class="id" type="module">InstructionType</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab85"></a><h1 class="section">Instruction Module</h1>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Module</span> <a name="INSTRUCTION"><span class="id" type="module">INSTRUCTION</span></a> &lt;: <a class="idref" href="Instructions.html#"><span class="id" type="module">InstructionType</span></a>.<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab86"></a><h2 class="section">Definitions</h2>
+
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> ADT definitions
+
+</li>
+<li> A dummy functions of no use anymore
+
+</li>
+</ul>
+
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.inst"><span class="id" type="definition">inst</span></a> := <a class="idref" href="Defs.html#Instruction"><span class="id" type="inductive">Instruction</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.mthd"><span class="id" type="definition">mthd</span></a> := <a class="idref" href="Defs.html#Method"><span class="id" type="inductive">Method</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.prg"><span class="id" type="definition">prg</span></a> := <a class="idref" href="Defs.html#Program"><span class="id" type="inductive">Program</span></a>.<br/>
@@ -58,6 +126,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab87"></a><h2 class="section">evalNop : evaluate nop instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalNop"><span class="id" type="definition">evalNop</span></a> (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) : <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a> :=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="Instructions.html#curr"><span class="id" type="variable">curr</span></a> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#stuck"><span class="id" type="constructor">stuck</span></a> =&gt; <a class="idref" href="DvmState.html#mkStuck"><span class="id" type="constructor">mkStuck</span></a><br/>
@@ -71,6 +155,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" type="var">_</span> =&gt; <a class="idref" href="DvmState.html#mkStuck"><span class="id" type="constructor">mkStuck</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab88"></a><h2 class="section">evalRet : evaluate ret instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalRet"><span class="id" type="definition">evalRet</span></a> (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) : (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a>) :=<br/>
@@ -96,6 +196,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab89"></a><h2 class="section">evalRetTo : evaluate retTo instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalRetTo"><span class="id" type="definition">evalRetTo</span></a> (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) (<span class="id" type="var">n</span>:<a class="idref" href="Defs.html#Location"><span class="id" type="definition">Location</span></a>) : (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a>) :=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">match</span> (<a class="idref" href="Eval.html#EVAL.evalReg"><span class="id" type="definition">EVAL.evalReg</span></a> 201 <a class="idref" href="Instructions.html#curr"><span class="id" type="variable">curr</span></a>),<a class="idref" href="Instructions.html#curr"><span class="id" type="variable">curr</span></a> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| (<a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> <span class="id" type="var">x</span>),(<a class="idref" href="DvmState.html#dst"><span class="id" type="constructor">dst</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#cons"><span class="id" type="constructor">cons</span></a> <span class="id" type="var">f1</span> (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#cons"><span class="id" type="constructor">cons</span></a> (<a class="idref" href="DvmState.html#frm"><span class="id" type="constructor">frm</span></a> <span class="id" type="var">vals</span> <span class="id" type="var">ml</span> <span class="id" type="var">pc</span>) <span class="id" type="var">frem</span>)) <span class="id" type="var">h</span> <span class="id" type="var">sh</span> <span class="id" type="var">bin</span> <span class="id" type="var">bout</span>) =&gt; <br/>
@@ -119,6 +235,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab90"></a><h2 class="section">evalInvokes : evaluate invokes instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalInvokes"><span class="id" type="definition">evalInvokes</span></a> (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) (<span class="id" type="var">lst</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#rhs"><span class="id" type="inductive">rhs</span></a>) (<span class="id" type="var">ml</span>:<a class="idref" href="Defs.html#MethodLocation"><span class="id" type="definition">MethodLocation</span></a>) : (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a>) :=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">match</span> (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#filter"><span class="id" type="definition">filter</span></a> <a class="idref" href="Helpers.html#isNone"><span class="id" type="definition">isNone</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#map"><span class="id" type="definition">map</span></a> (<span class="id" type="keyword">fun</span> (<span class="id" type="var">x</span>:<a class="idref" href="Defs.html#rhs"><span class="id" type="inductive">rhs</span></a>)=&gt; (<a class="idref" href="Eval.html#EVAL.evalRhs"><span class="id" type="definition">EVAL.evalRhs</span></a> <a class="idref" href="Instructions.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="Instructions.html#curr"><span class="id" type="variable">curr</span></a>)) <a class="idref" href="Instructions.html#lst"><span class="id" type="variable">lst</span></a>)),(<a class="idref" href="Method.html#METHOD.firstPC"><span class="id" type="definition">METHOD.firstPC</span></a> <a class="idref" href="Instructions.html#ml"><span class="id" type="variable">ml</span></a> <a class="idref" href="Instructions.html#p"><span class="id" type="variable">p</span></a>) <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nil"><span class="id" type="constructor">nil</span></a>,(<a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> <span class="id" type="var">pc</span>) =&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#cons"><span class="id" type="constructor">cons</span></a> (<a class="idref" href="DvmState.html#createFrame"><span class="id" type="constructor">createFrame</span></a> (<a class="idref" href="DvmState.html#frm"><span class="id" type="constructor">frm</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_']'"><span class="id" type="notation">[]</span></a> <a class="idref" href="Instructions.html#ml"><span class="id" type="variable">ml</span></a> <span class="id" type="var">pc</span>)) (<a class="idref" href="Helpers.html#fastRev"><span class="id" type="definition">fastRev</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#map"><span class="id" type="definition">map</span></a> <br/>
@@ -132,6 +264,23 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" type="var">_</span> =&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a><a class="idref" href="DvmState.html#mkStuck"><span class="id" type="constructor">mkStuck</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab91"></a><h2 class="section">evalInvokei : evaluate invokei instruction</h2>
+
+Register input takes object location for which method is called.
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalInvokei"><span class="id" type="definition">evalInvokei</span></a> (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) (<span class="id" type="var">lst</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#rhs"><span class="id" type="inductive">rhs</span></a>) (<span class="id" type="var">ml</span>:<a class="idref" href="Defs.html#MethodLocation"><span class="id" type="definition">MethodLocation</span></a>) (<span class="id" type="var">n</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>) : (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a>) :=<br/>
@@ -149,8 +298,40 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab92"></a><h2 class="section">evalGoto : evaluate goto instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalGoto"><span class="id" type="definition">evalGoto</span></a> (<span class="id" type="var">pc</span>:<a class="idref" href="Defs.html#ProgramCounter"><span class="id" type="definition">ProgramCounter</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a> :=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a><a class="idref" href="DvmState.html#updateFrame"><span class="id" type="constructor">updateFrame</span></a> (<a class="idref" href="DvmState.html#upPC"><span class="id" type="constructor">upPC</span></a> <a class="idref" href="Instructions.html#pc"><span class="id" type="variable">pc</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab93"></a><h2 class="section">evalBranch : evaluate branch instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalBranch"><span class="id" type="definition">evalBranch</span></a> (<span class="id" type="var">l1</span> <span class="id" type="var">l2</span>:<a class="idref" href="Defs.html#rhs"><span class="id" type="inductive">rhs</span></a>) (<span class="id" type="var">bc</span>:<a class="idref" href="Primitives.html#BinaryCompOperator"><span class="id" type="inductive">BinaryCompOperator</span></a>) (<span class="id" type="var">pc</span>:<a class="idref" href="Defs.html#ProgramCounter"><span class="id" type="definition">ProgramCounter</span></a>) (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a> :=<br/>
@@ -176,6 +357,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab94"></a><h2 class="section">evalMove : evaluate move instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalMove"><span class="id" type="definition">evalMove</span></a> (<span class="id" type="var">l1</span>:<a class="idref" href="Defs.html#rhs"><span class="id" type="inductive">rhs</span></a>) (<span class="id" type="var">n</span>:<a class="idref" href="Defs.html#Register"><span class="id" type="definition">Register</span></a>) (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a> :=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">match</span> (<a class="idref" href="Eval.html#EVAL.evalRhs"><span class="id" type="definition">EVAL.evalRhs</span></a> <a class="idref" href="Instructions.html#l1"><span class="id" type="variable">l1</span></a> <a class="idref" href="Instructions.html#curr"><span class="id" type="variable">curr</span></a>) <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> <span class="id" type="var">v1</span> =&gt; (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#cons"><span class="id" type="constructor">cons</span></a> (<a class="idref" href="Instructions.html#INSTRUCTION.evalNop"><span class="id" type="definition">evalNop</span></a> <a class="idref" href="Instructions.html#curr"><span class="id" type="variable">curr</span></a> <a class="idref" href="Instructions.html#p"><span class="id" type="variable">p</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a><a class="idref" href="DvmState.html#updateFrame"><span class="id" type="constructor">updateFrame</span></a> (<a class="idref" href="DvmState.html#upVals"><span class="id" type="constructor">upVals</span></a> <a class="idref" href="Instructions.html#n"><span class="id" type="variable">n</span></a> <span class="id" type="var">v1</span>)<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a> )<br/>
@@ -189,6 +386,22 @@
 &nbsp;&nbsp;<span class="id" type="keyword">Declare Module</span> <a name="INSTRUCTION.HEAP"><span class="id" type="module">HEAP</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := <a class="idref" href="Defs.html#arrOrObj"><span class="id" type="inductive">arrOrObj</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Declare Module</span> <a name="INSTRUCTION.VLIST"><span class="id" type="module">VLIST</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := <a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Declare Module</span> <a name="INSTRUCTION.FLIST"><span class="id" type="module">FLIST</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := <a class="idref" href="Defs.html#FieldLocation"><span class="id" type="definition">FieldLocation</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab95"></a><h2 class="section">evalUpdate : evaluate update instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalUpdate"><span class="id" type="definition">evalUpdate</span></a> (<span class="id" type="var">l1</span> <span class="id" type="var">l2</span>:<a class="idref" href="Defs.html#rhs"><span class="id" type="inductive">rhs</span></a>) (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a> :=<br/>
@@ -223,6 +436,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab96"></a><h2 class="section">evalUnary : evaluate unary instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalUnary"><span class="id" type="definition">evalUnary</span></a> (<span class="id" type="var">l1</span>:<a class="idref" href="Defs.html#rhs"><span class="id" type="inductive">rhs</span></a>) (<span class="id" type="var">n</span>:<a class="idref" href="Defs.html#Register"><span class="id" type="definition">Register</span></a>) (<span class="id" type="var">op</span>:<a class="idref" href="Primitives.html#UnaryOperator"><span class="id" type="inductive">UnaryOperator</span></a>) (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a> :=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="Instructions.html#op"><span class="id" type="variable">op</span></a>,(<a class="idref" href="Eval.html#EVAL.evalRhs"><span class="id" type="definition">EVAL.evalRhs</span></a> <a class="idref" href="Instructions.html#l1"><span class="id" type="variable">l1</span></a> <a class="idref" href="Instructions.html#curr"><span class="id" type="variable">curr</span></a>) <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="Primitives.html#unot"><span class="id" type="constructor">unot</span></a>,<a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="Defs.html#prim"><span class="id" type="constructor">prim</span></a> <span class="id" type="var">p1</span>) =&gt; <span class="id" type="keyword">match</span> <a class="idref" href="Helpers.html#isle_num"><span class="id" type="definition">isle_num</span></a> 1 (<a class="idref" href="Primitives.html#PType.toNat"><span class="id" type="definition">PType.toNat</span></a> <span class="id" type="var">p1</span>) <span class="id" type="keyword">with</span><br/>
@@ -236,6 +465,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" type="var">_</span> =&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a><a class="idref" href="DvmState.html#mkStuck"><span class="id" type="constructor">mkStuck</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab97"></a><h2 class="section">evalBinaryArith : evaluate binaryArith instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalBinaryArith"><span class="id" type="definition">evalBinaryArith</span></a> (<span class="id" type="var">l1</span> <span class="id" type="var">l2</span>:<a class="idref" href="Defs.html#rhs"><span class="id" type="inductive">rhs</span></a>) (<span class="id" type="var">n</span>:<a class="idref" href="Defs.html#Register"><span class="id" type="definition">Register</span></a>) (<span class="id" type="var">op</span>:<a class="idref" href="Primitives.html#BinaryArithOperator"><span class="id" type="inductive">BinaryArithOperator</span></a>) (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a> :=<br/>
@@ -258,6 +503,22 @@
 &nbsp;&nbsp;<span class="id" type="keyword">Declare Module</span> <a name="INSTRUCTION.HP"><span class="id" type="module">HP</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := <a class="idref" href="Defs.html#arrOrObj"><span class="id" type="inductive">arrOrObj</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab98"></a><h2 class="section">evalNew : evaluate new instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalNew"><span class="id" type="definition">evalNew</span></a> (<span class="id" type="var">n</span>:<a class="idref" href="Defs.html#Register"><span class="id" type="definition">Register</span></a>) (<span class="id" type="var">cl</span>:<a class="idref" href="Defs.html#ClassLocation"><span class="id" type="definition">ClassLocation</span></a>) (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a> :=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="Instructions.html#curr"><span class="id" type="variable">curr</span></a> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#stuck"><span class="id" type="constructor">stuck</span></a> =&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a><a class="idref" href="DvmState.html#mkStuck"><span class="id" type="constructor">mkStuck</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a><br/>
@@ -267,6 +528,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" type="var">_</span> =&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a><a class="idref" href="DvmState.html#mkStuck"><span class="id" type="constructor">mkStuck</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab99"></a><h2 class="section">evalNewArray : evaluate newarr instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalNewArray"><span class="id" type="definition">evalNewArray</span></a> (<span class="id" type="var">n</span>:<a class="idref" href="Defs.html#Register"><span class="id" type="definition">Register</span></a>) (<span class="id" type="var">t</span>:<a class="idref" href="Defs.html#type"><span class="id" type="inductive">type</span></a>) (<span class="id" type="var">l</span>:<a class="idref" href="Defs.html#rhs"><span class="id" type="inductive">rhs</span></a>) (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a> :=<br/>
@@ -282,6 +559,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" type="var">_</span>,<span class="id" type="var">_</span> =&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a><a class="idref" href="DvmState.html#mkStuck"><span class="id" type="constructor">mkStuck</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab100"></a><h2 class="section">evalCast : evaluate cast instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalCast"><span class="id" type="definition">evalCast</span></a> (<span class="id" type="var">n</span>:<a class="idref" href="Defs.html#Register"><span class="id" type="definition">Register</span></a>) (<span class="id" type="var">t</span>:<a class="idref" href="Defs.html#type"><span class="id" type="inductive">type</span></a>) (<span class="id" type="var">l</span>:<a class="idref" href="Defs.html#rhs"><span class="id" type="inductive">rhs</span></a>) (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a> :=<br/>
@@ -302,6 +595,22 @@
 &nbsp;&nbsp;<span class="id" type="keyword">Declare Module</span> <a name="INSTRUCTION.NLIST"><span class="id" type="module">NLIST</span></a>:<a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span>:=<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab101"></a><h2 class="section">evalRead : evaluate read instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalRead"><span class="id" type="definition">evalRead</span></a> (<span class="id" type="var">n</span>:<a class="idref" href="Defs.html#Register"><span class="id" type="definition">Register</span></a>) (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a> :=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="Instructions.html#curr"><span class="id" type="variable">curr</span></a> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#halt"><span class="id" type="constructor">halt</span></a> =&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a><a class="idref" href="DvmState.html#mkHalt"><span class="id" type="constructor">mkHalt</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a><br/>
@@ -313,6 +622,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab102"></a><h2 class="section">evalWrite : evaluate print instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalWrite"><span class="id" type="definition">evalWrite</span></a> (<span class="id" type="var">r1</span>:<a class="idref" href="Defs.html#rhs"><span class="id" type="inductive">rhs</span></a>) (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a> :=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="Instructions.html#curr"><span class="id" type="variable">curr</span></a>,(<a class="idref" href="Eval.html#EVAL.evalRhs"><span class="id" type="definition">EVAL.evalRhs</span></a> <a class="idref" href="Instructions.html#r1"><span class="id" type="variable">r1</span></a> <a class="idref" href="Instructions.html#curr"><span class="id" type="variable">curr</span></a>) <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#halt"><span class="id" type="constructor">halt</span></a>,<span class="id" type="var">_</span> =&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a><a class="idref" href="DvmState.html#mkHalt"><span class="id" type="constructor">mkHalt</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a><br/>
@@ -320,6 +645,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;| (<a class="idref" href="DvmState.html#dst"><span class="id" type="constructor">dst</span></a> <span class="id" type="var">frms</span> <span class="id" type="var">h</span> <span class="id" type="var">sh</span> <span class="id" type="var">inb</span> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><span class="id" type="var">crs</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,</span></a><span class="id" type="var">lst</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">)</span></a>),(<a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="Defs.html#prim"><span class="id" type="constructor">prim</span></a> <span class="id" type="var">p1</span>)) =&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#cons"><span class="id" type="constructor">cons</span></a> (<a class="idref" href="Instructions.html#INSTRUCTION.evalNop"><span class="id" type="definition">evalNop</span></a> <a class="idref" href="Instructions.html#curr"><span class="id" type="variable">curr</span></a> <a class="idref" href="Instructions.html#p"><span class="id" type="variable">p</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[(</span></a><a class="idref" href="DvmState.html#addOutb"><span class="id" type="constructor">addOutb</span></a> (<a class="idref" href="Primitives.html#PType.toNat"><span class="id" type="definition">PType.toNat</span></a> <span class="id" type="var">p1</span>)<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">)]</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" type="var">_</span>,<span class="id" type="var">_</span> =&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a><a class="idref" href="DvmState.html#mkStuck"><span class="id" type="constructor">mkStuck</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab103"></a><h2 class="section">evalInst : evaluate any instruction</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.evalInst"><span class="id" type="definition">evalInst</span></a> (<span class="id" type="var">inst</span>:<a class="idref" href="Defs.html#Instruction"><span class="id" type="inductive">Instruction</span></a>) (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a> :=<br/>
@@ -342,6 +683,26 @@
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="Defs.html#print"><span class="id" type="constructor">print</span></a> <span class="id" type="var">r1</span> =&gt; <a class="idref" href="Instructions.html#INSTRUCTION.evalWrite"><span class="id" type="definition">evalWrite</span></a> <span class="id" type="var">r1</span> <a class="idref" href="Instructions.html#curr"><span class="id" type="variable">curr</span></a> <a class="idref" href="Instructions.html#p"><span class="id" type="variable">p</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="Defs.html#hlt"><span class="id" type="constructor">hlt</span></a> =&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a><a class="idref" href="DvmState.html#mkHalt"><span class="id" type="constructor">mkHalt</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab104"></a><h2 class="section">C.I.P. : Compute In Peace</h2>
+
+
+<div class="paragraph"> </div>
+
+With execution defined, we can now write fixpoints to compute a Program
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="INSTRUCTION.getCurrInstruction"><span class="id" type="definition">getCurrInstruction</span></a> (<span class="id" type="var">curr</span>:<a class="idref" href="DvmState.html#DVMState"><span class="id" type="inductive">DVMState</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="Instructions.html#INSTRUCTION.prg"><span class="id" type="definition">prg</span></a>) : @<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> <a class="idref" href="Defs.html#Instruction"><span class="id" type="inductive">Instruction</span></a> :=<br/>

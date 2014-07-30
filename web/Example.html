@@ -29,15 +29,225 @@
 <span class="id" type="keyword">Open</span> <span class="id" type="keyword">Scope</span> <span class="id" type="var">string_scope</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab69"></a><h1 class="section">Access Modifier Codes</h1>
+
+
+<div class="paragraph"> </div>
+
+0  == Public
+1  == Protected
+2  == Private
+x&gt;2  == Static &amp;&amp; (x-3)
+
+<div class="paragraph"> </div>
+
+<a name="lab70"></a><h1 class="section">Original Java Code</h1>
+
+
+<div class="paragraph"> </div>
+
+Public Class super{
+public:
+  int n<font size=-2>&#9744;</font><font size=-2>&#9744;</font>;
+  void super(){
+    n = new int<span class="inlinecode">5</span><span class="inlinecode">6</span>;
+  }
+}
+
+<div class="paragraph"> </div>
+
+Public Class sub extends super{
+public:
+  int p;
+  void sub(n:int){
+    this.super();
+    this.n<span class="inlinecode">0</span><span class="inlinecode">0</span> = n;
+    p = 30;
+  }
+}
+
+<div class="paragraph"> </div>
+
+Public Class tester{
+  public static void main(){
+    int n;
+    super sp = new super();
+    inp n;
+    sub sb = new sub(n);
+    print(sb.n);
+  }
+}
+
+<div class="paragraph"> </div>
+
+<a name="lab71"></a><h1 class="section">Intermediate Dalvik Bytecode similar code</h1>
+
+
+<div class="paragraph"> </div>
+
+<a name="lab72"></a><h2 class="section">Classes Indexed</h2>
+
+1 super
+2 sub
+3 tester
+
+** MethodSigs
+1 pub super v 100 {}
+2 pub sub v 100 {(n,int)}
+3 static pub main v 100 {}
+
+<div class="paragraph"> </div>
+
+<a name="lab73"></a><h2 class="section">ClassDecls</h2>
+
+
+<div class="paragraph"> </div>
+
+{
+  pub c1
+  ifield f1
+  imethod m1
+}
+
+<div class="paragraph"> </div>
+
+{
+  pub c2
+  ifield f2
+  imethod m2
+}
+
+<div class="paragraph"> </div>
+
+{
+  pub c3
+  smethod m3
+}
+
+<div class="paragraph"> </div>
+
+<a name="lab74"></a><h2 class="section">FieldDecls</h2>
+
+
+<div class="paragraph"> </div>
+
+1 n pub (a (a int))  // Two D int array name n public
+2 p pub int
+
+<div class="paragraph"> </div>
+
+<a name="lab75"></a><h2 class="section">MethodDecls</h2>
+
+
+<div class="paragraph"> </div>
+
+{
+  1 move r1 5
+  2 move r2 6
+  3 add r3 r1 1
+  4 newarray (sizeda 5 (a int)) r4
+  5 move r5 0
+  6 branch r3 == 0 12
+  7 newarray (sizeda 6 int) r6
+  8 move r6 (acc r4 r5)
+  9 add r5 r5 1
+  10 sub r3 r3 1
+  11 goto 6
+  12 update (ifield r0 f1) r4
+  13 ret
+}
+
+{
+  14 invokei r0 {} m1
+  15 move r1 (ifield r0 f1)
+  16 move r1 (acc r1 0)
+  17 move r1 (acc r1 0)
+  18 update r1 v1
+  19 update (ifield r0 f2) v1
+  20 ret
+}
+
+<div class="paragraph"> </div>
+
+{
+  21 move r1 0
+  22 new r2 1
+  23 invokei r2 {} m1
+  24 read int r3
+  25 new r4 2
+  26 invokei r4 {r3} m2
+  27 print int (ifield r4 f2)
+  28 ret
+}
+
+<div class="paragraph"> </div>
+
+
+<div class="paragraph"> </div>
+
+
+<div class="paragraph"> </div>
+
+<a name="lab76"></a><h1 class="section">CoqDVM code</h1>
+
+
+<div class="paragraph"> </div>
+
+<a name="lab77"></a><h2 class="section">ClassNames</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 <span class="id" type="keyword">Definition</span> <a name="cnls"><span class="id" type="definition">cnls</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#ClassName"><span class="id" type="definition">ClassName</span></a> := <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a> "super" <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">;</span></a> "sub" <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">;</span></a> "tester" <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab78"></a><h2 class="section">Method Signatures</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 <span class="id" type="keyword">Definition</span> <a name="msigs"><span class="id" type="definition">msigs</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#MethodSig"><span class="id" type="inductive">MethodSig</span></a> := <br/>
 <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">(</span></a><a class="idref" href="Defs.html#ms"><span class="id" type="constructor">ms</span></a> 0 "super" <a class="idref" href="Defs.html#v"><span class="id" type="constructor">v</span></a> 100 <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_']'"><span class="id" type="notation">[]</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">;</span></a><br/>
 &nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">(</span></a><a class="idref" href="Defs.html#ms"><span class="id" type="constructor">ms</span></a> 0 "sub" <a class="idref" href="Defs.html#v"><span class="id" type="constructor">v</span></a> 100 <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><a class="idref" href="Defs.html#p"><span class="id" type="constructor">p</span></a>(<a class="idref" href="Primitives.html#Int"><span class="id" type="constructor">Int</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,</span></a>"n"<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">)</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">])</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">;</span></a><br/>
 &nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">(</span></a><a class="idref" href="Defs.html#ms"><span class="id" type="constructor">ms</span></a> 3 "main" <a class="idref" href="Defs.html#v"><span class="id" type="constructor">v</span></a> 100 <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_']'"><span class="id" type="notation">[]</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab79"></a><h2 class="section">Class Declarations</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 <span class="id" type="keyword">Definition</span> <a name="clst"><span class="id" type="definition">clst</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <span class="id" type="keyword">Class</span> :=<br/>
@@ -49,11 +259,43 @@
 <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab80"></a><h2 class="section">Field Declarations</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Definition</span> <a name="flst"><span class="id" type="definition">flst</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#Field"><span class="id" type="inductive">Field</span></a> :=<br/>
 <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a><br/>
 &nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">(</span></a><a class="idref" href="Defs.html#fld"><span class="id" type="constructor">fld</span></a> 0 "n" (<a class="idref" href="Defs.html#r"><span class="id" type="constructor">r</span></a> (<a class="idref" href="Defs.html#a"><span class="id" type="constructor">a</span></a> (<a class="idref" href="Defs.html#r"><span class="id" type="constructor">r</span></a> (<a class="idref" href="Defs.html#a"><span class="id" type="constructor">a</span></a> (<a class="idref" href="Defs.html#p"><span class="id" type="constructor">p</span></a> <a class="idref" href="Primitives.html#Int"><span class="id" type="constructor">Int</span></a>)))))<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">;</span></a><br/>
 &nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">(</span></a><a class="idref" href="Defs.html#fld"><span class="id" type="constructor">fld</span></a> 0 "p" (<a class="idref" href="Defs.html#p"><span class="id" type="constructor">p</span></a> <a class="idref" href="Primitives.html#Int"><span class="id" type="constructor">Int</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">)</span></a><br/>
 <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab81"></a><h2 class="section">Method Declarations</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 <span class="id" type="keyword">Definition</span> <a name="mb1"><span class="id" type="definition">mb1</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> (<a class="idref" href="Defs.html#ProgramCounter"><span class="id" type="definition">ProgramCounter</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="Defs.html#Instruction"><span class="id" type="inductive">Instruction</span></a>) :=<br/>
@@ -102,6 +344,22 @@
 
 <br/>
 <span class="id" type="keyword">Definition</span> <a name="mlst"><span class="id" type="definition">mlst</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#Method"><span class="id" type="inductive">Method</span></a> := <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">[</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">(</span></a><a class="idref" href="Defs.html#mtd"><span class="id" type="constructor">mtd</span></a> 1 (<a class="idref" href="Defs.html#mb"><span class="id" type="constructor">mb</span></a> <a class="idref" href="Example.html#mb1"><span class="id" type="definition">mb1</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">;</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">(</span></a><a class="idref" href="Defs.html#mtd"><span class="id" type="constructor">mtd</span></a> 2 (<a class="idref" href="Defs.html#mb"><span class="id" type="constructor">mb</span></a> <a class="idref" href="Example.html#mb2"><span class="id" type="definition">mb2</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">;</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">(</span></a><a class="idref" href="Defs.html#mtd"><span class="id" type="constructor">mtd</span></a> 3 (<a class="idref" href="Defs.html#mb"><span class="id" type="constructor">mb</span></a> <a class="idref" href="Example.html#mb3"><span class="id" type="definition">mb3</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Lists.List.html#ListNotations.:list_scope:'['_x_';'_'..'_';'_x_']'"><span class="id" type="notation">]</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab82"></a><h2 class="section">Final Program and Initial State</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 <span class="id" type="keyword">Definition</span> <a name="p"><span class="id" type="definition">p</span></a> : <a class="idref" href="Defs.html#Program"><span class="id" type="inductive">Program</span></a> := (<a class="idref" href="Defs.html#prog"><span class="id" type="constructor">prog</span></a> <a class="idref" href="Example.html#cnls"><span class="id" type="definition">cnls</span></a> <a class="idref" href="Example.html#msigs"><span class="id" type="definition">msigs</span></a> <a class="idref" href="Example.html#clst"><span class="id" type="definition">clst</span></a> <a class="idref" href="Example.html#flst"><span class="id" type="definition">flst</span></a> <a class="idref" href="Example.html#mlst"><span class="id" type="definition">mlst</span></a>).<br/>

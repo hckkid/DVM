@@ -4,6 +4,19 @@ Require Export DList.
 
 Open Scope type_scope.
 
+(**
+
+* Syntax definitions
+
+- DVMState is composed by elements of following types,
+  - Frame : register value pairs , method location , program counter , counts for method calls equivalent to call stacks
+  - Heap : list of arrOrObj, location of object/array in list suffices for its refrence, allows dynamic allocation
+  - SHeap : list of FieldLocation*Val, static heap, used to store static fields
+  - Buffer : used for input output purpose.
+- deltaState, to represent atomic change in state units
+
+*)
+
 Inductive Frame : Type :=  frm (vals:list (nat*Val)) (ml:MethodLocation) (PC:ProgramCounter).
 
 Definition Heap : Type := list arrOrObj.
@@ -36,10 +49,22 @@ Inductive deltaState : Type :=
   | mkStuck : deltaState
   | mkHalt : deltaState.
 
+(**
+
+A needed function to compare first elements of a pair.
+
+*)
+
 Definition compFirst {A:Type} (t1 t2:(Location*A)) : bool :=
   match t1,t2 with
   | (l1,v1),(l2,v2) => (areEqualNum l1 l2)
   end.
+
+(**
+
+* Module Type for ChangeState, provides signature.
+
+*)
 
 Module Type ChangeStateType.
   Parameter state : Type.
@@ -49,10 +74,25 @@ Module Type ChangeStateType.
   Parameter mkChanges : state -> list change -> @Option state.
 End ChangeStateType.
 
+(**
+
+* ChangeState
+
+ChangeState module implements functionality to make use of deltaState in order to change current state into next state
+
+*)
+
 Module ChangeState <: ChangeStateType.
   Definition state := DVMState.
   Definition change := deltaState.
   Declare Module VLIST : ListType with Definition t1 := nat*Val.
+
+(**
+
+** ChnageFrame
+Functionality of change in Frame
+
+*)
 
   Definition changeFrame (currf:Frame) (fd:frameDiff) : Frame :=
     match currf,fd with
@@ -87,42 +127,73 @@ Module ChangeState <: ChangeStateType.
   Declare Module ABLIST : ListType with Definition t1 := arrOrObj.
   Declare Module NLIST : ListType with Definition t1 := nat.
 
+(**
+
+** mkChange
+
+Implements state change function
+
+*** As definition
+
+*)
+
   Definition mkChange (cst:state) (ch:change) : @Option state :=
     match cst with
     | dst frms h sh inb outb => match ch with
+      (** Creates a new Frame at top of Frames *)
       | createFrame f => Some (dst (cons f frms) h sh inb outb)
+      (** Updates topmost Frame *)
       | updateFrame fd => match frms with
         | (cons f1 frem) => Some (dst (cons (changeFrame f1 fd) frem) h sh inb outb)
         | _ => None
         end
+      (** Deletes Topmost Frame *)
       | deleteFrame => match frms with
         | (cons f1 frem) => Some (dst frem h sh inb outb)
         | _ => None
         end
+      (** Add object/ arr at end of Heap *)
       | addHeap aob => Some (dst frms (ABLIST.prep aob h) sh inb outb)
+      (** Updates Heap data *)
       | upHeap lst => Some (dst frms (ABLIST.setMany lst h) sh inb outb)
+      (** Updates SHeap data *)
       | upSHeap sh' => Some (dst frms h sh' inb outb)
+      (** Update Input Buffer Data *)
       | upInb lst => match inb with
         | (curs,lst') => Some (dst frms h sh (curs,(NLIST.setMany lst lst')) outb)
         end
+      (** Update Input Buffer Cursor *)
       | upInc crs => match inb with
         | (curs,lst) => Some (dst frms h sh (crs,lst) outb)
         end
+      (** Add data at end of Output Buffer *)
       | addOutb v1 => match outb with
         | (curs,lst') => Some (dst frms h sh inb (curs,(NLIST.prep v1 lst')))
         end
+      (** Update Output Buffer data *)
       | upOutb lst => match outb with
         | (curs,lst') => Some (dst frms h sh inb (curs,(NLIST.setMany lst lst')))
         end
+      (** Update Output Buffer cursor *)
       | upOutc crs => match outb with
         | (curs,lst) => Some (dst frms h sh inb (crs,lst))
         end
+      (** make stuck *)
       | mkStuck => Some stuck
+      (** make halt *)
       | mkHalt => Some halt
       end
+    (** Stuck remains stuck, too much Inertia! *)
     | stuck => Some stuck
+    (** halt remains halt, again inertia! *)
     | halt => Some halt
     end.
+
+(**
+
+*** As Relation
+
+*)
 
   Inductive mkChangeRel : state -> change -> @Option state -> Prop :=
     | createFrameRel : forall (frms: list Frame) (f:Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer), mkChangeRel (dst frms h sh inb outb) (createFrame f) (Some (dst (cons f frms) h sh inb outb))
@@ -161,6 +232,12 @@ Module ChangeState <: ChangeStateType.
     | stuckRel : forall (ch:change), mkChangeRel stuck ch (Some stuck)
     | haltRel : forall (ch:change), mkChangeRel halt ch (Some halt).
 
+(**
+
+*** Definition Relation Equivalence
+
+*)
+
   Theorem mkChangeRelEq : forall (st:state) (ch:change) (fst:@Option state), mkChange st ch = fst <-> mkChangeRel st ch fst.
   Proof.
     intros st ch.
@@ -184,6 +261,12 @@ Module ChangeState <: ChangeStateType.
       destruct st; try destruct inb; simpl in H; subst; try econstructor.
       destruct st; try destruct outb; simpl in H; subst; try econstructor.
   Qed.
+
+(**
+
+** mkChanges : Repeated application of mkChange
+
+*)
 
   Fixpoint mkChanges (cst:state) (chs:list change) : @Option state :=
     match chs with

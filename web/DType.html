@@ -25,6 +25,49 @@
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Export</span> <a class="idref" href="DvmState.html#"><span class="id" type="library">DvmState</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab57"></a><h1 class="section">Overview</h1>
+
+
+<div class="paragraph"> </div>
+
+DType module deals with type related operations in DVM
+
+<div class="paragraph"> </div>
+
+<a name="lab58"></a><h1 class="section">type_type Signature</h1>
+
+
+<div class="paragraph"> </div>
+
+We need following type related operations the most
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> createObject : create an Object of given Class
+
+</li>
+<li> createArray : creates an Array of given type
+
+</li>
+<li> checkCast : checks for possibility of casting
+
+</li>
+<li> cast : casts and object into object of given type.
+
+</li>
+</ul>
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Module</span> <span class="id" type="keyword">Type</span> <a name="type_type"><span class="id" type="module">type_type</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="type_type.t"><span class="id" type="axiom">t</span></a> : <span class="id" type="keyword">Type</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="type_type.ob"><span class="id" type="axiom">ob</span></a>: <span class="id" type="keyword">Type</span>.<br/>
@@ -37,7 +80,37 @@
 <span class="id" type="keyword">End</span> <a class="idref" href="DType.html#"><span class="id" type="module">type_type</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab59"></a><h1 class="section">TYPE module</h1>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Module</span> <a name="TYPE"><span class="id" type="module">TYPE</span></a> &lt;: <a class="idref" href="DType.html#"><span class="id" type="module">type_type</span></a>.<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab60"></a><h2 class="section">Declarations &amp; Definitions</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="TYPE.t"><span class="id" type="definition">t</span></a> := <a class="idref" href="Defs.html#type"><span class="id" type="inductive">type</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="TYPE.ob"><span class="id" type="definition">ob</span></a> := <a class="idref" href="Defs.html#Object"><span class="id" type="inductive">Object</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="TYPE.prg"><span class="id" type="definition">prg</span></a> := <a class="idref" href="Defs.html#Program"><span class="id" type="inductive">Program</span></a>.<br/>
@@ -49,6 +122,28 @@
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="TYPE.appTemp"><span class="id" type="definition">appTemp</span></a> {<span class="id" type="var">A</span>:<span class="id" type="keyword">Type</span>} (<span class="id" type="var">x</span>:<a class="idref" href="DType.html#A"><span class="id" type="variable">A</span></a>) (<span class="id" type="var">l</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DType.html#A"><span class="id" type="variable">A</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DType.html#A"><span class="id" type="variable">A</span></a> :=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#cons"><span class="id" type="constructor">cons</span></a> <a class="idref" href="DType.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="DType.html#l"><span class="id" type="variable">l</span></a>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab61"></a><h2 class="section">Helper Operations</h2>
+
+
+<div class="paragraph"> </div>
+
+<a name="lab62"></a><h3 class="section">fieldListIndexed</h3>
+
+  creates list of field locations for given class
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Fixpoint</span> <a name="TYPE.fieldListIndexed"><span class="id" type="definition">fieldListIndexed</span></a> (<span class="id" type="var">n</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>) (<span class="id" type="var">c</span>:<span class="id" type="keyword">Class</span>) (<span class="id" type="var">clst</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <span class="id" type="keyword">Class</span>) : @<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#FieldLocation"><span class="id" type="definition">FieldLocation</span></a>) :=<br/>
@@ -65,8 +160,42 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab63"></a><h3 class="section">fieldList</h3>
+
+  generates Field list from list of FieldLocation
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="TYPE.fieldList"><span class="id" type="definition">fieldList</span></a> (<span class="id" type="var">c</span>:<span class="id" type="keyword">Class</span>) (<span class="id" type="var">clst</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <span class="id" type="keyword">Class</span>) : @<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#FieldLocation"><span class="id" type="definition">FieldLocation</span></a>) :=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="DType.html#TYPE.fieldListIndexed"><span class="id" type="definition">fieldListIndexed</span></a> (<a class="idref" href="DType.html#TYPE.CLIST.len"><span class="id" type="definition">CLIST.len</span></a> <a class="idref" href="DType.html#clst"><span class="id" type="variable">clst</span></a>) <a class="idref" href="DType.html#c"><span class="id" type="variable">c</span></a> <a class="idref" href="DType.html#clst"><span class="id" type="variable">clst</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab64"></a><h3 class="section">defaultSetter</h3>
+
+  generates list of default value from Fields based upon their type in corresponding order
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="TYPE.defaultSetter"><span class="id" type="definition">defaultSetter</span></a> (<span class="id" type="var">fl</span>:<a class="idref" href="Defs.html#FieldLocation"><span class="id" type="definition">FieldLocation</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="DType.html#TYPE.prg"><span class="id" type="definition">prg</span></a>) : @<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> <a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a> :=<br/>
@@ -86,6 +215,23 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab65"></a><h3 class="section">defaultedFields</h3>
+
+  generates list of FieldLocation Value pairs in corresponding order
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="TYPE.defaultedFields"><span class="id" type="definition">defaultedFields</span></a> (<span class="id" type="var">l</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="Defs.html#FieldLocation"><span class="id" type="definition">FieldLocation</span></a>) (<span class="id" type="var">p</span>:<a class="idref" href="DType.html#TYPE.prg"><span class="id" type="definition">prg</span></a>) : @<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> (<a class="idref" href="Defs.html#FieldLocation"><span class="id" type="definition">FieldLocation</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>)) :=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="Helpers.html#filter"><span class="id" type="definition">filter</span></a> (<a class="idref" href="Helpers.html#map"><span class="id" type="definition">map</span></a> <a class="idref" href="DType.html#l"><span class="id" type="variable">l</span></a> (<span class="id" type="keyword">fun</span> <span class="id" type="var">x</span>:<a class="idref" href="Defs.html#FieldLocation"><span class="id" type="definition">FieldLocation</span></a>=&gt;<a class="idref" href="DType.html#TYPE.defaultSetter"><span class="id" type="definition">defaultSetter</span></a> <a class="idref" href="DType.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="DType.html#p"><span class="id" type="variable">p</span></a>)) <a class="idref" href="Helpers.html#isNone"><span class="id" type="definition">isNone</span></a> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nil"><span class="id" type="constructor">nil</span></a> =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="Helpers.html#map"><span class="id" type="definition">map</span></a> <a class="idref" href="DType.html#l"><span class="id" type="variable">l</span></a> (<span class="id" type="keyword">fun</span> <span class="id" type="var">x</span>:<a class="idref" href="Defs.html#FieldLocation"><span class="id" type="definition">FieldLocation</span></a> =&gt; <span class="id" type="keyword">match</span> (<a class="idref" href="DType.html#TYPE.defaultSetter"><span class="id" type="definition">defaultSetter</span></a> <a class="idref" href="DType.html#x"><span class="id" type="variable">x</span></a> <a class="idref" href="DType.html#p"><span class="id" type="variable">p</span></a>) <span class="id" type="keyword">with</span><br/>
@@ -94,6 +240,26 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>))<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" type="var">_</span> =&gt; <a class="idref" href="Helpers.html#None"><span class="id" type="constructor">None</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab66"></a><h2 class="section">createObject</h2>
+
+
+<div class="paragraph"> </div>
+
+All helpers functions put together form createObject
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="TYPE.createObject"><span class="id" type="definition">createObject</span></a> (<span class="id" type="var">p</span>:<a class="idref" href="DType.html#TYPE.prg"><span class="id" type="definition">prg</span></a>) (<span class="id" type="var">ty</span>:<a class="idref" href="DType.html#TYPE.t"><span class="id" type="definition">t</span></a>) (<span class="id" type="var">h</span>:<a class="idref" href="DType.html#TYPE.heap"><span class="id" type="definition">heap</span></a>) : @<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a> :=<br/>
@@ -110,6 +276,40 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" type="var">_</span> =&gt; <a class="idref" href="Helpers.html#None"><span class="id" type="constructor">None</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab67"></a><h2 class="section">createArray</h2>
+
+
+<div class="paragraph"> </div>
+
+To create array we tak following steps
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> fixpoint for generating N sized list of type A
+
+</li>
+<li> compute default
+
+</li>
+<li> generate N sized with default values
+
+</li>
+<li> create array using above
+
+</li>
+</ul>
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Fixpoint</span> <a name="TYPE.generateNList"><span class="id" type="definition">generateNList</span></a> {<span class="id" type="var">A</span>:<span class="id" type="keyword">Type</span>} (<span class="id" type="var">n</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>) (<span class="id" type="var">val</span>:<a class="idref" href="DType.html#A"><span class="id" type="variable">A</span></a>) : (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DType.html#A"><span class="id" type="variable">A</span></a>) :=<br/>
@@ -139,6 +339,40 @@
 &nbsp;&nbsp;&nbsp;&nbsp;| (<a class="idref" href="Defs.html#r"><span class="id" type="constructor">r</span></a> (<a class="idref" href="Defs.html#a"><span class="id" type="constructor">a</span></a> <span class="id" type="var">ty2</span>)) =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="DvmState.html#addHeap"><span class="id" type="constructor">addHeap</span></a> (<a class="idref" href="Defs.html#ar"><span class="id" type="constructor">ar</span></a> (<a class="idref" href="Defs.html#arr"><span class="id" type="constructor">arr</span></a> <a class="idref" href="DType.html#n"><span class="id" type="variable">n</span></a> (<a class="idref" href="DType.html#TYPE.generateN"><span class="id" type="definition">generateN</span></a> <a class="idref" href="DType.html#n"><span class="id" type="variable">n</span></a> <span class="id" type="var">ty2</span>))))<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" type="var">_</span> =&gt; <a class="idref" href="Helpers.html#None"><span class="id" type="constructor">None</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab68"></a><h2 class="section">Cast</h2>
+
+
+<div class="paragraph"> </div>
+
+For casting we define following functionality
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> isSubIndexed : given class locations tells if first is subclass of second or not
+
+</li>
+<li> isSub : given classes tells whether first is sub of second or not
+
+</li>
+<li> checkCast : check types for casting possibility
+
+</li>
+<li> cast : cast object into object of given type
+
+</li>
+</ul>
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Fixpoint</span> <a name="TYPE.isSubIndexed"><span class="id" type="definition">isSubIndexed</span></a> (<span class="id" type="var">p</span>:<a class="idref" href="DType.html#TYPE.prg"><span class="id" type="definition">prg</span></a>) (<span class="id" type="var">c1</span> <span class="id" type="var">c2</span>:<a class="idref" href="Defs.html#ClassLocation"><span class="id" type="definition">ClassLocation</span></a>) (<span class="id" type="var">n</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#bool"><span class="id" type="inductive">bool</span></a> :=<br/>

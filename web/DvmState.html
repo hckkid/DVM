@@ -27,6 +27,44 @@
 <span class="id" type="keyword">Open</span> <span class="id" type="keyword">Scope</span> <span class="id" type="var">type_scope</span>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab39"></a><h1 class="section">Syntax definitions</h1>
+
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> DVMState is composed by elements of following types,
+<ul class="doclist">
+<li> Frame : register value pairs , method location , program counter , counts for method calls equivalent to call stacks
+
+</li>
+<li> Heap : list of arrOrObj, location of object/array in list suffices for its refrence, allows dynamic allocation
+
+</li>
+<li> SHeap : list of FieldLocation*Val, static heap, used to store static fields
+
+</li>
+<li> Buffer : used for input output purpose.
+
+</li>
+</ul>
+
+</li>
+<li> deltaState, to represent atomic change in state units
+
+</li>
+</ul>
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Inductive</span> <a name="Frame"><span class="id" type="inductive">Frame</span></a> : <span class="id" type="keyword">Type</span> :=  <a name="frm"><span class="id" type="constructor">frm</span></a> (<span class="id" type="var">vals</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>)) (<span class="id" type="var">ml</span>:<a class="idref" href="Defs.html#MethodLocation"><span class="id" type="definition">MethodLocation</span></a>) (<span class="id" type="var">PC</span>:<a class="idref" href="Defs.html#ProgramCounter"><span class="id" type="definition">ProgramCounter</span></a>).<br/>
 
 <br/>
@@ -66,10 +104,41 @@
 &nbsp;&nbsp;| <a name="mkHalt"><span class="id" type="constructor">mkHalt</span></a> : <a class="idref" href="DvmState.html#deltaState"><span class="id" type="inductive">deltaState</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+A needed function to compare first elements of a pair.
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Definition</span> <a name="compFirst"><span class="id" type="definition">compFirst</span></a> {<span class="id" type="var">A</span>:<span class="id" type="keyword">Type</span>} (<span class="id" type="var">t1</span> <span class="id" type="var">t2</span>:(<a class="idref" href="Defs.html#Location"><span class="id" type="definition">Location</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="DvmState.html#A"><span class="id" type="variable">A</span></a>)) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#bool"><span class="id" type="inductive">bool</span></a> :=<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="DvmState.html#t1"><span class="id" type="variable">t1</span></a>,<a class="idref" href="DvmState.html#t2"><span class="id" type="variable">t2</span></a> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><span class="id" type="var">l1</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,</span></a><span class="id" type="var">v1</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">)</span></a>,<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><span class="id" type="var">l2</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,</span></a><span class="id" type="var">v2</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">)</span></a> =&gt; (<a class="idref" href="Helpers.html#areEqualNum"><span class="id" type="definition">areEqualNum</span></a> <span class="id" type="var">l1</span> <span class="id" type="var">l2</span>)<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab40"></a><h1 class="section">Module Type for ChangeState, provides signature.</h1>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 <span class="id" type="keyword">Module</span> <span class="id" type="keyword">Type</span> <a name="ChangeStateType"><span class="id" type="module">ChangeStateType</span></a>.<br/>
@@ -81,10 +150,47 @@
 <span class="id" type="keyword">End</span> <a class="idref" href="DvmState.html#"><span class="id" type="module">ChangeStateType</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab41"></a><h1 class="section">ChangeState</h1>
+
+
+<div class="paragraph"> </div>
+
+ChangeState module implements functionality to make use of deltaState in order to change current state into next state
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Module</span> <a name="ChangeState"><span class="id" type="module">ChangeState</span></a> &lt;: <a class="idref" href="DvmState.html#"><span class="id" type="module">ChangeStateType</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="ChangeState.state"><span class="id" type="definition">state</span></a> := <a class="idref" href="DvmState.html#ChangeState.DVMState"><span class="id" type="inductive">DVMState</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="ChangeState.change"><span class="id" type="definition">change</span></a> := <a class="idref" href="DvmState.html#ChangeState.deltaState"><span class="id" type="inductive">deltaState</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Declare Module</span> <a name="ChangeState.VLIST"><span class="id" type="module">VLIST</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:type_scope:x_'*'_x"><span class="id" type="notation">*</span></a><a class="idref" href="Defs.html#Val"><span class="id" type="inductive">Val</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab42"></a><h2 class="section">ChnageFrame</h2>
+
+Functionality of change in Frame
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="ChangeState.changeFrame"><span class="id" type="definition">changeFrame</span></a> (<span class="id" type="var">currf</span>:<a class="idref" href="DvmState.html#ChangeState.Frame"><span class="id" type="inductive">Frame</span></a>) (<span class="id" type="var">fd</span>:<a class="idref" href="DvmState.html#ChangeState.frameDiff"><span class="id" type="inductive">frameDiff</span></a>) : <a class="idref" href="DvmState.html#ChangeState.Frame"><span class="id" type="inductive">Frame</span></a> :=<br/>
@@ -124,42 +230,173 @@
 &nbsp;&nbsp;<span class="id" type="keyword">Declare Module</span> <a name="ChangeState.NLIST"><span class="id" type="module">NLIST</span></a> : <a class="idref" href="DList.html#"><span class="id" type="module">ListType</span></a> <span class="id" type="keyword">with</span> <span class="id" type="keyword">Definition</span> <span class="id" type="var">t1</span> := <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab43"></a><h2 class="section">mkChange</h2>
+
+
+<div class="paragraph"> </div>
+
+Implements state change function
+
+<div class="paragraph"> </div>
+
+<a name="lab44"></a><h3 class="section">As definition</h3>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="ChangeState.mkChange"><span class="id" type="definition">mkChange</span></a> (<span class="id" type="var">cst</span>:<a class="idref" href="DvmState.html#ChangeState.state"><span class="id" type="definition">state</span></a>) (<span class="id" type="var">ch</span>:<a class="idref" href="DvmState.html#ChangeState.change"><span class="id" type="definition">change</span></a>) : @<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> <a class="idref" href="DvmState.html#ChangeState.state"><span class="id" type="definition">state</span></a> :=<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">match</span> <a class="idref" href="DvmState.html#cst"><span class="id" type="variable">cst</span></a> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.dst"><span class="id" type="constructor">dst</span></a> <span class="id" type="var">frms</span> <span class="id" type="var">h</span> <span class="id" type="var">sh</span> <span class="id" type="var">inb</span> <span class="id" type="var">outb</span> =&gt; <span class="id" type="keyword">match</span> <a class="idref" href="DvmState.html#ch"><span class="id" type="variable">ch</span></a> <span class="id" type="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+Creates a new Frame at top of Frames 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.createFrame"><span class="id" type="constructor">createFrame</span></a> <span class="id" type="var">f</span> =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="DvmState.html#ChangeState.dst"><span class="id" type="constructor">dst</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#cons"><span class="id" type="constructor">cons</span></a> <span class="id" type="var">f</span> <span class="id" type="var">frms</span>) <span class="id" type="var">h</span> <span class="id" type="var">sh</span> <span class="id" type="var">inb</span> <span class="id" type="var">outb</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+Updates topmost Frame 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.updateFrame"><span class="id" type="constructor">updateFrame</span></a> <span class="id" type="var">fd</span> =&gt; <span class="id" type="keyword">match</span> <span class="id" type="var">frms</span> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#cons"><span class="id" type="constructor">cons</span></a> <span class="id" type="var">f1</span> <span class="id" type="var">frem</span>) =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="DvmState.html#ChangeState.dst"><span class="id" type="constructor">dst</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#cons"><span class="id" type="constructor">cons</span></a> (<a class="idref" href="DvmState.html#ChangeState.changeFrame"><span class="id" type="definition">changeFrame</span></a> <span class="id" type="var">f1</span> <span class="id" type="var">fd</span>) <span class="id" type="var">frem</span>) <span class="id" type="var">h</span> <span class="id" type="var">sh</span> <span class="id" type="var">inb</span> <span class="id" type="var">outb</span>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" type="var">_</span> =&gt; <a class="idref" href="Helpers.html#None"><span class="id" type="constructor">None</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+Deletes Topmost Frame 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.deleteFrame"><span class="id" type="constructor">deleteFrame</span></a> =&gt; <span class="id" type="keyword">match</span> <span class="id" type="var">frms</span> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| (<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#cons"><span class="id" type="constructor">cons</span></a> <span class="id" type="var">f1</span> <span class="id" type="var">frem</span>) =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="DvmState.html#ChangeState.dst"><span class="id" type="constructor">dst</span></a> <span class="id" type="var">frem</span> <span class="id" type="var">h</span> <span class="id" type="var">sh</span> <span class="id" type="var">inb</span> <span class="id" type="var">outb</span>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" type="var">_</span> =&gt; <a class="idref" href="Helpers.html#None"><span class="id" type="constructor">None</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+Add object/ arr at end of Heap 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.addHeap"><span class="id" type="constructor">addHeap</span></a> <span class="id" type="var">aob</span> =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="DvmState.html#ChangeState.dst"><span class="id" type="constructor">dst</span></a> <span class="id" type="var">frms</span> (<a class="idref" href="DvmState.html#ChangeState.ABLIST.prep"><span class="id" type="definition">ABLIST.prep</span></a> <span class="id" type="var">aob</span> <span class="id" type="var">h</span>) <span class="id" type="var">sh</span> <span class="id" type="var">inb</span> <span class="id" type="var">outb</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+Updates Heap data 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.upHeap"><span class="id" type="constructor">upHeap</span></a> <span class="id" type="var">lst</span> =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="DvmState.html#ChangeState.dst"><span class="id" type="constructor">dst</span></a> <span class="id" type="var">frms</span> (<a class="idref" href="DvmState.html#ChangeState.ABLIST.setMany"><span class="id" type="definition">ABLIST.setMany</span></a> <span class="id" type="var">lst</span> <span class="id" type="var">h</span>) <span class="id" type="var">sh</span> <span class="id" type="var">inb</span> <span class="id" type="var">outb</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+Updates SHeap data 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.upSHeap"><span class="id" type="constructor">upSHeap</span></a> <span class="id" type="var">sh'</span> =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="DvmState.html#ChangeState.dst"><span class="id" type="constructor">dst</span></a> <span class="id" type="var">frms</span> <span class="id" type="var">h</span> <span class="id" type="var">sh'</span> <span class="id" type="var">inb</span> <span class="id" type="var">outb</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+Update Input Buffer Data 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.upInb"><span class="id" type="constructor">upInb</span></a> <span class="id" type="var">lst</span> =&gt; <span class="id" type="keyword">match</span> <span class="id" type="var">inb</span> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><span class="id" type="var">curs</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,</span></a><span class="id" type="var">lst'</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">)</span></a> =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="DvmState.html#ChangeState.dst"><span class="id" type="constructor">dst</span></a> <span class="id" type="var">frms</span> <span class="id" type="var">h</span> <span class="id" type="var">sh</span> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><span class="id" type="var">curs</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,(</span></a><a class="idref" href="DvmState.html#ChangeState.NLIST.setMany"><span class="id" type="definition">NLIST.setMany</span></a> <span class="id" type="var">lst</span> <span class="id" type="var">lst'</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">))</span></a> <span class="id" type="var">outb</span>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+Update Input Buffer Cursor 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.upInc"><span class="id" type="constructor">upInc</span></a> <span class="id" type="var">crs</span> =&gt; <span class="id" type="keyword">match</span> <span class="id" type="var">inb</span> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><span class="id" type="var">curs</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,</span></a><span class="id" type="var">lst</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">)</span></a> =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="DvmState.html#ChangeState.dst"><span class="id" type="constructor">dst</span></a> <span class="id" type="var">frms</span> <span class="id" type="var">h</span> <span class="id" type="var">sh</span> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><span class="id" type="var">crs</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,</span></a><span class="id" type="var">lst</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">)</span></a> <span class="id" type="var">outb</span>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+Add data at end of Output Buffer 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.addOutb"><span class="id" type="constructor">addOutb</span></a> <span class="id" type="var">v1</span> =&gt; <span class="id" type="keyword">match</span> <span class="id" type="var">outb</span> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><span class="id" type="var">curs</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,</span></a><span class="id" type="var">lst'</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">)</span></a> =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="DvmState.html#ChangeState.dst"><span class="id" type="constructor">dst</span></a> <span class="id" type="var">frms</span> <span class="id" type="var">h</span> <span class="id" type="var">sh</span> <span class="id" type="var">inb</span> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><span class="id" type="var">curs</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,(</span></a><a class="idref" href="DvmState.html#ChangeState.NLIST.prep"><span class="id" type="definition">NLIST.prep</span></a> <span class="id" type="var">v1</span> <span class="id" type="var">lst'</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">))</span></a>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+Update Output Buffer data 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.upOutb"><span class="id" type="constructor">upOutb</span></a> <span class="id" type="var">lst</span> =&gt; <span class="id" type="keyword">match</span> <span class="id" type="var">outb</span> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><span class="id" type="var">curs</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,</span></a><span class="id" type="var">lst'</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">)</span></a> =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="DvmState.html#ChangeState.dst"><span class="id" type="constructor">dst</span></a> <span class="id" type="var">frms</span> <span class="id" type="var">h</span> <span class="id" type="var">sh</span> <span class="id" type="var">inb</span> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><span class="id" type="var">curs</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,(</span></a><a class="idref" href="DvmState.html#ChangeState.NLIST.setMany"><span class="id" type="definition">NLIST.setMany</span></a> <span class="id" type="var">lst</span> <span class="id" type="var">lst'</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">))</span></a>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+Update Output Buffer cursor 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.upOutc"><span class="id" type="constructor">upOutc</span></a> <span class="id" type="var">crs</span> =&gt; <span class="id" type="keyword">match</span> <span class="id" type="var">outb</span> <span class="id" type="keyword">with</span><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><span class="id" type="var">curs</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,</span></a><span class="id" type="var">lst</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">)</span></a> =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> (<a class="idref" href="DvmState.html#ChangeState.dst"><span class="id" type="constructor">dst</span></a> <span class="id" type="var">frms</span> <span class="id" type="var">h</span> <span class="id" type="var">sh</span> <span class="id" type="var">inb</span> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">(</span></a><span class="id" type="var">crs</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">,</span></a><span class="id" type="var">lst</span><a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#:core_scope:'('_x_','_x_','_'..'_','_x_')'"><span class="id" type="notation">)</span></a>)<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+make stuck 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.mkStuck"><span class="id" type="constructor">mkStuck</span></a> =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> <a class="idref" href="DvmState.html#ChangeState.stuck"><span class="id" type="constructor">stuck</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+make halt 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.mkHalt"><span class="id" type="constructor">mkHalt</span></a> =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> <a class="idref" href="DvmState.html#ChangeState.halt"><span class="id" type="constructor">halt</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+Stuck remains stuck, too much Inertia! 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.stuck"><span class="id" type="constructor">stuck</span></a> =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> <a class="idref" href="DvmState.html#ChangeState.stuck"><span class="id" type="constructor">stuck</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+<div class="doc">
+halt remains halt, again inertia! 
+</div>
+<div class="code">
 &nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="DvmState.html#ChangeState.halt"><span class="id" type="constructor">halt</span></a> =&gt; <a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> <a class="idref" href="DvmState.html#ChangeState.halt"><span class="id" type="constructor">halt</span></a><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab45"></a><h3 class="section">As Relation</h3>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Inductive</span> <a name="ChangeState.mkChangeRel"><span class="id" type="inductive">mkChangeRel</span></a> : <a class="idref" href="DvmState.html#ChangeState.state"><span class="id" type="definition">state</span></a> -&gt; <a class="idref" href="DvmState.html#ChangeState.change"><span class="id" type="definition">change</span></a> -&gt; @<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> <a class="idref" href="DvmState.html#ChangeState.state"><span class="id" type="definition">state</span></a> -&gt; <span class="id" type="keyword">Prop</span> :=<br/>
@@ -200,6 +437,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;| <a name="ChangeState.haltRel"><span class="id" type="constructor">haltRel</span></a> : <span class="id" type="keyword">forall</span> (<span class="id" type="var">ch</span>:<a class="idref" href="DvmState.html#ChangeState.change"><span class="id" type="definition">change</span></a>), <a class="idref" href="DvmState.html#mkChangeRel"><span class="id" type="inductive">mkChangeRel</span></a> <a class="idref" href="DvmState.html#ChangeState.halt"><span class="id" type="constructor">halt</span></a> <a class="idref" href="DvmState.html#ch"><span class="id" type="variable">ch</span></a> (<a class="idref" href="Helpers.html#Some"><span class="id" type="constructor">Some</span></a> <a class="idref" href="DvmState.html#ChangeState.halt"><span class="id" type="constructor">halt</span></a>).<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab46"></a><h3 class="section">Definition Relation Equivalence</h3>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Theorem</span> <a name="ChangeState.mkChangeRelEq"><span class="id" type="lemma">mkChangeRelEq</span></a> : <span class="id" type="keyword">forall</span> (<span class="id" type="var">st</span>:<a class="idref" href="DvmState.html#ChangeState.state"><span class="id" type="definition">state</span></a>) (<span class="id" type="var">ch</span>:<a class="idref" href="DvmState.html#ChangeState.change"><span class="id" type="definition">change</span></a>) (<span class="id" type="var">fst</span>:@<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> <a class="idref" href="DvmState.html#ChangeState.state"><span class="id" type="definition">state</span></a>), <a class="idref" href="DvmState.html#ChangeState.mkChange"><span class="id" type="definition">mkChange</span></a> <a class="idref" href="DvmState.html#st"><span class="id" type="variable">st</span></a> <a class="idref" href="DvmState.html#ch"><span class="id" type="variable">ch</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Logic.html#:type_scope:x_'='_x"><span class="id" type="notation">=</span></a> <a class="idref" href="DvmState.html#fst"><span class="id" type="variable">fst</span></a> <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Logic.html#:type_scope:x_'<->'_x"><span class="id" type="notation">&lt;-&gt;</span></a> <a class="idref" href="DvmState.html#ChangeState.mkChangeRel"><span class="id" type="inductive">mkChangeRel</span></a> <a class="idref" href="DvmState.html#st"><span class="id" type="variable">st</span></a> <a class="idref" href="DvmState.html#ch"><span class="id" type="variable">ch</span></a> <a class="idref" href="DvmState.html#fst"><span class="id" type="variable">fst</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Proof</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">intros</span> <span class="id" type="var">st</span> <span class="id" type="var">ch</span>.<br/>
@@ -223,6 +476,22 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> <span class="id" type="var">st</span>; <span class="id" type="tactic">try</span> <span class="id" type="tactic">destruct</span> <span class="id" type="var">inb</span>; <span class="id" type="tactic">simpl</span> <span class="id" type="keyword">in</span> <span class="id" type="var">H</span>; <span class="id" type="tactic">subst</span>; <span class="id" type="tactic">try</span> <span class="id" type="tactic">econstructor</span>.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" type="tactic">destruct</span> <span class="id" type="var">st</span>; <span class="id" type="tactic">try</span> <span class="id" type="tactic">destruct</span> <span class="id" type="var">outb</span>; <span class="id" type="tactic">simpl</span> <span class="id" type="keyword">in</span> <span class="id" type="var">H</span>; <span class="id" type="tactic">subst</span>; <span class="id" type="tactic">try</span> <span class="id" type="tactic">econstructor</span>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab47"></a><h2 class="section">mkChanges : Repeated application of mkChange</h2>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Fixpoint</span> <a name="ChangeState.mkChanges"><span class="id" type="definition">mkChanges</span></a> (<span class="id" type="var">cst</span>:<a class="idref" href="DvmState.html#ChangeState.state"><span class="id" type="definition">state</span></a>) (<span class="id" type="var">chs</span>:<a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#list"><span class="id" type="inductive">list</span></a> <a class="idref" href="DvmState.html#ChangeState.change"><span class="id" type="definition">change</span></a>) : @<a class="idref" href="Helpers.html#Option"><span class="id" type="inductive">Option</span></a> <a class="idref" href="DvmState.html#ChangeState.state"><span class="id" type="definition">state</span></a> :=<br/>

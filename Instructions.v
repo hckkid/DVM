@@ -4,6 +4,19 @@ Require Export Example.
 Require Export Method.
 Require Export DType.
 
+(**
+
+* Enter The Dragon!
+
+Welcome to the most crucial and intense part of whole implementation, in this module we provide functionality for
+execution of each Instruction given a State and Program.
+
+* InstructionType Signature
+
+Its not much to discus about, just for abstarcting Instruction Module.
+
+*)
+
 Module Type InstructionType.
   Parameter inst : Type. (* ADT for Instrucion *)
   Parameter mthd : Type. (* ADT for Methods *)
@@ -13,7 +26,20 @@ Module Type InstructionType.
   (* Parameter evalWith : inst -> DVMState -> list ValOrRef -> list deltaState. *)
 End InstructionType.
 
+(**
+
+* Instruction Module
+
+*)
+
 Module INSTRUCTION <: InstructionType.
+(**
+
+** Definitions
+- ADT definitions
+- A dummy functions of no use anymore
+
+*)
   Definition inst := Instruction.
   Definition mthd := Method.
   Definition prg := Program.
@@ -38,6 +64,12 @@ Module INSTRUCTION <: InstructionType.
     | hlt => nil
     end.
 
+(**
+
+** evalNop : evaluate nop instruction
+
+*)
+
   Definition evalNop (curr:DVMState) (p:prg) : deltaState :=
     match curr with
     | stuck => mkStuck
@@ -51,6 +83,12 @@ Module INSTRUCTION <: InstructionType.
       | _ => mkStuck
       end
     end.
+
+(**
+
+** evalRet : evaluate ret instruction
+
+*)
 
   Definition evalRet (curr:DVMState) (p:prg) : (list deltaState) :=
     match (EVAL.evalReg 201 curr),curr with
@@ -74,6 +112,12 @@ Module INSTRUCTION <: InstructionType.
     | _,_ => [mkStuck]
     end.
 
+(**
+
+** evalRetTo : evaluate retTo instruction
+
+*)
+
   Definition evalRetTo (curr:DVMState) (p:prg) (n:Location) : (list deltaState) :=
     match (EVAL.evalReg 201 curr),curr with
     | (Some x),(dst (cons f1 (cons (frm vals ml pc) frem)) h sh bin bout) => 
@@ -96,6 +140,12 @@ Module INSTRUCTION <: InstructionType.
     | _,_ => [mkStuck]
     end.
 
+(**
+
+** evalInvokes : evaluate invokes instruction
+
+*)
+
   Definition evalInvokes (curr:DVMState) (p:prg) (lst:list rhs) (ml:MethodLocation) : (list deltaState) :=
     match (filter isNone (map (fun (x:rhs)=> (EVAL.evalRhs x curr)) lst)),(METHOD.firstPC ml p) with
     | nil,(Some pc) => cons (createFrame (frm [] ml pc)) (fastRev (map 
@@ -109,6 +159,13 @@ Module INSTRUCTION <: InstructionType.
       | _ => [mkStuck]
       end
     end.
+
+(**
+
+** evalInvokei : evaluate invokei instruction
+Register input takes object location for which method is called.
+
+*)
 
   Definition evalInvokei (curr:DVMState) (p:prg) (lst:list rhs) (ml:MethodLocation) (n:nat) : (list deltaState) :=
     match (filter isNone (map (fun (x:rhs)=> (EVAL.evalRhs x curr)) lst)),(METHOD.firstPC ml p),(EVAL.evalReg n curr) with
@@ -124,8 +181,20 @@ Module INSTRUCTION <: InstructionType.
       end
     end.
 
+(**
+
+** evalGoto : evaluate goto instruction
+
+*)
+
   Definition evalGoto (pc:ProgramCounter) : list deltaState :=
     [updateFrame (upPC pc)].
+
+(**
+
+** evalBranch : evaluate branch instruction
+
+*)
 
   Definition evalBranch (l1 l2:rhs) (bc:BinaryCompOperator) (pc:ProgramCounter) (curr:DVMState) (p:prg) : list deltaState :=
     match (EVAL.evalRhs l1 curr),(EVAL.evalRhs l2 curr) with
@@ -149,6 +218,12 @@ Module INSTRUCTION <: InstructionType.
       end
     end.
 
+(**
+
+** evalMove : evaluate move instruction
+
+*)
+
   Definition evalMove (l1:rhs) (n:Register) (curr:DVMState) (p:prg) : list deltaState :=
     match (EVAL.evalRhs l1 curr) with
     | Some v1 => (cons (evalNop curr p) [updateFrame (upVals n v1)] )
@@ -161,6 +236,12 @@ Module INSTRUCTION <: InstructionType.
   Declare Module HEAP : ListType with Definition t1 := arrOrObj.
   Declare Module VLIST : ListType with Definition t1 := Val.
   Declare Module FLIST : ListType with Definition t1 := FieldLocation*Val.
+
+(**
+
+** evalUpdate : evaluate update instruction
+
+*)
 
   Definition evalUpdate (l1 l2:rhs) (curr:DVMState) (p:prg) : list deltaState :=
     match l1,(EVAL.evalRhs l2 curr),curr with
@@ -193,6 +274,12 @@ Module INSTRUCTION <: InstructionType.
     | _,_,_ => [mkStuck]
     end.
 
+(**
+
+** evalUnary : evaluate unary instruction
+
+*)
+
   Definition evalUnary (l1:rhs) (n:Register) (op:UnaryOperator) (curr:DVMState) (p:prg) : list deltaState :=
     match op,(EVAL.evalRhs l1 curr) with
     | unot,Some (prim p1) => match isle_num 1 (PType.toNat p1) with
@@ -206,6 +293,12 @@ Module INSTRUCTION <: InstructionType.
       | _ => [mkStuck]
       end
     end.
+
+(**
+
+** evalBinaryArith : evaluate binaryArith instruction
+
+*)
 
   Definition evalBinaryArith (l1 l2:rhs) (n:Register) (op:BinaryArithOperator) (curr:DVMState) (p:prg) : list deltaState :=
     match curr with
@@ -225,6 +318,12 @@ Module INSTRUCTION <: InstructionType.
 
   Declare Module HP : ListType with Definition t1 := arrOrObj.
 
+(**
+
+** evalNew : evaluate new instruction
+
+*)
+
   Definition evalNew (n:Register) (cl:ClassLocation) (curr:DVMState) (p:prg) : list deltaState :=
     match curr with
     | stuck => [mkStuck]
@@ -234,6 +333,12 @@ Module INSTRUCTION <: InstructionType.
       | _ => [mkStuck]
       end
     end.
+
+(**
+
+** evalNewArray : evaluate newarr instruction
+
+*)
 
   Definition evalNewArray (n:Register) (t:type) (l:rhs) (curr:DVMState) (p:prg) : list deltaState :=
     match curr,(EVAL.evalRhs l curr) with
@@ -248,6 +353,12 @@ Module INSTRUCTION <: InstructionType.
       end
     | _,_ => [mkStuck]
     end.
+
+(**
+
+** evalCast : evaluate cast instruction
+
+*)
 
   Definition evalCast (n:Register) (t:type) (l:rhs) (curr:DVMState) (p:prg) : list deltaState :=
     match curr,(EVAL.evalRhs l curr) with
@@ -265,6 +376,12 @@ Module INSTRUCTION <: InstructionType.
 
   Declare Module NLIST:ListType with Definition t1:=nat.
 
+(**
+
+** evalRead : evaluate read instruction
+
+*)
+
   Definition evalRead (n:Register) (curr:DVMState) (p:prg) : list deltaState :=
     match curr with
     | halt => [mkHalt]
@@ -275,6 +392,12 @@ Module INSTRUCTION <: InstructionType.
       end
     end.
 
+(**
+
+** evalWrite : evaluate print instruction
+
+*)
+
   Definition evalWrite (r1:rhs) (curr:DVMState) (p:prg) : list deltaState :=
     match curr,(EVAL.evalRhs r1 curr) with
     | halt,_ => [mkHalt]
@@ -282,6 +405,12 @@ Module INSTRUCTION <: InstructionType.
     | (dst frms h sh inb (crs,lst)),(Some (prim p1)) => cons (evalNop curr p) [(addOutb (PType.toNat p1))]
     | _,_ => [mkStuck]
     end.
+
+(**
+
+** evalInst : evaluate any instruction
+
+*)
 
   Definition evalInst (inst:Instruction) (curr:DVMState) (p:prg) : list deltaState :=
     match inst with
@@ -303,6 +432,14 @@ Module INSTRUCTION <: InstructionType.
     | print r1 => evalWrite r1 curr p
     | hlt => [mkHalt]
     end.
+
+(**
+
+** C.I.P. : Compute In Peace
+
+With execution defined, we can now write fixpoints to compute a Program
+
+*)
 
   Definition getCurrInstruction (curr:DVMState) (p:prg) : @Option Instruction :=
     match curr with

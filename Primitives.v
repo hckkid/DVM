@@ -1,6 +1,16 @@
 Add LoadPath "D:\DVM".
 Require Export Helpers.
 
+(**
+
+* Operator Definitions
+
+- UnaryOperator : For unary operations
+- BinaryArithOperator : For Binary Arithmetic Only
+- BinaryCompOperator : For comparison of two values
+
+*)
+
 Inductive UnaryOperator : Type :=
   | unot : UnaryOperator.
 
@@ -10,11 +20,14 @@ Inductive BinaryArithOperator : Type :=
   | bmult : BinaryArithOperator
   | bdiv : BinaryArithOperator
   | bmod : BinaryArithOperator
-(*  | band : BinaryArithOperator
-  | bor : BinaryArithOperator
-  | bxor : BinaryArithOperator 
-For later*)
 .
+
+(**
+  - | band : BinaryArithOperator
+  - | bor : BinaryArithOperator
+  - | bxor : BinaryArithOperator 
+  For later
+*)
 
 Inductive BinaryCompOperator : Type :=
   | beq : BinaryCompOperator
@@ -29,21 +42,52 @@ Inductive Prim : Type :=
   | char : nat -> Prim
   | int : nat -> Prim.
 
+(**
+
+* Signature for Functionality module on primitives
+
+*)
+
 Module Type PrimitiveType.
-  Parameter t : Type.   (* ADT for primitives which is Prim *)
-  Parameter t_type : Type. (* ADT for primitive types *)
+  Parameter t : Type.   (** ADT for primitives which is Prim *)
+  Parameter t_type : Type. (** ADT for primitive types *)
   Parameter cast : t_type -> t -> t.
   Parameter comp : t -> t -> nat.
   Parameter toNat : t -> nat.
   Parameter fromNat : t_type -> nat -> t.
   Parameter getType : t -> t_type.
-  (*Axiom castToSame : forall x ty, ty = (getType x) -> (cast ty x) = x.
-  Axiom castType : forall x ty, getType (cast ty x) = ty. *)
+(** 
+  - Axiom castToSame : forall x ty, ty = (getType x) -> (cast ty x) = x.
+  - Axiom castType : forall x ty, getType (cast ty x) = ty. 
+  Not a priority, since Primitives are in separate modules, there execution can be updated anytime 
+  without breaking whole system
+*)
 End PrimitiveType.
 
+(**
+
+* PType an implementation module
+
+*)
+
 Module PType <: PrimitiveType.
+(**
+  Declares parameter ADTs for Primitive and PrimitiveType
+*)
   Definition t := Prim.
   Definition t_type := PrimType.
+
+(**
+
+** Operations
+
+  - toNat : Prim to nat conversion
+  - fromNat : nat and input type to Prim of input type
+  - getType : return type of current Prim
+  - comp : compares two prims
+  - cast : cast given prim to prim of input type
+
+*)
 
   Fixpoint toNat (x:t) : nat :=
     match x with

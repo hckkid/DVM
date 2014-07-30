@@ -2,6 +2,22 @@ Add LoadPath "D:\DVM".
 Require Export Primitives.
 Require Import String.
 
+(**
+
+* Overview
+
+In this module we define syntax elements of CoqDVM
+
+* Definitions
+
+*)
+
+(**
+
+** Location and Name Definitions
+
+*)
+
 Definition Location := nat.
 
 Definition Name := string.
@@ -20,6 +36,12 @@ Definition ClassName := Name.
 Definition FieldName := Name.
 Definition MethodName := Name.
 
+(**
+
+** Constant Definition
+
+*)
+
 Inductive Constant : Type :=
   | cnat : nat -> Constant
 (*  | cstr : Name -> Constant  
@@ -27,6 +49,12 @@ Inductive Constant : Type :=
   | ctrue : Constant
   | cfalse : Constant
   | cnull : Constant.
+
+(**
+
+** "type" definition
+
+*)
 
 Inductive type : Type :=
   | p : PrimType -> type
@@ -37,6 +65,12 @@ with RefType : Type :=
   | a : type -> RefType
   | sizeda : type -> nat -> RefType.
 
+(**
+
+** lhs and rhs for simple expression
+
+*)
+
 Inductive lhs : Type :=
   | reg : Register -> lhs
   | acc : Register -> Register -> lhs
@@ -45,6 +79,12 @@ Inductive lhs : Type :=
 with rhs : Type :=
   | l : lhs -> rhs
   | cs : Constant -> rhs.
+
+(**
+
+** Instruction Definition
+
+*)
 
 Inductive Instruction : Type :=
   | nop : Instruction
@@ -65,6 +105,12 @@ Inductive Instruction : Type :=
   | print : rhs -> Instruction
   | hlt : Instruction.
 
+(**
+
+** Class related final definitions
+
+*)
+
 Inductive MethodSig : Type := ms (am:nat) (mn:MethodName) (ret:type) (regs:nat) (args:list (type*Name)).
 Inductive MethodBody : Type := mb (insts:list (ProgramCounter*Instruction)).
 
@@ -76,7 +122,13 @@ Inductive Class : Type :=
   | top : Class
   | class : nat -> ClassLocation -> list FieldLocation -> list MethodLocation -> Class.
 
-(* Accessmodifier then superclass then fields then methods *)
+(** Accessmodifier then superclass then fields then methods *)
+
+(**
+
+** Val (Values in CoqDVM) Definition
+
+*)
 
 Inductive Ref : Type :=
   | lRef : Location -> Ref
@@ -87,6 +139,8 @@ Inductive Val : Type :=
   | ref : Ref -> Val.
 
 (** 
+
+** Object & Array Definitions
 
 An Object either is instance of Top class, or it made of current Class Location (Used in Casting),
 Original Class Location, Field Value Pairs, or it is deletedObject which comes into play during Garbage Collection.
@@ -108,5 +162,11 @@ Inductive arrOrObj : Type :=
 Inductive ValOrRef : Type :=
   | vl : Val -> ValOrRef
   | rf : arrOrObj -> ValOrRef.
+
+(**
+
+** Program : Where all definitions meet
+
+*)
 
 Inductive Program : Type := prog (cnl:list ClassName) (mnl:list MethodSig) (cl:list Class) (fl:list Field) (ml:list Method).

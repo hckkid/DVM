@@ -2,18 +2,51 @@ Add LoadPath "D:\DVM".
 Require Export DvmState.
 Require Export Program.
 
+(**
+
+* Overview
+
+This Module implements functionality to evaluate simple expressions that occur in CoqDVM instruction provided current state
+
+* EVALTYPE signature
+
+Here we have just three function prototypes
+- evalReg : evaluates value of a register
+- evalLhs : evaluates value of lhs expression
+- evalRhs : evaluates value of rhs expression
+
+*)
+
+
 Module Type EVALTYPE.
   Parameter evalReg : nat -> DVMState -> @Option Val.
   Parameter evalLhs : lhs -> DVMState -> @Option Val.
   Parameter evalRhs : rhs -> DVMState -> @Option Val.
 End EVALTYPE.
 
+(**
+
+* EVAL module
+
+*)
+
 Module EVAL <: EVALTYPE.
+(**
+
+List Based Declarions to be used later.
+
+*)
   Declare Module RLIST : ListType with Definition t1 := nat*Val.
   Declare Module HP : ListType with Definition t1 := arrOrObj.
   Declare Module VLIST : ListType with Definition t1 := Val.
   Declare Module LVLIST : ListType with Definition t1 := (FieldLocation*Val).
   Declare Module SVLIST : ListType with Definition t1 := (FieldLocation*Val).
+
+(**
+
+** evalReg : Evaluates Register
+
+*)
 
   Fixpoint evalReg (n:nat) (st:DVMState) : @Option Val :=
     match st with
@@ -65,6 +98,12 @@ Module EVAL <: EVALTYPE.
     inversion H; subst; destruct n; simpl; try reflexivity;
       try (apply RLIST.findRelEq in H0; rewrite H0; try reflexivity; apply RLIST.getRelEq in H1; rewrite H1; reflexivity).
   Qed.
+
+(**
+
+** evalLhs : Evaluates lhs expressions
+
+*)
 
   Definition evalLhs (exp:lhs) (st:DVMState) : @Option Val :=
     match exp,st with
@@ -242,7 +281,14 @@ Module EVAL <: EVALTYPE.
       destruct st; try reflexivity. destruct (evalReg n (dst frms h sh inb outb)); destruct v; simpl; try reflexivity. destruct r0; auto. destruct (HP.get l h); auto. destruct t; auto. destruct a; auto.
       apply evalRegRelEq in H2. rewrite H2. apply PType.toNatRelEq in H3. rewrite H3. apply VLIST.getRelEq. assumption.
 *)
-(** Bug Alert *)
+
+(* Bug Alert ! pattern matching bug *)
+
+(**
+
+** evalRhs : Evaluates rhs expressions
+
+*)
 
   Definition evalRhs (exp:rhs) (st:DVMState) : @Option Val :=
     match exp with

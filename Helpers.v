@@ -2,7 +2,7 @@
 
 Helpers provide few key definitions general for development purpose in Coq.
 
-Option provides support for monads.
+* Option
 
 *)
 
@@ -12,7 +12,14 @@ Inductive Option {A:Type} : Type :=
 
 (** 
 
-Fixpoint for equality on naturals.
+* Arithmetic Definitions
+
+In this section following arithmetic definitions are made:
+- areEqualNum : returns bool result of equality on numbers
+- areEqualBool : returns bool result of equality on bools
+- isle_num : n1 < n2 with bool result
+- div : n1 / n2 , integer division
+- mod : n1 % n2 , modulo operator
 
 *)
 
@@ -54,6 +61,20 @@ Fixpoint div (m n:nat) {struct m} : nat :=
   end.
 
 Definition mod (m n:nat) : nat := m - (mult (div m n) n).
+
+(**
+
+* List Operations
+
+Here following generic list operations are covered:
+- fold : Similar to statndard accumulator function
+- map : Applies a function to all elements of list
+- filter : Filters content of list based upon certain check
+- numberList : numbers elements of given list, hence generating list (nat*X) for list X input
+- fastRev : linear order reverse on list, makes use of temporary list
+- forAllList : relation that holds if input relation holds for each element of list
+
+*)
 
 Fixpoint fold {X Y:Type} (l1:list X) (f:X->Y->Y) (def:Y) : Y :=
   match l1 with
@@ -111,6 +132,24 @@ Fixpoint twoRev {X:Type} (l1 l2:list X) : list X :=
 Definition fastRev {X:Type} (l:list X) : list X :=
   twoRev l nil.
 
+Inductive forAllList {A:Type} : list A -> (A -> Prop) -> Prop :=
+  | forAllNil : forall (rel:A->Prop), forAllList nil rel
+  | forAllCons : forall (x:A) (lst:list A) (rel:A->Prop), rel x ->
+     (forAllList lst rel) -> (forAllList (cons x lst) rel).
+
+(**
+
+* Arithematic Theorems
+
+Following theorems are proved for later purpose
+- forall n, 0 < (S n)
+- forall n m, n <= m -> S n <= S m
+- forall n m, n < m -> S n < S m
+- forall n m, S n <= S m -> n <= m
+- forall n m, S n < S m -> n < m
+
+*)
+
 Theorem zero_lt_S_n : forall n, 0 < S n.
 Proof.
   induction n.
@@ -164,10 +203,11 @@ Proof.
   eauto.
 Qed.
 
+(**
+
+* Bool coerced as Prop
+
+*)
+
 Inductive boolCoerced : bool -> Prop :=
   | trueP : boolCoerced true.
-
-Inductive forAllList {A:Type} : list A -> (A -> Prop) -> Prop :=
-  | forAllNil : forall (rel:A->Prop), forAllList nil rel
-  | forAllCons : forall (x:A) (lst:list A) (rel:A->Prop), rel x ->
-     (forAllList lst rel) -> (forAllList (cons x lst) rel).

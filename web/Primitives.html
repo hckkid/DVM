@@ -23,6 +23,33 @@
 <span class="id" type="keyword">Require</span> <span class="id" type="keyword">Export</span> <a class="idref" href="Helpers.html#"><span class="id" type="library">Helpers</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab18"></a><h1 class="section">Operator Definitions</h1>
+
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> UnaryOperator : For unary operations
+
+</li>
+<li> BinaryArithOperator : For Binary Arithmetic Only
+
+</li>
+<li> BinaryCompOperator : For comparison of two values
+
+</li>
+</ul>
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Inductive</span> <a name="UnaryOperator"><span class="id" type="inductive">UnaryOperator</span></a> : <span class="id" type="keyword">Type</span> :=<br/>
 &nbsp;&nbsp;| <a name="unot"><span class="id" type="constructor">unot</span></a> : <a class="idref" href="Primitives.html#UnaryOperator"><span class="id" type="inductive">UnaryOperator</span></a>.<br/>
 
@@ -33,8 +60,30 @@
 &nbsp;&nbsp;| <a name="bmult"><span class="id" type="constructor">bmult</span></a> : <a class="idref" href="Primitives.html#BinaryArithOperator"><span class="id" type="inductive">BinaryArithOperator</span></a><br/>
 &nbsp;&nbsp;| <a name="bdiv"><span class="id" type="constructor">bdiv</span></a> : <a class="idref" href="Primitives.html#BinaryArithOperator"><span class="id" type="inductive">BinaryArithOperator</span></a><br/>
 &nbsp;&nbsp;| <a name="bmod"><span class="id" type="constructor">bmod</span></a> : <a class="idref" href="Primitives.html#BinaryArithOperator"><span class="id" type="inductive">BinaryArithOperator</span></a><br/>
-<br/>
 .<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> | band : BinaryArithOperator
+
+</li>
+<li> | bor : BinaryArithOperator
+
+</li>
+<li> | bxor : BinaryArithOperator 
+
+</li>
+</ul>
+  For later
+
+</div>
+<div class="code">
 
 <br/>
 <span class="id" type="keyword">Inductive</span> <a name="BinaryCompOperator"><span class="id" type="inductive">BinaryCompOperator</span></a> : <span class="id" type="keyword">Type</span> :=<br/>
@@ -53,18 +102,124 @@
 &nbsp;&nbsp;| <a name="int"><span class="id" type="constructor">int</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a> -&gt; <a class="idref" href="Primitives.html#Prim"><span class="id" type="inductive">Prim</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab19"></a><h1 class="section">Signature for Functionality module on primitives</h1>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Module</span> <span class="id" type="keyword">Type</span> <a name="PrimitiveType"><span class="id" type="module">PrimitiveType</span></a>.<br/>
-&nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="PrimitiveType.t"><span class="id" type="axiom">t</span></a> : <span class="id" type="keyword">Type</span>. &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="PrimitiveType.t_type"><span class="id" type="axiom">t_type</span></a> : <span class="id" type="keyword">Type</span>. &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="PrimitiveType.cast"><span class="id" type="axiom">cast</span></a> : <a class="idref" href="Primitives.html#PrimitiveType.t_type"><span class="id" type="axiom">t_type</span></a> -&gt; <a class="idref" href="Primitives.html#PrimitiveType.t"><span class="id" type="axiom">t</span></a> -&gt; <a class="idref" href="Primitives.html#PrimitiveType.t"><span class="id" type="axiom">t</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="PrimitiveType.t"><span class="id" type="axiom">t</span></a> : <span class="id" type="keyword">Type</span>. </div>
+
+<div class="doc">
+ADT for primitives which is Prim 
+</div>
+<div class="code">
+&nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="PrimitiveType.t_type"><span class="id" type="axiom">t_type</span></a> : <span class="id" type="keyword">Type</span>. </div>
+
+<div class="doc">
+ADT for primitive types 
+</div>
+<div class="code">
+&nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="PrimitiveType.cast"><span class="id" type="axiom">cast</span></a> : <a class="idref" href="Primitives.html#PrimitiveType.t_type"><span class="id" type="axiom">t_type</span></a> -&gt; <a class="idref" href="Primitives.html#PrimitiveType.t"><span class="id" type="axiom">t</span></a> -&gt; <a class="idref" href="Primitives.html#PrimitiveType.t"><span class="id" type="axiom">t</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="PrimitiveType.comp"><span class="id" type="axiom">comp</span></a> : <a class="idref" href="Primitives.html#PrimitiveType.t"><span class="id" type="axiom">t</span></a> -&gt; <a class="idref" href="Primitives.html#PrimitiveType.t"><span class="id" type="axiom">t</span></a> -&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="PrimitiveType.toNat"><span class="id" type="axiom">toNat</span></a> : <a class="idref" href="Primitives.html#PrimitiveType.t"><span class="id" type="axiom">t</span></a> -&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="PrimitiveType.fromNat"><span class="id" type="axiom">fromNat</span></a> : <a class="idref" href="Primitives.html#PrimitiveType.t_type"><span class="id" type="axiom">t_type</span></a> -&gt; <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a> -&gt; <a class="idref" href="Primitives.html#PrimitiveType.t"><span class="id" type="axiom">t</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Parameter</span> <a name="PrimitiveType.getType"><span class="id" type="axiom">getType</span></a> : <a class="idref" href="Primitives.html#PrimitiveType.t"><span class="id" type="axiom">t</span></a> -&gt; <a class="idref" href="Primitives.html#PrimitiveType.t_type"><span class="id" type="axiom">t_type</span></a>.<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> Axiom castToSame : forall x ty, ty = (getType x) -&gt; (cast ty x) = x.
+
+</li>
+<li> Axiom castType : forall x ty, getType (cast ty x) = ty. 
+
+</li>
+</ul>
+  Not a priority, since Primitives are in separate modules, there execution can be updated anytime 
+  without breaking whole system
+
+</div>
+<div class="code">
 <span class="id" type="keyword">End</span> <a class="idref" href="Primitives.html#"><span class="id" type="module">PrimitiveType</span></a>.<br/>
 
 <br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab20"></a><h1 class="section">PType an implementation module</h1>
+
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
 <span class="id" type="keyword">Module</span> <a name="PType"><span class="id" type="module">PType</span></a> &lt;: <a class="idref" href="Primitives.html#"><span class="id" type="module">PrimitiveType</span></a>.<br/>
+</div>
+
+<div class="doc">
+  Declares parameter ADTs for Primitive and PrimitiveType
+
+</div>
+<div class="code">
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="PType.t"><span class="id" type="definition">t</span></a> := <a class="idref" href="Primitives.html#PType.Prim"><span class="id" type="inductive">Prim</span></a>.<br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Definition</span> <a name="PType.t_type"><span class="id" type="definition">t_type</span></a> := <a class="idref" href="Primitives.html#PType.PrimType"><span class="id" type="inductive">PrimType</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+<div class="paragraph"> </div>
+
+<a name="lab21"></a><h2 class="section">Operations</h2>
+
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> toNat : Prim to nat conversion
+
+</li>
+<li> fromNat : nat and input type to Prim of input type
+
+</li>
+<li> getType : return type of current Prim
+
+</li>
+<li> comp : compares two prims
+
+</li>
+<li> cast : cast given prim to prim of input type
+
+</li>
+</ul>
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
 
 <br/>
 &nbsp;&nbsp;<span class="id" type="keyword">Fixpoint</span> <a name="PType.toNat"><span class="id" type="definition">toNat</span></a> (<span class="id" type="var">x</span>:<a class="idref" href="Primitives.html#PType.t"><span class="id" type="definition">t</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/8.4pl4/stdlib/Coq.Init.Datatypes.html#nat"><span class="id" type="inductive">nat</span></a> :=<br/>

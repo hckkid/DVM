@@ -3,6 +3,22 @@ Require Export Program.
 Require Export DList.
 Require Export DvmState.
 
+(**
+
+* Overview
+
+DType module deals with type related operations in DVM
+
+* type_type Signature
+
+We need following type related operations the most
+- createObject : create an Object of given Class
+- createArray : creates an Array of given type
+- checkCast : checks for possibility of casting
+- cast : casts and object into object of given type.
+
+*)
+
 Module Type type_type.
   Parameter t : Type.
   Parameter ob: Type.
@@ -14,7 +30,18 @@ Module Type type_type.
   Parameter cast : prg -> t -> Location -> heap -> @Option deltaState.
 End type_type.
 
+(**
+
+* TYPE module
+
+*)
+
 Module TYPE <: type_type.
+(**
+
+** Declarations & Definitions
+
+*)
   Definition t := type.
   Definition ob := Object.
   Definition prg := Program.
@@ -25,6 +52,15 @@ Module TYPE <: type_type.
 
   Definition appTemp {A:Type} (x:A) (l:list A) : list A :=
     (cons x l).
+
+(**
+
+** Helper Operations
+
+*** fieldListIndexed
+  creates list of field locations for given class
+
+*)
 
   Fixpoint fieldListIndexed (n:nat) (c:Class) (clst:list Class) : @Option (list FieldLocation) :=
     match c,n with
@@ -39,8 +75,22 @@ Module TYPE <: type_type.
     | _,_ => None
     end.
 
+(**
+
+*** fieldList
+  generates Field list from list of FieldLocation
+
+*)
+
   Definition fieldList (c:Class) (clst:list Class) : @Option (list FieldLocation) :=
     fieldListIndexed (CLIST.len clst) c clst.
+
+(**
+
+*** defaultSetter
+  generates list of default value from Fields based upon their type in corresponding order
+
+*)
 
   Definition defaultSetter (fl:FieldLocation) (p:prg) : @Option Val :=
     match p with
@@ -58,6 +108,13 @@ Module TYPE <: type_type.
       end
     end.
 
+(**
+
+*** defaultedFields
+  generates list of FieldLocation Value pairs in corresponding order
+
+*)
+
   Definition defaultedFields (l:list FieldLocation) (p:prg) : @Option (list (FieldLocation*Val)) :=
     match filter (map l (fun x:FieldLocation=>defaultSetter x p)) isNone with
     | nil => Some (map l (fun x:FieldLocation => match (defaultSetter x p) with
@@ -66,6 +123,14 @@ Module TYPE <: type_type.
                       end))
     | _ => None
     end.
+
+(**
+
+** createObject
+
+All helpers functions put together form createObject
+
+*)
 
   Definition createObject (p:prg) (ty:t) (h:heap) : @Option deltaState :=
     match ty with
@@ -81,6 +146,18 @@ Module TYPE <: type_type.
       end
     | _ => None
     end.
+
+(**
+
+** createArray
+
+To create array we tak following steps
+- fixpoint for generating N sized list of type A
+- compute default
+- generate N sized with default values
+- create array using above
+
+*)
 
   Fixpoint generateNList {A:Type} (n:nat) (val:A) : (list A) :=
     match n with
@@ -106,6 +183,18 @@ Module TYPE <: type_type.
     | (r (a ty2)) => Some (addHeap (ar (arr n (generateN n ty2))))
     | _ => None
     end.
+
+(**
+
+** Cast
+
+For casting we define following functionality
+- isSubIndexed : given class locations tells if first is subclass of second or not
+- isSub : given classes tells whether first is sub of second or not
+- checkCast : check types for casting possibility
+- cast : cast object into object of given type
+
+*)
 
   Fixpoint isSubIndexed (p:prg) (c1 c2:ClassLocation) (n:nat) : bool :=
     match (areEqualNum c1 c2),n with
