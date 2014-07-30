@@ -314,6 +314,8 @@ Module INSTRUCTION <: InstructionType.
     | _ => None
     end.
 
+  Definition stepWith (i:Instruction) (curr:DVMState) (p:prg) : @Option DVMState := (ChangeState.mkChanges curr (evalInst i curr p)).
+
   Definition stepFix (curr:DVMState) (p:prg) : @Option DVMState :=
     match (getCurrInstruction curr p) with
     | Some ins => (ChangeState.mkChanges curr (evalInst ins curr p))

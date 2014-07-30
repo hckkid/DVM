@@ -35,6 +35,234 @@ This subset of Dalvik Virtual Machine is made keeping Occam's Razor in mind.
 
 <div class="paragraph"> </div>
 
+To begin with, lets take top to bottom view approach. Which means we will go
+to deeper level of abstractions after describing top level abstractions.
+CoqDVM from topmost view can be broken into following units:
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> General Units providing universal functions
+
+</li>
+<li> Syntax Defining Units provide syntax used by CoqDVM
+
+</li>
+<li> Semantic Defining Units which basically are an implementation for given syntax
+
+</li>
+<li> Proof Units formed by files carrying relations and theorems over CoqDVM
+
+</li>
+</ul>
+<a name="lab2"></a><h2 class="section">General Units</h2>
+
+
+<div class="paragraph"> </div>
+
+This part of CoqDVM is made by Helpers Module and DList Module. Both of these files provide
+generic functionality. Helper provides functions and definitions as general as Option for monads
+fold, map, filter for list operations. List on other hand provides a Parameterised module on lists
+with list function alog with their Relation eqvivalents. The benefits of having a relation equivalent
+are from proof perspective as they aren't bound by termination coditions, which is key feature writing
+multi step relation for CoqDVM. We will discuss this further during Instruction Module which is part
+of semantic defining units.
+
+<div class="paragraph"> </div>
+
+<a name="lab3"></a><h2 class="section">Syntax Defining Units</h2>
+
+
+<div class="paragraph"> </div>
+
+This part is formed by modules Primitives Defs Program DvmState and Method.
+
+<div class="paragraph"> </div>
+
+<a name="lab4"></a><h3 class="section">Primitives</h3>
+
+
+<div class="paragraph"> </div>
+
+Primitives Module defines Primitive types of Coqdoc along with arithmetic over primitives,
+Cast &amp; Compare operation on primitives and also fuction to genrate equivalent natural(nat) or
+generate primitive provided type and natural. Primitives Modules also hosts definition of
+Operators in CoqDVM.
+
+<div class="paragraph"> </div>
+
+<a name="lab5"></a><h3 class="section">Defs</h3>
+
+
+<div class="paragraph"> </div>
+
+Defs module as the name suggest defines the core syntax of CoqDVM, key definitions worth
+mentioning are:
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> Constant (Not defined in primitives)
+
+</li>
+<li> lhs &amp; rhs (Almost as their name suggest except there is no equality)
+
+</li>
+<li> Instruction (Defines Syntax for valid instructions)
+
+</li>
+<li> Method, Field, Class (For object oriented features)
+
+</li>
+<li> Val (Values that register can hold, allows refrences)
+
+</li>
+<li> Object &amp; Array (Semantic Domain for the former in Heap)
+
+</li>
+<li> Program (Allowed program definition, note no verification on class/method/field links is done, its done on runtime)
+
+</li>
+</ul>
+<a name="lab6"></a><h3 class="section">Method &amp; Program</h3>
+
+
+<div class="paragraph"> </div>
+
+These are very small modules, which basically provide few simple operation on their corresponding Semantic Domain.
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> Program basically allows one to fetch its constituent Classes, Methods &amp; Fields.
+
+</li>
+<li> Method allows to get next program counter provided current counter, getting instruction at given counter etc.
+
+</li>
+</ul>
+<a name="lab7"></a><h3 class="section">DvmState</h3>
+
+
+<div class="paragraph"> </div>
+
+DvmState is as much part of semantic defining unit as much it is for syntax definitions. In DvmState we
+introduce DVMState which is syntax definition for current state of CoqDVM. In DvmState we also
+introduce deltaState, which we use to represent unit changes between two DVMState's. So any changes CoqDVM
+undergoes on execution of one or more Instructions is mapped into a list of deltaState. Then we finally
+introduce mkChange and mkChanges, which determine given a DVMState and deltaState / list deltaState respectively,
+the final DVMState based on both these inputs, which CoqDVM should be in.
+
+<div class="paragraph"> </div>
+
+<a name="lab8"></a><h2 class="section">Semantic Definining Units</h2>
+
+
+<div class="paragraph"> </div>
+
+The semantics for CoqDVM is covered by modules DvmState(already described), Eval, DType and Instructions.
+
+<div class="paragraph"> </div>
+
+<a name="lab9"></a><h3 class="section">Eval</h3>
+
+
+<div class="paragraph"> </div>
+
+Eval module consists mainly of three important fixpoint definitions and their relation equivalents, which are
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> evalReg : it take a register location as input followed by current state, and produces value for asked Register
+
+</li>
+<li> evalLhs : it takes an expression of semantic domain lhs followed by state producing its computed value
+
+</li>
+<li> evalRhs : Just like previous two function this one computes value for expression of domain rhs in a given state.
+
+</li>
+</ul>
+<a name="lab10"></a><h3 class="section">DType</h3>
+
+
+<div class="paragraph"> </div>
+
+DType modules deals with operations on composite types. It can primarily be said to deal with following three operations
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> createObject : returns a newly created object(No constructors called yet) of input type, this definition is used by
+  instruction new
+
+</li>
+<li> createArray : returns a newly created 1 dimensional array of given type, this definition is used by newarr instrucction
+
+</li>
+<li> cast : This instruction does type casting for composite types.
+
+</li>
+</ul>
+<a name="lab11"></a><h3 class="section">Instructions</h3>
+
+
+<div class="paragraph"> </div>
+
+Instructions modules is a huge module, since it provide semantics for each and every instruction in CoqDVM.
+We take tagcode of given instruction, appending its name with eval &amp; first letter capitalised we get name for its
+implementation definition. For e.g. : implementation of nop is given in evalNop, branch is given in evalBranch.
+Finally we couple all these definition together in single definition evalInst which given an Instruction, current State
+and Program returns list deltaState which can be used to compute next State using mkChanges defined in DvmState.
+And to add more simplicity we define stepFix and multiStepFix which given State and Program take step based on what
+current instruction is, by application of evalInst and mkChanges.
+
+<div class="paragraph"> </div>
+
+<a name="lab12"></a><h2 class="section">Proof Units</h2>
+
+
+<div class="paragraph"> </div>
+
+This part of CoqDVM is still upgrading, currently it consists of modules Example, Consistency and Progress.
+
+<div class="paragraph"> </div>
+
+<a name="lab13"></a><h3 class="section">Consistency</h3>
+
+
+<div class="paragraph"> </div>
+
+We define inductive definitions of relation which take care of necessities to compute corresponding execution unit.
+For example consistentEvalReg n st will have an evidence only if Register n is compuptable in state st.
+This makes every consistent Relation over states to have evidence for halt state and never for stuck state.
+We define consistency relation for each instruction taking care of its parameters as input and then finally couple
+them all as single relation on instruction as consistentInst. Consistency has many uses, primary use for it now is
+in Progress property and Heap soundness property.
+
+<div class="paragraph"> </div>
+
+<a name="lab14"></a><h3 class="section">Example</h3>
+
+
+<div class="paragraph"> </div>
+
+This module is completely optional but we have it for testing purpose. Here we have CoqDVM implementation of a source
+Java program which we converted into a sub-dalvik equivalent and then we defined in CoqDVM. We make use of example
+file in Instructions module where we use multiStepFix on program and state defined in it.
+
+<div class="paragraph"> </div>
+
+<a name="lab15"></a><h3 class="section">Progress</h3>
+
+
+<div class="paragraph"> </div>
+
+This module is to prove progress property on CoqDVM and is in development right now.
+
+<div class="paragraph"> </div>
+
 
 </div>
 <div class="code">

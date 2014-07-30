@@ -166,3 +166,8 @@ Qed.
 
 Inductive boolCoerced : bool -> Prop :=
   | trueP : boolCoerced true.
+
+Inductive forAllList {A:Type} : list A -> (A -> Prop) -> Prop :=
+  | forAllNil : forall (rel:A->Prop), forAllList nil rel
+  | forAllCons : forall (x:A) (lst:list A) (rel:A->Prop), rel x ->
+     (forAllList lst rel) -> (forAllList (cons x lst) rel).
