@@ -121,6 +121,7 @@ Only program and state dependent heap properties would need to be defined later.
 - get_set_unavail : get after a set at unallocated location is always None
 - get_set_indep : get at location independent of set remains the same
 - get_set_dep : get at location same as set changes to input value in set
+- get_find : get after a find is successful.
 
 *)
 
@@ -148,6 +149,15 @@ Only program and state dependent heap properties would need to be defined later.
   Theorem get_nil : forall n, get n nil = None.
   Proof.
     intros; destruct n; auto.
+  Qed.
+
+  Theorem get_avail : forall n lst, n<len lst -> exists v, get n lst = Some v.
+  Proof.
+    intros n lst. generalize dependent n. induction lst.
+    destruct n. simpl. intros. inversion H.
+      simpl. intros. inversion H.
+    destruct n. simpl. intros. exists a. reflexivity.
+      simpl. intros. apply Sn_Sm_lt_n_m in H. apply IHlst. assumption.
   Qed.
 
   Theorem get_set_avail : forall n v lst, n < (len lst) -> get n (set n v lst) = Some v.
@@ -341,6 +351,19 @@ Only program and state dependent heap properties would need to be defined later.
         eapply setRelEq. symmetry. eapply Heqlst2.
         apply IHdata. reflexivity.
       inversion H. simpl. apply setRelEq in H2. rewrite H2. apply IHdata. assumption.
+  Qed.
+
+  Theorem get_find : forall (x:t1) (n:nat) (cmp:t1->t1->bool) (lst:t2), find x cmp lst = Some n -> (exists y,get n lst = Some y).
+  Proof.
+    intros x n cmp lst.
+    generalize dependent n.
+    induction lst. simpl. intros. inversion H.
+    intros. simpl in H.
+    destruct (cmp x a).
+      inversion H. subst. simpl. exists a. reflexivity.
+      destruct (find x cmp lst).
+        inversion H; subst. simpl. apply IHlst. reflexivity.
+        inversion H.
   Qed.
 
 End ListType.

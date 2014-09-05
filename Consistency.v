@@ -9,17 +9,7 @@ This module creates consistency relations to check different kinds of consistenc
 frames, program etc. Our progress property makes use of instruction being consistent with state and program to
 state that given instruction will definitely go into some next non stuck state or not.
 
-* Declarations
-
 *)
-
-Declare Module RLIST : ListType with Definition t1 := nat*Val.
-Declare Module HP : ListType with Definition t1 := arrOrObj.
-Declare Module VLIST : ListType with Definition t1 := Val.
-Declare Module LVLIST : ListType with Definition t1 := (FieldLocation*Val).
-Declare Module SVLIST : ListType with Definition t1 := (FieldLocation*Val).
-Declare Module FLIST : ListType with Definition t1 := FieldLocation*Val.
-Declare Module NLIST : ListType with Definition t1 := nat.
 
 (**
 
@@ -36,7 +26,7 @@ Inductive consistentNop : DVMState -> Program -> Prop :=
 
 Inductive consistentEvalReg : nat -> DVMState -> Prop :=
   | consistencyReg : forall (n n':nat) (vals:list (nat*Val)) (ml:MethodLocation) (pc:ProgramCounter) (frem:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer),
-                     RLIST.findRel (n,ref null) compFirst vals (Some n') ->
+                     EVAL.RLIST.findRel (n,ref null) compFirst vals (Some n') ->
                      consistentEvalReg n (dst (cons (frm vals ml pc) frem) h sh inb outb).
 
 Inductive consistentRet : DVMState -> Program -> Prop :=
@@ -50,20 +40,23 @@ Inductive consistentEvalLhs : lhs -> DVMState -> Prop :=
   | consistencyRegLhs : forall (n:nat) (st:DVMState),
                      consistentEvalReg n st ->
                      consistentEvalLhs (reg n) st
-  | consistencyAccLhs : forall (frms:list Frame) (h:Heap) (sh:SHeap)  (inb outb:Buffer) (lc:Location) (n n2 n': nat) (lst:list Val) (p1:Prim),
+  | consistencyAccLhs : forall (frms:list Frame) (h:Heap) (sh:SHeap)  (inb outb:Buffer) (lc:Location) (n n2 n' n'': nat) (lst:list Val) (p1:Prim),
                      EVAL.evalRegRel n (dst frms h sh inb outb) (Some (ref (lRef lc))) ->
-                     HP.getRel lc h (Some (ar (arr n' lst))) ->
-                     EVAL.evalRegRel n (dst frms h sh inb outb) (Some (prim p1)) ->
+                     EVAL.HP.getRel lc h (Some (ar (arr n' lst))) ->
+                     EVAL.evalRegRel n2 (dst frms h sh inb outb) (Some (prim p1)) ->
+                     EVAL.VLIST.len lst = n' ->
+                     PType.toNatRel p1 n'' ->
+                     n'' < n' ->
                      consistentEvalLhs (acc n n2) (dst frms h sh inb outb)
   | consistencyIfieldLhs : forall (frms:list Frame) (h:Heap) (sh:SHeap)  (inb outb:Buffer) (lc:Location) (n n2 n3 n' n'': nat) (lst:list (FieldLocation*Val)) (vl:FieldLocation*Val),
                      EVAL.evalRegRel n (dst frms h sh inb outb) (Some (ref (lRef lc))) ->
-                     HP.getRel lc h (Some (dob (obj n' n'' lst))) ->
-                     LVLIST.findRel (n2,(ref null)) compFirst lst (Some n3) ->
-                     LVLIST.getRel n3 lst (Some vl) ->
+                     EVAL.HP.getRel lc h (Some (dob (obj n' n'' lst))) ->
+                     EVAL.LVLIST.findRel (n2,(ref null)) compFirst lst (Some n3) ->
+                     EVAL.LVLIST.getRel n3 lst (Some vl) ->
                      consistentEvalLhs (ifield n n2) (dst frms h sh inb outb)
   | consistencySfieldLhs : forall (frms:list Frame) (h:Heap) (sh:SHeap)  (inb outb:Buffer) (lc:Location) (n n2: nat) (vl:FieldLocation*Val),
-                     SVLIST.findRel (n,(ref null)) compFirst sh (Some n2) ->
-                     SVLIST.getRel n2 sh (Some vl) ->
+                     EVAL.SVLIST.findRel (n,(ref null)) compFirst sh (Some n2) ->
+                     EVAL.SVLIST.getRel n2 sh (Some vl) ->
                      consistentEvalLhs (sfield n) (dst frms h sh inb outb).
 
 Inductive consistentEvalRhs : rhs -> DVMState -> Prop :=
@@ -113,19 +106,19 @@ Inductive consistentUpdate : DVMState -> Program -> rhs -> rhs -> Prop :=
                      consistentEvalRhs r2 (dst frms h sh inb outb) ->
                      EVAL.evalRegRel n1 (dst frms h sh inb outb) (Some (ref (lRef loc1))) ->
                      EVAL.evalRegRel n2 (dst frms h sh inb outb) (Some (prim p2)) ->
-                     HP.getRel loc1 h (Some (ar (arr n3 vlst))) ->
+                     EVAL.HP.getRel loc1 h (Some (ar (arr n3 vlst))) ->
                      PType.toNatRel p2 n4 ->
                      n4 < (S n3) ->
                      consistentUpdate (dst frms h sh inb outb) p (l (acc n1 n2)) r2
   | consistencyIfieldUpdate : forall (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (p:Program) (n1:Register) (n2:nat) (f1:FieldLocation) (r2:rhs) (c1 c2:ClassLocation) (loc1:Location) (lst:list (FieldLocation*Val)),
                      consistentEvalRhs r2 (dst frms h sh inb outb) ->
                      EVAL.evalRegRel n1 (dst frms h sh inb outb) (Some (ref (lRef loc1))) ->
-                     HP.getRel loc1 h (Some (dob (obj c1 c2 lst))) ->
-                     FLIST.findRel (f1,(ref null)) compFirst lst (Some n2) ->
+                     EVAL.HP.getRel loc1 h (Some (dob (obj c1 c2 lst))) ->
+                     INSTRUCTION.FLIST.findRel (f1,(ref null)) compFirst lst (Some n2) ->
                      consistentUpdate (dst frms h sh inb outb) p (l (ifield n1 f1)) r2
   | consistencySfieldUpdate : forall (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (p:Program) (f1:FieldLocation) (n:nat) (r2:rhs),
                      consistentEvalRhs r2 (dst frms h sh inb outb) ->
-                     FLIST.findRel (f1,(ref null)) compFirst sh (Some n) ->
+                     INSTRUCTION.FLIST.findRel (f1,(ref null)) compFirst sh (Some n) ->
                      consistentUpdate (dst frms h sh inb outb) p (l (sfield f1)) r2
   | consistencyUpdateHalt : forall (p:Program) (r1 r2:rhs), consistentUpdate halt p r1 r2.
 
@@ -162,7 +155,7 @@ Inductive consistentNewArray : DVMState -> Program -> Register -> type -> rhs ->
 
 Inductive consistentRead : DVMState -> Program -> Register -> Prop :=
   | consistencyRead : forall (frms:list Frame) (h:Heap) (sh:SHeap) (crs:Cursor) (lst:list nat) (outb:Buffer) (p:Program) (n:Register) (n':nat),
-                     NLIST.getRel crs lst (Some n') ->
+                     INSTRUCTION.NLIST.getRel crs lst (Some n') ->
                      consistentRead (dst frms h sh (crs,lst) outb) p n
   | consistencyReadHalt : forall (p:Program) (n:Register),
                      consistentRead halt p n.

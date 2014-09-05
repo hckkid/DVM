@@ -147,7 +147,7 @@ Module INSTRUCTION <: InstructionType.
 *)
 
   Definition evalInvokes (curr:DVMState) (p:prg) (lst:list rhs) (ml:MethodLocation) : (list deltaState) :=
-    match (filter isNone (map (fun (x:rhs)=> (EVAL.evalRhs x curr)) lst)),(METHOD.firstPC ml p) with
+    match (Helpers.filter (Helpers.map lst (fun (x:rhs)=> (EVAL.evalRhs x curr))) isNone),(METHOD.firstPC ml p) with
     | nil,(Some pc) => cons (createFrame (frm [] ml pc)) (fastRev (map 
         (fun x:(nat*Val)=> match x with | (nx,vx) => updateFrame (upVals nx vx) end)
         (numberList 101 (map (fun (x:rhs)=> match (EVAL.evalRhs x curr) with
@@ -168,7 +168,7 @@ Register input takes object location for which method is called.
 *)
 
   Definition evalInvokei (curr:DVMState) (p:prg) (lst:list rhs) (ml:MethodLocation) (n:nat) : (list deltaState) :=
-    match (filter isNone (map (fun (x:rhs)=> (EVAL.evalRhs x curr)) lst)),(METHOD.firstPC ml p),(EVAL.evalReg n curr) with
+    match (Helpers.filter (Helpers.map lst (fun (x:rhs)=> (EVAL.evalRhs x curr))) isNone),(METHOD.firstPC ml p),(EVAL.evalReg n curr) with
     | nil,(Some pc),(Some obv) => cons (createFrame (frm [] ml pc)) (cons (updateFrame (upVals 0 obv)) (fastRev (map 
         (fun x:(nat*Val)=> match x with | (nx,vx) => updateFrame (upVals nx vx) end)
         (numberList 101 (map (fun (x:rhs)=> match (EVAL.evalRhs x curr) with
@@ -468,6 +468,6 @@ With execution defined, we can now write fixpoints to compute a Program
       end
     end.
 
-  Compute (multiStepFix 101 currState p).
+  Compute (multiStepFix 100 currState p).
 
 End INSTRUCTION.

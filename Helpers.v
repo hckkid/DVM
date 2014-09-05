@@ -19,7 +19,7 @@ In this section following arithmetic definitions are made:
 - areEqualBool : returns bool result of equality on bools
 - isle_num : n1 < n2 with bool result
 - div : n1 / n2 , integer division
-- mod : n1 % n2 , modulo operator
+- mod : modulo operator
 
 *)
 
@@ -137,6 +137,43 @@ Inductive forAllList {A:Type} : list A -> (A -> Prop) -> Prop :=
   | forAllCons : forall (x:A) (lst:list A) (rel:A->Prop), rel x ->
      (forAllList lst rel) -> (forAllList (cons x lst) rel).
 
+Theorem two_rev_pres : forall {X:Type} (l1 l2:list X) P, (forAllList l1 P /\ forAllList l2 P) ->
+  forAllList (twoRev l1 l2) P.
+Proof.
+  induction l1; intros; inversion H. simpl. assumption.
+  simpl. inversion H0. apply IHl1. split; try assumption. constructor; assumption.
+Qed.
+
+Fixpoint tempApp {X:Type} (l1 l2:list X) : list X :=
+  match l1 with
+  | nil => l2
+  | (cons hd tl) => (cons hd (tempApp tl l2))
+  end.
+
+Theorem temp_App_Mid_Val : forall {X:Type} l1 (a:X) l2, tempApp l1 (cons a l2) = tempApp (tempApp l1 (cons a nil)) l2.
+Proof.
+  induction l1; intros; simpl. reflexivity.
+  rewrite IHl1. reflexivity.
+Qed.
+
+Theorem two_rev_app : forall {X:Type} (l1 l2:list X), twoRev l1 l2 = tempApp (twoRev l1 nil) l2.
+Proof.
+  induction l1; intros.
+  simpl. reflexivity.
+  simpl. rewrite IHl1. remember (twoRev l1 nil) as tmp. rewrite IHl1.
+  apply temp_App_Mid_Val.
+Qed.
+
+Theorem two_rev_dist : forall {X:Type} (l1 l2:list X), twoRev (tempApp l1 l2) l3 = tempApp (tempApp (twoRev l2 nil) (twoRev l1 nil)) l3.
+Proof.
+
+Theorem rev_pres : forall {X:Type} (l:list X) P , forAllList l P <-> forAllList (fastRev l) P.
+Proof.
+  intros.
+  split.
+  unfold fastRev. intro. apply two_rev_pres. split. assumption. constructor.
+  
+
 (**
 
 * Arithematic Theorems
@@ -211,3 +248,18 @@ Qed.
 
 Inductive boolCoerced : bool -> Prop :=
   | trueP : boolCoerced true.
+
+Theorem forAllListFilter : forall (X Y:Type) (l:list X) (r:X->Prop) (s:X->@Option Y), (forall (x:X), r x -> isNone (s x) = false) ->
+  forAllList l r -> filter (map l s) isNone = nil .
+Proof.
+  induction l.
+    intros. simpl. unfold filter. simpl. reflexivity.
+    intros. simpl. inversion H0. apply H in H3.
+    destruct (s a). unfold filter. simpl.
+      replace (fold (map l s)
+        (fun (x : Option) (l' : list Option) =>
+        if isNone x then (x :: l')%list else l') nil)
+      with (filter (map l s) isNone). eapply IHl. apply H. assumption.
+      reflexivity.
+    inversion H3.
+Qed.
