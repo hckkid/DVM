@@ -146,14 +146,16 @@ Module INSTRUCTION <: InstructionType.
 
 *)
 
+  Definition mapsw {X Y:Type} := fun (x:X->Y) => fun (y:list X) => map y x.
+
   Definition evalInvokes (curr:DVMState) (p:prg) (lst:list rhs) (ml:MethodLocation) : (list deltaState) :=
-    match (Helpers.filter (Helpers.map lst (fun (x:rhs)=> (EVAL.evalRhs x curr))) isNone),(METHOD.firstPC ml p) with
+    match (filter (map lst (fun (x:rhs)=> (EVAL.evalRhs x curr))) isNone),(METHOD.firstPC ml p) with
     | nil,(Some pc) => cons (createFrame (frm [] ml pc)) (fastRev (map 
-        (fun x:(nat*Val)=> match x with | (nx,vx) => updateFrame (upVals nx vx) end)
-        (numberList 101 (map (fun (x:rhs)=> match (EVAL.evalRhs x curr) with
+        (numberList 101 (map (fastRev lst) (fun (x:rhs)=> match (EVAL.evalRhs x curr) with
         | Some v1 => v1
         | _ => (ref null)
-        end) (fastRev lst)))))
+        end) ))
+        (fun x:(nat*Val)=> match x with | (nx,vx) => updateFrame (upVals nx vx) end)))
     | _,_ => match curr with
       | halt => [mkHalt]
       | _ => [mkStuck]
@@ -170,11 +172,11 @@ Register input takes object location for which method is called.
   Definition evalInvokei (curr:DVMState) (p:prg) (lst:list rhs) (ml:MethodLocation) (n:nat) : (list deltaState) :=
     match (Helpers.filter (Helpers.map lst (fun (x:rhs)=> (EVAL.evalRhs x curr))) isNone),(METHOD.firstPC ml p),(EVAL.evalReg n curr) with
     | nil,(Some pc),(Some obv) => cons (createFrame (frm [] ml pc)) (cons (updateFrame (upVals 0 obv)) (fastRev (map 
-        (fun x:(nat*Val)=> match x with | (nx,vx) => updateFrame (upVals nx vx) end)
-        (numberList 101 (map (fun (x:rhs)=> match (EVAL.evalRhs x curr) with
+        (numberList 101 (map (fastRev lst) (fun (x:rhs)=> match (EVAL.evalRhs x curr) with
         | Some v1 => v1
         | _ => (ref null)
-        end) (fastRev lst))))))
+        end)))
+        (fun x:(nat*Val)=> match x with | (nx,vx) => updateFrame (upVals nx vx) end))))
     | _,_,_ => match curr with
       | halt => [mkHalt]
       | _ => [mkStuck]

@@ -6,6 +6,9 @@ Helpers provide few key definitions general for development purpose in Coq.
 
 *)
 
+Require Export List.
+Export ListNotations.
+
 Inductive Option {A:Type} : Type :=
   | Some : A -> Option
   | None : Option.
@@ -137,11 +140,16 @@ Inductive forAllList {A:Type} : list A -> (A -> Prop) -> Prop :=
   | forAllCons : forall (x:A) (lst:list A) (rel:A->Prop), rel x ->
      (forAllList lst rel) -> (forAllList (cons x lst) rel).
 
-Theorem two_rev_pres : forall {X:Type} (l1 l2:list X) P, (forAllList l1 P /\ forAllList l2 P) ->
+Theorem two_rev_pres : forall {X:Type} (l1 l2:list X) P, (forAllList l1 P /\ forAllList l2 P) <->
   forAllList (twoRev l1 l2) P.
 Proof.
+  split.
+  generalize dependent l2.
   induction l1; intros; inversion H. simpl. assumption.
   simpl. inversion H0. apply IHl1. split; try assumption. constructor; assumption.
+  intro.
+    generalize dependent l2. induction l1; intros. split. constructor. simpl in H. assumption.
+    simpl in H. apply IHl1 in H. inversion H. inversion H1. split; try constructor; assumption.
 Qed.
 
 Fixpoint tempApp {X:Type} (l1 l2:list X) : list X :=
@@ -149,6 +157,19 @@ Fixpoint tempApp {X:Type} (l1 l2:list X) : list X :=
   | nil => l2
   | (cons hd tl) => (cons hd (tempApp tl l2))
   end.
+
+Theorem tempAppNil : forall {X:Type} (l:list X), tempApp l nil = l.
+Proof.
+  induction l; eauto.
+  simpl. rewrite IHl. auto.
+Qed.
+
+Theorem tempAppAssoc : forall {X:Type} (l1 l2 l3:list X), tempApp l1 (tempApp l2 l3) = tempApp (tempApp l1 l2) l3.
+Proof.
+  induction l1; intros.
+  simpl. reflexivity.
+  simpl. rewrite IHl1. reflexivity.
+Qed.
 
 Theorem temp_App_Mid_Val : forall {X:Type} l1 (a:X) l2, tempApp l1 (cons a l2) = tempApp (tempApp l1 (cons a nil)) l2.
 Proof.
@@ -164,14 +185,23 @@ Proof.
   apply temp_App_Mid_Val.
 Qed.
 
-Theorem two_rev_dist : forall {X:Type} (l1 l2:list X), twoRev (tempApp l1 l2) l3 = tempApp (tempApp (twoRev l2 nil) (twoRev l1 nil)) l3.
+
+Theorem two_rev_dist : forall {X:Type} (l1 l2 l3:list X), twoRev (tempApp l1 l2) l3 = tempApp (tempApp (twoRev l2 nil) (twoRev l1 nil)) l3.
 Proof.
+  induction l1; intros.
+  simpl. rewrite <- two_rev_app. apply two_rev_app.
+  simpl. rewrite IHl1. rewrite  <- tempAppAssoc. rewrite  <- tempAppAssoc.
+  assert(H:tempApp (twoRev l1 []) (a::l3) = tempApp (twoRev l1 [a]) l3).
+    rewrite temp_App_Mid_Val. rewrite <- two_rev_app. reflexivity.
+  rewrite H. reflexivity.
+Qed.
 
 Theorem rev_pres : forall {X:Type} (l:list X) P , forAllList l P <-> forAllList (fastRev l) P.
 Proof.
   intros.
-  split.
-  unfold fastRev. intro. apply two_rev_pres. split. assumption. constructor.
+  split; unfold fastRev; intro. apply two_rev_pres. split. assumption. constructor.
+  apply two_rev_pres in H. inversion H. assumption.
+Qed.
   
 
 (**
