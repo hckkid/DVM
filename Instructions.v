@@ -1,4 +1,3 @@
-Add LoadPath "D:\DVM".
 Require Export Eval.
 Require Export Example.
 Require Export Method.

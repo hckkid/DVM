@@ -1,4 +1,3 @@
-Add LoadPath "D:\DVM".
 Require Export Defs.
 Require Export DList.
 

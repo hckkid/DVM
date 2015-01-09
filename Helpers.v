@@ -106,10 +106,29 @@ Fixpoint map {X Y:Type} (l1:list X) (f:X->Y) : list Y :=
   | (cons x lrem) => cons (f x) (map lrem f)
   end.
 
+Definition findIf {X:Type} (l:list X) (f:X->bool) : bool := fold (map l f) orb false.
+
 Definition filter {X:Type} (l:list X) (f:X->bool) : list X :=
   fold l (fun (x:X)=>(fun (l':list X)=>match (f x) with
           | true => (cons x l')
           | false => l' end)) nil.
+
+Definition intersection {X:Type} (l1 l2:list X) (f:X->X->bool) : list X :=
+  filter l1 (fun x => findIf l2 (f x)).
+
+Definition difference {X:Type} (l1 l2:list X) (f:X->X->bool) : list X :=
+  filter l1 (fun x => negb (findIf l2 (f x))).
+
+Definition invArgs {X Y Z:Type} (f:X->Y->Z) : Y -> X -> Z := (fun x => fun y => (f y x)).
+
+Definition length {X:Type} (l:list X) : nat :=
+  fold l (fun _ => S) 0.
+
+Fixpoint nToZero (n:nat) : list nat :=
+  match n with
+  | O => [0]
+  | (S n) => (S n)::(nToZero n)
+  end.
 
 Definition isNone {X:Type} (x:@Option X) : bool :=
   match x with
