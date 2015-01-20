@@ -17,7 +17,7 @@ run:
 
 for compiling from inside subdirectory
 
-coqc CoqDVM.v Helpers.v Primitives.v DList.v Defs.v Program.v DvmState.v Method.v Eval.v DType.v Example.v Instructions.v Consistency.v Progress.v LookingAhead.v
+coqc CoqDVM.v Helpers.v Primitives.v DList.v Defs.v Program.v GenericState.v DvmState.v Method.v Eval.v DType.v Example.v Instructions.v Consistency.v Progress.v LookingAhead.v
 
 coqc ..\CoqDVM.v ..\Helpers.v ..\Primitives.v ..\DList.v ..\Defs.v ..\Program.v ..\DvmState.v ..\Method.v ..\Eval.v ..\DType.v ..\Example.v ..\Instructions.v ..\Consistency.v ..\Progress.v ..\LookingAhead.v
 

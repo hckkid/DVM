@@ -19,7 +19,9 @@ Open Scope type_scope.
 Module Type GenericStateType.
 
 Parameter Val' : Type.
+Parameter arrOrObj' : Type.
 
+(*
 Inductive Object : Type :=
   | topObj : Object
   | obj : ClassLocation -> ClassLocation -> list (FieldLocation * Val') -> Object
@@ -31,6 +33,7 @@ Inductive Array : Type :=
 Inductive arrOrObj' : Type :=
   | ar : Array -> arrOrObj'
   | dob : Object -> arrOrObj'.
+*)
 
 Inductive Frame : Type :=  frm (vals:list (nat*Val')) (ml:MethodLocation) (PC:ProgramCounter).
 
@@ -321,8 +324,8 @@ End ChangeState.
 
 End GenericStateType.
 
+(*
 Declare Module DvmState : GenericStateType with Definition Val' := nat.
 
 Definition t1 := DvmState.State_ind.
-
-Compute t1.
+*)
