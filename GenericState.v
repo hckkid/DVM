@@ -228,7 +228,7 @@ Implements state change function
                          mkChangeRel (dst frms h sh inb outb) (upHeap lst) (Some (dst frms h' sh inb outb))
     | upSHeapRel : forall (frms: list Frame) (h:Heap) (sh sh':SHeap) (inb outb:Buffer),
                          mkChangeRel (dst frms h sh inb outb) (upSHeap sh') (Some (dst frms h sh' inb outb))
-    | addOutb : forall (frms: list Frame) (h:Heap) (sh:SHeap) (curs:Cursor) (lst lst':list nat) (inb:Buffer) (n:nat),
+    | addOutbRel : forall (frms: list Frame) (h:Heap) (sh:SHeap) (curs:Cursor) (lst lst':list nat) (inb:Buffer) (n:nat),
                          NLIST.prepRel n lst lst' ->
                          mkChangeRel (dst frms h sh inb (curs,lst)) (addOutb n) (Some (dst frms h sh inb (curs,lst')))
     | upInbRel : forall (frms: list Frame) (h:Heap) (sh:SHeap) (curs:Cursor) (clst:list (nat*nat)) (lst lst':list nat) (outb:Buffer),
@@ -321,6 +321,8 @@ Implements state change function
   Qed.
 
 End ChangeState.
+
+Export ChangeState.
 
 End GenericStateType.
 

@@ -248,6 +248,18 @@ Proof.
   auto.
 Qed.
 
+Theorem zero_le_n : forall n, 0 <= n.
+Proof.
+  induction n.
+  econstructor.
+  inversion IHn.
+  econstructor.
+  econstructor.
+  econstructor.
+  econstructor.
+  assumption.
+Qed.
+
 Theorem n_m_le_Sn_Sm : forall p q, p <= q -> S p <= S q.
 Proof.
   intros.
@@ -287,6 +299,27 @@ Proof.
   subst.
   apply Sn_Sm_le_n_m in H1.
   eauto.
+Qed.
+
+Theorem isleNumRefl : forall n, isle_num n n = true.
+Proof.
+  induction n.
+  unfold isle_num. reflexivity.
+  unfold isle_num in IHn.
+  unfold isle_num. assumption.
+Qed.
+
+Theorem isleNumProp : forall m n, isle_num m n = true <-> m <= n.
+Proof.
+  split; generalize dependent m; induction n.
+    induction m.
+      econstructor. intro. unfold isle_num in H. inversion H.
+    induction m.
+      intro. apply zero_le_n.
+      intro. apply IHn in H. apply n_m_le_Sn_Sm. assumption.
+    intros. inversion H. simpl. reflexivity.
+    induction m. intros. reflexivity.
+    intro. unfold isle_num. apply IHn. apply Sn_Sm_le_n_m. assumption.
 Qed.
 
 (**

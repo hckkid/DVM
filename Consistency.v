@@ -81,22 +81,24 @@ Inductive consistentInvokei : DVMState -> Program -> (list rhs) -> MethodLocatio
                      consistentInvokei halt p lst ml n.
 
 Inductive consistentGoto : DVMState -> Program -> ProgramCounter -> Prop :=
-  | consistencyGoto : forall (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (p:Program) (pc:ProgramCounter),
-                     consistentGoto (dst frms h sh inb outb) p pc
+  | consistencyGoto : forall (frm:Frame) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (p:Program) (pc:ProgramCounter),
+                     consistentGoto (dst (frm::frms) h sh inb outb) p pc
   | consistencyGotoHalt : forall (p:Program) (pc:ProgramCounter),
                      consistentGoto halt p pc.
 
 Inductive consistentBranch : DVMState -> Program -> rhs -> rhs -> BinaryCompOperator -> ProgramCounter -> Prop :=
-  | consistencyBranch : forall (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (p:Program) (pc:ProgramCounter) (r1 r2:rhs) (bcomp:BinaryCompOperator) (p1 p2:Prim),
-                     EVAL.evalRhsRel r1 (dst frms h sh inb outb) (Some (prim p1)) ->
-                     EVAL.evalRhsRel r2 (dst frms h sh inb outb) (Some (prim p2)) ->
-                     consistentBranch (dst frms h sh inb outb) p r1 r2 bcomp pc
+  | consistencyBranch : forall (frm:Frame) (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (p:Program) (pc:ProgramCounter) (r1 r2:rhs) (bcomp:BinaryCompOperator) (p1 p2:Prim),
+                     EVAL.evalRhsRel r1 (dst (frm::frms) h sh inb outb) (Some (prim p1)) ->
+                     EVAL.evalRhsRel r2 (dst (frm::frms) h sh inb outb) (Some (prim p2)) ->
+                     consistentNop (dst (frm::frms) h sh inb outb) p ->
+                     consistentBranch (dst (frm::frms) h sh inb outb) p r1 r2 bcomp pc
   | consistencyBranchHalt : forall (p:Program) (pc:ProgramCounter) (r1 r2:rhs) (bcomp:BinaryCompOperator),
                      consistentBranch halt p r1 r2 bcomp pc.
 
 Inductive consistentMove : DVMState -> Program -> Register -> rhs -> Prop :=
   | consistencyMove : forall (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (p:Program) (n:Register) (r1:rhs),
                      consistentEvalRhs r1 (dst frms h sh inb outb) ->
+                     consistentNop (dst frms h sh inb outb) p ->
                      consistentMove (dst frms h sh inb outb) p n r1
   | consistencyMoveHalt : forall (p:Program) (n:Register) (r1:rhs), consistentMove halt p n r1.
 
@@ -108,22 +110,26 @@ Inductive consistentUpdate : DVMState -> Program -> rhs -> rhs -> Prop :=
                      EVAL.HP.getRel loc1 h (Some (ar (arr n3 vlst))) ->
                      PType.toNatRel p2 n4 ->
                      n4 < (S n3) ->
+                     consistentNop (dst frms h sh inb outb) p ->
                      consistentUpdate (dst frms h sh inb outb) p (l (acc n1 n2)) r2
   | consistencyIfieldUpdate : forall (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (p:Program) (n1:Register) (n2:nat) (f1:FieldLocation) (r2:rhs) (c1 c2:ClassLocation) (loc1:Location) (lst:list (FieldLocation*Val)),
                      consistentEvalRhs r2 (dst frms h sh inb outb) ->
                      EVAL.evalRegRel n1 (dst frms h sh inb outb) (Some (ref (lRef loc1))) ->
                      EVAL.HP.getRel loc1 h (Some (dob (obj c1 c2 lst))) ->
                      INSTRUCTION.FLIST.findRel (f1,(ref null)) compFirst lst (Some n2) ->
+                     consistentNop (dst frms h sh inb outb) p ->
                      consistentUpdate (dst frms h sh inb outb) p (l (ifield n1 f1)) r2
   | consistencySfieldUpdate : forall (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (p:Program) (f1:FieldLocation) (n:nat) (r2:rhs),
                      consistentEvalRhs r2 (dst frms h sh inb outb) ->
                      INSTRUCTION.FLIST.findRel (f1,(ref null)) compFirst sh (Some n) ->
+                     consistentNop (dst frms h sh inb outb) p ->
                      consistentUpdate (dst frms h sh inb outb) p (l (sfield f1)) r2
   | consistencyUpdateHalt : forall (p:Program) (r1 r2:rhs), consistentUpdate halt p r1 r2.
 
 Inductive consistentUnary : DVMState -> Program -> Register -> rhs -> UnaryOperator -> Prop :=
   | consistencyUnot : forall (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (p:Program) (r1:rhs) (n:Register),
                      consistentEvalRhs r1 (dst frms h sh inb outb) ->
+                     consistentNop (dst frms h sh inb outb) p ->
                      consistentUnary (dst frms h sh inb outb) p n r1 unot
   | consistencyHalt : forall (p:Program) (r1:rhs) (n:Register) (uop:UnaryOperator),
                      consistentUnary halt p n r1 uop.
@@ -132,6 +138,7 @@ Inductive consistentBinaryArith : DVMState -> Program -> Register -> rhs -> rhs 
   | consistencyPrimPrimBinaryArith : forall (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (p:Program) (r1 r2:rhs) (n:Register) (p1 p2:Prim) (binop:BinaryArithOperator),
                      EVAL.evalRhsRel r1 (dst frms h sh inb outb) (Some (prim p1)) ->
                      EVAL.evalRhsRel r2 (dst frms h sh inb outb) (Some (prim p2)) ->
+                     consistentNop (dst frms h sh inb outb) p ->
                      consistentBinaryArith (dst frms h sh inb outb) p n r1 r2 binop
   | consistencyBinaryArithHalt : forall (p:Program) (r1 r2:rhs) (n:Register) (binop:BinaryArithOperator),
                      consistentBinaryArith halt p n r1 r2 binop.
@@ -139,6 +146,7 @@ Inductive consistentBinaryArith : DVMState -> Program -> Register -> rhs -> rhs 
 Inductive consistentNew : DVMState -> Program -> Register -> ClassLocation -> Prop :=
   | consistencyNew : forall (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (p:Program) (cl:ClassLocation) (vl1:arrOrObj) (n:Register),
                      (TYPE.createObject p (r (c cl)) h) = Some (addHeap vl1) ->
+                     consistentNop (dst frms h sh inb outb) p ->
                      consistentNew (dst frms h sh inb outb) p n cl
   | consistencyNewHalt : forall (p:Program) (n:Register) (cl:ClassLocation),
                      consistentNew halt p n cl.
@@ -148,6 +156,7 @@ Inductive consistentNewArray : DVMState -> Program -> Register -> type -> rhs ->
                      EVAL.evalRhsRel r1 (dst frms h sh inb outb) (Some (prim p1)) ->
                      PType.toNatRel p1 n' ->
                      (TYPE.createArray ty n' h) = Some (addHeap vl1) ->
+                     consistentNop (dst frms h sh inb outb) p ->
                      consistentNewArray (dst frms h sh inb outb) p n ty r1
   | consistencyNewArrayHalt : forall (p:Program) (n:Register) (ty:type) (r1:rhs),
                      consistentNewArray halt p n ty r1.
@@ -155,6 +164,7 @@ Inductive consistentNewArray : DVMState -> Program -> Register -> type -> rhs ->
 Inductive consistentRead : DVMState -> Program -> Register -> Prop :=
   | consistencyRead : forall (frms:list Frame) (h:Heap) (sh:SHeap) (crs:Cursor) (lst:list nat) (outb:Buffer) (p:Program) (n:Register) (n':nat),
                      INSTRUCTION.NLIST.getRel crs lst (Some n') ->
+                     consistentNop (dst frms h sh (crs,lst) outb) p ->
                      consistentRead (dst frms h sh (crs,lst) outb) p n
   | consistencyReadHalt : forall (p:Program) (n:Register),
                      consistentRead halt p n.
@@ -162,6 +172,7 @@ Inductive consistentRead : DVMState -> Program -> Register -> Prop :=
 Inductive consistentWrite : DVMState -> Program -> rhs -> Prop :=
   | consistencyWrite : forall (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (p:Program) (r1:rhs) (p1:Prim),
                      EVAL.evalRhsRel r1 (dst frms h sh inb outb) (Some (prim p1)) ->
+                     consistentNop (dst frms h sh inb outb) p ->
                      consistentWrite (dst frms h sh inb outb) p r1
   | consistencyWriteHalt : forall (p:Program) (r1:rhs),
                      consistentWrite halt p r1.
@@ -170,6 +181,7 @@ Inductive consistentCast : DVMState -> Program -> Register -> type -> rhs -> Pro
   | consistencyCast : forall (frms:list Frame) (h:Heap) (sh:SHeap) (inb outb:Buffer) (p:Program) (r1:rhs) (loc1:Location) (ty:type) (n:Register) (lst:list (Location*arrOrObj)),
                      EVAL.evalRhsRel r1 (dst frms h sh inb outb) (Some (ref (lRef loc1))) ->
                      TYPE.cast p ty loc1 h = Some (upHeap lst) ->
+                     consistentNop (dst frms h sh inb outb) p ->
                      consistentCast (dst frms h sh inb outb) p n ty r1
   | consistencyCastHalt : forall (p:Program) (n:Register) (ty:type) (r1:rhs),
                      consistentCast halt p n ty r1.
